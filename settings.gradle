@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name='room_designer_client_android'
