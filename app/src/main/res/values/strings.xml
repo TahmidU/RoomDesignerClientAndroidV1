@@ -7,4 +7,18 @@
     <string name="verify_an_email">Verify an Email</string>
     <string name="don_t_have_an_account_sign_up">Don\'t have an Account? Sign Up</string>
     <string name="forgot_password">Forgot Password?</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_account">Create Account</string>
+    <string name="first_name">First Name</string>
+    <string name="enter_the_details_bellow_to_create_your_account_by_clicking_create_account_you_agree_with_the_terms_and_agreements">Enter the details bellow to create your account. By clicking create account you agree with the terms and agreements.</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="re_enter_password">Re-Enter Password</string>
+    <string name="already_have_an_account_sign_in">Already have an Account? Sign In</string>
+    <string name="verify_your_email">Verify your Email</string>
+    <string name="email_verify_desc">You should have received an email from us containing a token.\nGive it a few minutes or check your junk mail\nif you can\'t see the email.</string>
+    <string name="verify">Verify</string>
+    <string name="resend_token">Resend Token</string>
 </resources>

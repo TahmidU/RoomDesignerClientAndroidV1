@@ -1,21 +1,17 @@
-package com.tahmidu.room_designer_client_android.userAuthentication.login;
+package com.tahmidu.room_designer_client_android.repository;
 
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.tahmidu.room_designer_client_android.api.APIService;
-import com.tahmidu.room_designer_client_android.api.RetrofitClient;
-
+import com.tahmidu.room_designer_client_android.network.api.APIService;
+import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
+import com.tahmidu.room_designer_client_android.model.Login;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginRepo implements ILoginRepo
@@ -32,12 +28,11 @@ public class LoginRepo implements ILoginRepo
     }
 
     @Override
-    public MutableLiveData<String> retrieveToken(String email, String password)
+    public void retrieveToken(String email, String password)
     {
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
-        token.setValue("");
 
-        Observable<Response<Void>> tokenObservable = apiService.login(new Login(email, password));
+        final Observable<Response<Void>> tokenObservable = apiService.login(new Login(email, password));
         tokenObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Response<Void>>() {
             @Override
@@ -63,10 +58,10 @@ public class LoginRepo implements ILoginRepo
             @Override
             public void onComplete() {
                 Log.d(TAG, "onComplete called");
+                tokenObservable.subscribe().isDisposed();
+                Log.d(TAG, "Observer subscription: " + tokenObservable.subscribe().isDisposed());
             }
         });
-
-        return token;
     }
 
     public MutableLiveData<String> getToken() {

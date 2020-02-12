@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <import type="com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel"/>
         <variable
             name="VM"
-            type="com.tahmidu.room_designer_client_android.userAuthentication.login.LoginViewModel" />
+            type="com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel" />
         <variable
             name="login"
-            type="com.tahmidu.room_designer_client_android.userAuthentication.login.Login" />
+            type="com.tahmidu.room_designer_client_android.model.Login" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/login_layout"
-        android:orientation="vertical"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark">
@@ -114,53 +113,55 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_btn">
+
+        <TextView
+            android:id="@+id/verify_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="segoe_ui"
             android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login_btn">
+            android:onClick="@{() -> VM.navigateFragment(WelcomeViewModel.VERIFY_EMAIL_FRAGMENT)}"
+            android:text="@string/verify_an_email"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/verify_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="segoe_ui"
-                android:gravity="center"
-                android:text="@string/verify_an_email"
-                android:textColor="@color/colorTextPrimary"
-                android:textSize="14sp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
+        <TextView
+            android:id="@+id/create_acc_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="segoe_ui"
+            android:gravity="center"
+            android:onClick="@{() -> VM.navigateFragment(WelcomeViewModel.SIGN_UP_FRAGMENT)}"
+            android:text="@string/don_t_have_an_account_sign_up"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/create_acc_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="segoe_ui"
-                android:gravity="center"
-                android:text="@string/don_t_have_an_account_sign_up"
-                android:textColor="@color/colorTextPrimary"
-                android:textSize="16sp" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-
-            <TextView
-                android:id="@+id/forgot_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="segoe_ui"
-                android:gravity="center"
-                android:text="@string/forgot_password"
-                android:textColor="@color/colorTextPrimary"
-                android:textSize="14sp" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/forgot_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="segoe_ui"
+            android:gravity="center"
+            android:text="@string/forgot_password"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="14sp" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

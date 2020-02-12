@@ -17,7 +17,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <!--Activities Registration-->
-        <activity android:name=".userAuthentication.login.LoginActivity">
+        <activity android:name=".activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".activity.MainActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
 
     </application>

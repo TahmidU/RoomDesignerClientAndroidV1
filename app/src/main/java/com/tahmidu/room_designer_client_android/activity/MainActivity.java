@@ -1,8 +1,10 @@
-package com.tahmidu.room_designer_client_android;
+package com.tahmidu.room_designer_client_android.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.tahmidu.room_designer_client_android.R;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.tahmidu.room_designer_client_android.userAuthentication.login;
+package com.tahmidu.room_designer_client_android.model;
 
 import androidx.databinding.Bindable;
 import androidx.databinding.Observable;
