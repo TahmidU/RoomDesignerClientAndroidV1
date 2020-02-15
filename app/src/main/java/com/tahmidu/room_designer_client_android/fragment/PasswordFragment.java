@@ -17,30 +17,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.view.WindowManager;
 
 import com.tahmidu.room_designer_client_android.R;
-import com.tahmidu.room_designer_client_android.databinding.FragmentVerifyEmailBinding;
-import com.tahmidu.room_designer_client_android.model.SignUp;
-import com.tahmidu.room_designer_client_android.model.VerifyCode;
-import com.tahmidu.room_designer_client_android.repository.VerifyRepo;
+import com.tahmidu.room_designer_client_android.databinding.FragmentPasswordBinding;
+import com.tahmidu.room_designer_client_android.model.Login;
 import com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VerifyEmailFragment extends Fragment {
+public class PasswordFragment extends Fragment {
 
-    private final String TAG = "VERIFY_FRAGMENT";
-
-    //Messages
-    public static final String OK_VERIFY_MSG = "";
-    public static final String ERROR_VERIFY_MSG = "Something went wrong.";
-    public static final String INCORRECT_VERIFY_MSG = "The token you have entered is incorrect.";
-    public static final String EXPIRED_VERIFY_MSG = "The token you have entered is expired. Click resend token.";
+    private final String TAG = "PASSWORD_FRAGMENT";
 
     //Binding
-    private FragmentVerifyEmailBinding binding;
+    private FragmentPasswordBinding binding;
 
     //View Model
     private WelcomeViewModel welcomeViewModel;
@@ -48,20 +40,17 @@ public class VerifyEmailFragment extends Fragment {
     //Navigation Controller
     private NavController navController;
 
-    public VerifyEmailFragment() {
+    public PasswordFragment() {
         // Required empty public constructor
-
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         binding = DataBindingUtil
-                .inflate(inflater, R.layout.fragment_verify_email, container, false);
+                .inflate(inflater, R.layout.fragment_password, container, false);
 
-        // Inflate the layout for this fragment
         return binding.getRoot();
     }
 
@@ -81,33 +70,31 @@ public class VerifyEmailFragment extends Fragment {
         welcomeViewModel = new ViewModelProvider(this, factory)
                 .get(WelcomeViewModel.class);
         binding.setVM(welcomeViewModel);
+        binding.setLogin(new Login());
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setVerify(new VerifyCode());
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                navController.navigate(R.id.action_verifyEmailFragment_to_loginFragment);
+                navController.navigate(R.id.action_passwordFragment_to_loginFragment);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
-        welcomeViewModel.getVerifyResponse().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                if (s.equals(VerifyRepo.RESPONSE_OK)) {
-                    navController.navigate(R.id.action_verifyEmailFragment_to_loginFragment);
-                }
-            }
-        });
-
+        //Navigation
         welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 Log.d(TAG, integer.toString());
-                if (integer == WelcomeViewModel.SIGN_IN_FRAGMENT) {
-                    navController.navigate(R.id.action_verifyEmailFragment_to_loginFragment);
+                switch (integer)
+                {
+                    case WelcomeViewModel.VERIFY_PASSWORD_FRAGMENT:
+                        navController.navigate(R.id.action_passwordFragment_to_passwordTokenFragment);
+                        break;
+                    case WelcomeViewModel.SIGN_UP_FRAGMENT:
+                        navController.navigate(R.id.action_passwordFragment_to_signUpFragment);
+                        break;
                 }
             }
         });

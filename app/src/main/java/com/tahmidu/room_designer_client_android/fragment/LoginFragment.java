@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.tahmidu.room_designer_client_android.R;
@@ -50,15 +51,6 @@ public class LoginFragment extends Fragment{
         binding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_login, container, false);
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
-
-        // Inflate the layout for this fragment
         return binding.getRoot();
     }
 
@@ -78,16 +70,20 @@ public class LoginFragment extends Fragment{
         welcomeViewModel = new ViewModelProvider(this, factory)
                 .get(WelcomeViewModel.class);
         binding.setVM(welcomeViewModel);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setLogin(new Login("",""));
 
-        //Subscribe to live data.
+        //Subscribed to live data.
         welcomeViewModel.getToken().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
+                getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 toastToken(s);
             }
         });
 
+        //Navigation
         welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -99,6 +95,8 @@ public class LoginFragment extends Fragment{
                         break;
                     case WelcomeViewModel.VERIFY_EMAIL_FRAGMENT:
                         navController.navigate(R.id.action_loginFragment_to_verifyEmailFragment);
+                    case WelcomeViewModel.FORGOT_PASSWORD_FRAGMENT:
+                        navController.navigate(R.id.action_loginFragment_to_passwordFragment);
                         break;
                 }
             }

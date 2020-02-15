@@ -8,6 +8,13 @@ public class Login implements Observable
     private String email;
     private String password;
 
+    public Login(){}
+
+    public Login(String email)
+    {
+        this.email = email;
+    }
+
     public Login(String email, String password)
     {
         this.email = email;

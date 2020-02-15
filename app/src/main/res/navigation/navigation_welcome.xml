@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_loginFragment_to_verifyEmailFragment"
             app:destination="@id/verifyEmailFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_passwordFragment"
+            app:destination="@id/passwordFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -39,5 +42,44 @@
         <action
             android:id="@+id/action_verifyEmailFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordFragment"
+        android:name="com.tahmidu.room_designer_client_android.fragment.PasswordFragment"
+        android:label="fragment_password"
+        tools:layout="@layout/fragment_password" >
+        <action
+            android:id="@+id/action_passwordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_passwordFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_passwordFragment_to_passwordTokenFragment"
+            app:destination="@id/passwordTokenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordTokenFragment"
+        android:name="com.tahmidu.room_designer_client_android.fragment.PasswordTokenFragment"
+        android:label="fragment_password_token"
+        tools:layout="@layout/fragment_password_token" >
+        <action
+            android:id="@+id/action_passwordTokenFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_passwordTokenFragment_to_passwordFragment"
+            app:destination="@id/passwordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.tahmidu.room_designer_client_android.fragment.ChangePasswordFragment"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password" >
+        <action
+            android:id="@+id/action_changePasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_changePasswordFragment_to_passwordTokenFragment"
+            app:destination="@id/passwordTokenFragment" />
     </fragment>
 </navigation>

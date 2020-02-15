@@ -4,9 +4,10 @@ import androidx.lifecycle.MutableLiveData;
 
 public interface IWelcomeViewModel
 {
-    void Login(String email, String password);
+    void authenticateUser(String email, String password);
+    void login(String email, String password);
+    void signUp(String firstName, String lastName, String password, String rePassword, String email,
+                String phoneNum);
+    void forgotPassword(String email);
     void navigateFragment(int id);
-    void goToVerify();
-    void goToSignUp();
-    void goToForgotPassword();
 }

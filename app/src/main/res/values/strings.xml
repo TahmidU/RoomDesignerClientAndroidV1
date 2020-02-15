@@ -12,13 +12,23 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="create_account">Create Account</string>
     <string name="first_name">First Name</string>
-    <string name="enter_the_details_bellow_to_create_your_account_by_clicking_create_account_you_agree_with_the_terms_and_agreements">Enter the details bellow to create your account. By clicking create account you agree with the terms and agreements.</string>
+    <string name="enter_the_details_bellow_to_create_your_account">Enter the details bellow to create your account.</string>
     <string name="last_name">Last Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="re_enter_password">Re-Enter Password</string>
     <string name="already_have_an_account_sign_in">Already have an Account? Sign In</string>
     <string name="verify_your_email">Verify your Email</string>
-    <string name="email_verify_desc">You should have received an email from us containing a token.\nGive it a few minutes or check your junk mail\nif you can\'t see the email.</string>
+    <string name="email_verify_desc">You should have received an email from us containing a token. Give it a few minutes or check your junk mail if hasn\'t arrived yet.</string>
     <string name="verify">Verify</string>
     <string name="resend_token">Resend Token</string>
+    <string name="enter_the_code_here">Enter the token here...</string>
+    <string name="enter_your_details_bellow_sign_in">Enter your details bellow to sign-in or to verify an existing account.</string>
+    <string name="password_recovery">Password Recovery</string>
+    <string name="forgot_password_desc">Enter your registered email.\nYou should receive an email containing a token. This would enable you to reset your password.</string>
+    <string name="enter_you_email_here">Enter you email here...</string>
+    <string name="send_token">Send Token</string>
+    <string name="change_password">Change Password</string>
+    <string name="i_already_have_a_token">I already have a Token</string>
+    <string name="change_password_confirmation">Change Password Confirmation</string>
+    <string name="enter_you_new_password_and_confirm">Enter you new password and confirm.</string>
 </resources>
