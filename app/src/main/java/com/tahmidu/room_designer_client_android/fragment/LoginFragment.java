@@ -95,6 +95,7 @@ public class LoginFragment extends Fragment{
                         break;
                     case WelcomeViewModel.VERIFY_EMAIL_FRAGMENT:
                         navController.navigate(R.id.action_loginFragment_to_verifyEmailFragment);
+                        break;
                     case WelcomeViewModel.FORGOT_PASSWORD_FRAGMENT:
                         navController.navigate(R.id.action_loginFragment_to_passwordFragment);
                         break;

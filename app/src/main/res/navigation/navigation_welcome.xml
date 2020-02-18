@@ -12,13 +12,19 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_loginFragment_to_verifyEmailFragment"
-            app:destination="@id/verifyEmailFragment" />
+            app:destination="@id/verifyEmailFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_loginFragment_to_passwordFragment"
-            app:destination="@id/passwordFragment" />
+            app:destination="@id/passwordFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -28,11 +34,15 @@
         <action
             android:id="@+id/action_signUpFragment_to_loginFragment"
             app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_signUpFragment_to_verifyEmailFragment"
-            app:destination="@id/verifyEmailFragment" />
+            app:destination="@id/verifyEmailFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
     </fragment>
     <fragment
         android:id="@+id/verifyEmailFragment"
@@ -41,7 +51,9 @@
         tools:layout="@layout/fragment_verify_email" >
         <action
             android:id="@+id/action_verifyEmailFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
     </fragment>
     <fragment
         android:id="@+id/passwordFragment"
@@ -50,13 +62,19 @@
         tools:layout="@layout/fragment_password" >
         <action
             android:id="@+id/action_passwordFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_passwordFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_passwordFragment_to_passwordTokenFragment"
-            app:destination="@id/passwordTokenFragment" />
+            app:destination="@id/passwordTokenFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
     </fragment>
     <fragment
         android:id="@+id/passwordTokenFragment"
@@ -65,10 +83,14 @@
         tools:layout="@layout/fragment_password_token" >
         <action
             android:id="@+id/action_passwordTokenFragment_to_changePasswordFragment"
-            app:destination="@id/changePasswordFragment" />
+            app:destination="@id/changePasswordFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_passwordTokenFragment_to_passwordFragment"
-            app:destination="@id/passwordFragment" />
+            app:destination="@id/passwordFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
     </fragment>
     <fragment
         android:id="@+id/changePasswordFragment"
@@ -77,9 +99,13 @@
         tools:layout="@layout/fragment_change_password" >
         <action
             android:id="@+id/action_changePasswordFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
         <action
             android:id="@+id/action_changePasswordFragment_to_passwordTokenFragment"
-            app:destination="@id/passwordTokenFragment" />
+            app:destination="@id/passwordTokenFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
     </fragment>
 </navigation>
