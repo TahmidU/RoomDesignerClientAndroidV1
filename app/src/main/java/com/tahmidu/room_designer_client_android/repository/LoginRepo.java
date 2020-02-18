@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.tahmidu.room_designer_client_android.network.api.APIService;
 import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
 import com.tahmidu.room_designer_client_android.model.Login;
+import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
 import com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel;
 
 import java.util.Objects;
@@ -38,7 +39,8 @@ public class LoginRepo implements ILoginRepo
      * @param token mutable live data containing JWT Token
      */
     @Override
-    public void retrieveToken(String email, String password, final MutableLiveData token)
+    public void retrieveToken(String email, String password, final MutableLiveData<String> token,
+                              final PreferenceProvider preferenceProvider)
     {
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
 
@@ -55,7 +57,12 @@ public class LoginRepo implements ILoginRepo
                 Log.d(TAG, "onNext called");
 
                 String responseHeader = voidResponse.headers().get("Authorization");
-                if(responseHeader != null) token.postValue(responseHeader);
+                if(responseHeader != null)
+                {
+                    preferenceProvider.saveJWTToken(responseHeader);
+                    token.postValue(responseHeader);
+                }
+
             }
 
             @Override
@@ -84,7 +91,8 @@ public class LoginRepo implements ILoginRepo
                          final MutableLiveData<String> signUpResponse,
                          final MutableLiveData<Boolean> progressVisibility,
                          final MutableLiveData<Integer> navFragment,
-                         final MutableLiveData<String> token)
+                         final MutableLiveData<String> token,
+                         final PreferenceProvider preferenceProvider)
     {
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
         progressVisibility.postValue(true);
@@ -106,7 +114,7 @@ public class LoginRepo implements ILoginRepo
 
                         if(stringResponse.body() != null) {
                             if (stringResponse.body().equals(""))
-                                retrieveToken(email, password, token);
+                                retrieveToken(email, password, token, preferenceProvider);
                             if (stringResponse.body().equals("This Account is not active."))
                                 navFragment.postValue(WelcomeViewModel.VERIFY_EMAIL_FRAGMENT);
                         }

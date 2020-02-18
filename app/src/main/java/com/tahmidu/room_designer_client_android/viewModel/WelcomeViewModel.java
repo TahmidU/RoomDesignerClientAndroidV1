@@ -43,7 +43,7 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
     private final MutableLiveData<String> passwordVerifyResponse = new MutableLiveData<>();
 
     //JWT Token
-    private final MutableLiveData<String> token = new MutableLiveData<>();
+    private final MutableLiveData<String> jwtToken = new MutableLiveData<>();
 
     //Preferences
     private PreferenceProvider preferenceProvider;
@@ -67,6 +67,7 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
      */
     @Override
     public void authenticateUser(String email, String password) {
+        //token.postValue("bypass");
         Log.d(TAG, "Authenticate User: " + email);
         final String COMPLETE_FIELD = "Complete all fields.";
         if(email.equals("") || password.equals(""))
@@ -75,7 +76,7 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
             return;
         }
         loginRepo.authUser(email, password, signInResponse, progressVisibility, navigateFragment,
-                token);
+                jwtToken, preferenceProvider);
     }
 
     /**
@@ -87,7 +88,7 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
     public void login(String email, String password)
     {
         Log.d(TAG, "Login User: " + email);
-        loginRepo.retrieveToken(email, password, token);
+        loginRepo.retrieveToken(email, password, jwtToken, preferenceProvider);
     }
 
     /**
@@ -216,9 +217,9 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
         return progressVisibility;
     }
 
-    public MutableLiveData<String> getToken()
+    public MutableLiveData<String> getJWTToken()
     {
-        return token;
+        return jwtToken;
     }
 
     public MutableLiveData<String> getVerifyResponse()

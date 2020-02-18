@@ -1,6 +1,7 @@
 package com.tahmidu.room_designer_client_android.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 import com.tahmidu.room_designer_client_android.R;
+import com.tahmidu.room_designer_client_android.activity.MainActivity;
 import com.tahmidu.room_designer_client_android.databinding.FragmentLoginBinding;
 import com.tahmidu.room_designer_client_android.model.Login;
 import com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel;
@@ -70,13 +72,15 @@ public class LoginFragment extends Fragment{
         binding.setLogin(new Login("",""));
 
         //Subscribed to live data.
-        welcomeViewModel.getToken().observe(getViewLifecycleOwner(), new Observer<String>() {
+        welcomeViewModel.getJWTToken().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 Objects.requireNonNull(getActivity()).getWindow()
                         .setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                         WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 toastToken(s);
+                startActivity(new Intent(getContext(), MainActivity.class));
+                getActivity().finish();
             }
         });
 

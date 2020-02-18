@@ -11,6 +11,7 @@ public class PreferenceProvider
 
     private final String EMAIL = "EMAIL"; //Save email
     private final String TOKEN = "TOKEN"; //Save password or verification token
+    private final String JWT_TOKEN = "JWT TOKEN";
 
     public PreferenceProvider(Context applicationContext)
     {
@@ -35,5 +36,15 @@ public class PreferenceProvider
     public int getToken()
     {
         return sharedPreferences.getInt(TOKEN, 0);
+    }
+
+    public void saveJWTToken(String token)
+    {
+        sharedPreferences.edit().putString(JWT_TOKEN, token).apply();
+    }
+
+    public String getJWTToken()
+    {
+        return sharedPreferences.getString(JWT_TOKEN, "");
     }
 }

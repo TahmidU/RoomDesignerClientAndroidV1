@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">room_designer_client_android</string>
+    <string name="app_name">Room Designer AR</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="login">Login</string>
-    <string name="enter_here">Enter here...</string>
+    <string name="enter_here">Enter here…</string>
     <string name="verify_an_email">Verify an Email</string>
     <string name="don_t_have_an_account_sign_up">Don\'t have an Account? Sign Up</string>
     <string name="forgot_password">Forgot Password?</string>
@@ -21,14 +21,16 @@
     <string name="email_verify_desc">You should have received an email from us containing a token. Give it a few minutes or check your junk mail if hasn\'t arrived yet.</string>
     <string name="verify">Verify</string>
     <string name="resend_token">Resend Token</string>
-    <string name="enter_the_code_here">Enter the token here...</string>
+    <string name="enter_the_code_here">Enter the token here…</string>
     <string name="enter_your_details_bellow_sign_in">Enter your details bellow to sign-in or to verify an existing account.</string>
     <string name="password_recovery">Password Recovery</string>
     <string name="forgot_password_desc">Enter your registered email.\nYou should receive an email containing a token. This would enable you to reset your password.</string>
-    <string name="enter_you_email_here">Enter you email here...</string>
+    <string name="enter_you_email_here">Enter you email here…</string>
     <string name="send_token">Send Token</string>
     <string name="change_password">Change Password</string>
     <string name="i_already_have_a_token">I already have a Token</string>
     <string name="change_password_confirmation">Change Password Confirmation</string>
     <string name="enter_you_new_password_and_confirm">Enter you new password and confirm.</string>
+    <string name="filter">Filter &amp; Sort</string>
+    <string name="main_library">Main Library</string>
 </resources>
