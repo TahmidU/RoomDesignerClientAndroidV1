@@ -28,6 +28,7 @@ public class ChangePasswordFragment extends Fragment {
 
     private final String TAG = "LOGIN_FRAGMENT";
 
+    //Binding
     private FragmentChangePasswordBinding binding;
 
     //View Model
@@ -64,18 +65,28 @@ public class ChangePasswordFragment extends Fragment {
                 .getInstance(getActivity().getApplication());
         welcomeViewModel = new ViewModelProvider(this, factory)
                 .get(WelcomeViewModel.class);
+        //Bind to view.
         binding.setVM(welcomeViewModel);
         binding.setPassword(new ConfirmPassword());
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
+        //Handle back press.
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                // Handle the back button event
                 navController.navigate(R.id.action_changePasswordFragment_to_passwordTokenFragment);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+
+        //Subscriptions to observables.
+        welcomeViewModel.getPasswordVerifyResponse().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if(s.equals(""))
+                    navController.navigate(R.id.action_changePasswordFragment_to_loginFragment);
+            }
+        });
 
         //Navigation
         welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), new Observer<Integer>() {

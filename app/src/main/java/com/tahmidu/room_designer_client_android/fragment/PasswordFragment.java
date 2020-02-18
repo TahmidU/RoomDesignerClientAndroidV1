@@ -2,7 +2,6 @@ package com.tahmidu.room_designer_client_android.fragment;
 
 
 import android.os.Bundle;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,17 +11,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.databinding.FragmentPasswordBinding;
 import com.tahmidu.room_designer_client_android.model.Login;
 import com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,16 +32,12 @@ public class PasswordFragment extends Fragment {
     //Binding
     private FragmentPasswordBinding binding;
 
-    //View Model
-    private WelcomeViewModel welcomeViewModel;
-
     //Navigation Controller
     private NavController navController;
 
     public PasswordFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,17 +60,19 @@ public class PasswordFragment extends Fragment {
 
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getActivity().getApplication());
-        welcomeViewModel = new ViewModelProvider(this, factory)
+                .getInstance(Objects.requireNonNull(getActivity()).getApplication());
+        //View Model
+        WelcomeViewModel welcomeViewModel = new ViewModelProvider(this, factory)
                 .get(WelcomeViewModel.class);
+        //Bind to view.
         binding.setVM(welcomeViewModel);
         binding.setLogin(new Login());
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
+        //On back pressed.
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                // Handle the back button event
                 navController.navigate(R.id.action_passwordFragment_to_loginFragment);
             }
         };

@@ -4,5 +4,10 @@ import androidx.lifecycle.MutableLiveData;
 
 public interface ILoginRepo
 {
-    void retrieveToken(String email, String password);
+    void retrieveToken(String email, String password, final MutableLiveData token);
+    void authUser(final String email, final String password,
+                  final MutableLiveData<String> signUpResponse,
+                  final MutableLiveData<Boolean> progressVisibility,
+                  final MutableLiveData<Integer> navFragment,
+                  final MutableLiveData<String> token);
 }

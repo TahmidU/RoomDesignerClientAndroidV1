@@ -2,8 +2,6 @@ package com.tahmidu.room_designer_client_android.fragment;
 
 
 import android.os.Bundle;
-
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -12,18 +10,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
-
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.databinding.FragmentLoginBinding;
 import com.tahmidu.room_designer_client_android.model.Login;
 import com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,9 +31,6 @@ public class LoginFragment extends Fragment{
 
     //Binding
     private FragmentLoginBinding binding;
-
-    //View Model
-    private WelcomeViewModel welcomeViewModel;
 
     //Navigation Controller
     private NavController navController;
@@ -66,9 +60,11 @@ public class LoginFragment extends Fragment{
 
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getActivity().getApplication());
-        welcomeViewModel = new ViewModelProvider(this, factory)
+                .getInstance(Objects.requireNonNull(getActivity()).getApplication());
+        //View Model
+        WelcomeViewModel welcomeViewModel = new ViewModelProvider(this, factory)
                 .get(WelcomeViewModel.class);
+        //Bind to view
         binding.setVM(welcomeViewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setLogin(new Login("",""));
@@ -77,7 +73,8 @@ public class LoginFragment extends Fragment{
         welcomeViewModel.getToken().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                Objects.requireNonNull(getActivity()).getWindow()
+                        .setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                         WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 toastToken(s);
             }

@@ -12,19 +12,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.databinding.FragmentVerifyEmailBinding;
-import com.tahmidu.room_designer_client_android.model.SignUp;
 import com.tahmidu.room_designer_client_android.model.VerifyCode;
 import com.tahmidu.room_designer_client_android.repository.VerifyRepo;
 import com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,26 +31,15 @@ public class VerifyEmailFragment extends Fragment {
 
     private final String TAG = "VERIFY_FRAGMENT";
 
-    //Messages
-    public static final String OK_VERIFY_MSG = "";
-    public static final String ERROR_VERIFY_MSG = "Something went wrong.";
-    public static final String INCORRECT_VERIFY_MSG = "The token you have entered is incorrect.";
-    public static final String EXPIRED_VERIFY_MSG = "The token you have entered is expired. Click resend token.";
-
     //Binding
     private FragmentVerifyEmailBinding binding;
-
-    //View Model
-    private WelcomeViewModel welcomeViewModel;
 
     //Navigation Controller
     private NavController navController;
 
     public VerifyEmailFragment() {
         // Required empty public constructor
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,22 +64,25 @@ public class VerifyEmailFragment extends Fragment {
 
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getActivity().getApplication());
-        welcomeViewModel = new ViewModelProvider(this, factory)
+                .getInstance(Objects.requireNonNull(getActivity()).getApplication());
+        //View Model
+        WelcomeViewModel welcomeViewModel = new ViewModelProvider(this, factory)
                 .get(WelcomeViewModel.class);
+        //Bind to view.
         binding.setVM(welcomeViewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setVerify(new VerifyCode());
 
+        //On back pressed.
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                // Handle the back button event
                 navController.navigate(R.id.action_verifyEmailFragment_to_loginFragment);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
+        //Subscribe to live data.
         welcomeViewModel.getVerifyResponse().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -102,6 +92,7 @@ public class VerifyEmailFragment extends Fragment {
             }
         });
 
+        //Navigation
         welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {

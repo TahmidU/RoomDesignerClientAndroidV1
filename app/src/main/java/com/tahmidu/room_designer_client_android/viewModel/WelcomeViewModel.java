@@ -2,19 +2,9 @@ package com.tahmidu.room_designer_client_android.viewModel;
 
 import android.app.Application;
 import android.util.Log;
-import android.view.View;
-
 import androidx.annotation.NonNull;
-import androidx.databinding.Bindable;
-import androidx.databinding.Observable;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-
-import com.tahmidu.room_designer_client_android.fragment.VerifyEmailFragment;
-import com.tahmidu.room_designer_client_android.model.VerifyCode;
 import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
 import com.tahmidu.room_designer_client_android.repository.LoginRepo;
 import com.tahmidu.room_designer_client_android.repository.PasswordRepo;
@@ -49,7 +39,11 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
     //Responses
     private final MutableLiveData<String> verifyResponse = new MutableLiveData<>();
     private final MutableLiveData<String> signInResponse = new MutableLiveData<>();
+    private final MutableLiveData<String> passwordEmailResponse = new MutableLiveData<>();
     private final MutableLiveData<String> passwordVerifyResponse = new MutableLiveData<>();
+
+    //JWT Token
+    private final MutableLiveData<String> token = new MutableLiveData<>();
 
     //Preferences
     private PreferenceProvider preferenceProvider;
@@ -66,29 +60,49 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
         progressVisibility.setValue(true);
     }
 
+    /**
+     * Authenticate if the user has valid credentials.
+     * @param email email
+     * @param password password
+     */
     @Override
     public void authenticateUser(String email, String password) {
-
+        Log.d(TAG, "Authenticate User: " + email);
         final String COMPLETE_FIELD = "Complete all fields.";
         if(email.equals("") || password.equals(""))
         {
             signInResponse.postValue(COMPLETE_FIELD);
             return;
         }
-        loginRepo.authUser(email, password, signInResponse, progressVisibility, navigateFragment);
+        loginRepo.authUser(email, password, signInResponse, progressVisibility, navigateFragment,
+                token);
     }
 
+    /**
+     * Once Authenticated, login to retrieve token.
+     * @param email email
+     * @param password password
+     */
     @Override
     public void login(String email, String password)
     {
-
-        loginRepo.retrieveToken(email, password);
-
+        Log.d(TAG, "Login User: " + email);
+        loginRepo.retrieveToken(email, password, token);
     }
 
+    /**
+     * Sign-up user.
+     * @param firstName first name
+     * @param lastName last name
+     * @param password password
+     * @param rePassword re-enter password
+     * @param email email
+     * @param phoneNum phone number
+     */
     @Override
     public void signUp(String firstName, String lastName, String password, String rePassword, String email, String phoneNum)
     {
+        Log.d(TAG, "Sign-up");
         if (firstName == null || lastName == null || password == null || rePassword == null
                 || email == null || phoneNum == null)
             return;
@@ -97,55 +111,104 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
         {
             signUpRepo.signUp(getApplication().getApplicationContext(),firstName, lastName, password,
                     email, phoneNum);
+            Log.d(TAG, "Sign-up: fields valid");
             navigateFragment(VERIFY_EMAIL_FRAGMENT);
         }
     }
 
+    /**
+     * Verify account (filter spam accounts) by checking if verification code matches.
+     * @param code verification code
+     */
+    @Override
     public void verifyCode(String code)
     {
+        Log.d(TAG,"Verify code" + code);
        verifyRepo.verify(getApplication().getApplicationContext(), code, verifyResponse);
     }
 
+    /**
+     * Resend verification code. Previous code will be deleted and replaced!
+     */
+    @Override
     public void resendVerificationCode()
     {
+        Log.d(TAG,"Resend verify code.");
         verifyRepo.resendToken(getApplication().getApplicationContext());
     }
 
+    /**
+     * Navigate to specific fragment.
+     * @param id fragment id
+     */
     @Override
     public void navigateFragment(int id)
     {
+        Log.d(TAG, "Navigate to " + id);
         navigateFragment.postValue(id);
     }
 
+    /**
+     * Send password reset token to users email (optional), if and only if the user exists.
+     * Save email in preference then navigate to verifying password token fragment.
+     * @param email email
+     * @param sendToken send token?
+     */
     @Override
-    public void forgotPassword(String email)
+    public void forgotPassword(String email, boolean sendToken)
     {
-        preferenceProvider.saveEmail(email);
-        passwordRepo.sendToken(email);
-        navigateFragment(VERIFY_PASSWORD_FRAGMENT);
+        if(email != null)
+        {
+            if(!email.equals(""))
+            {
+                preferenceProvider.saveEmail(email);
+                if(sendToken)
+                    passwordRepo.sendToken(email);
+                Log.d(TAG,"Forgot password, send token: " + sendToken);
+                navigateFragment(VERIFY_PASSWORD_FRAGMENT);
+            }
+        }
+
+        passwordEmailResponse.postValue("Please enter your email");
     }
 
+    /**
+     * Save password verification token in preference.
+     * @param token password token
+     */
+    @Override
     public void verifyPasswordToken(String token)
     {
+        Log.d(TAG, "Saving password token..." + token);
         preferenceProvider.saveToken(Integer.parseInt(token));
         navigateFragment(CONFIRM_PASSWORD_FRAGMENT);
     }
 
+    /**
+     * Resend password verification token.
+     */
+    @Override
     public void forgotPasswordTokenResend()
     {
-        forgotPassword(preferenceProvider.getEmail());
+        Log.d(TAG, "Resend password token.");
+        forgotPassword(preferenceProvider.getEmail(), true);
     }
 
+    /**
+     * Change password. Check if fields match and retrieve email and token from preference.
+     * @param password password
+     * @param reEnterPassword re-enter password
+     */
+    @Override
     public void changePassword(String password, String reEnterPassword)
     {
+        Log.d(TAG, "Change password");
         if(password == null || reEnterPassword == null)
             return;
 
         if(password.equals(reEnterPassword))
             passwordRepo.changePassword(preferenceProvider.getEmail(),preferenceProvider.getToken(),
-                    password, verifyResponse);
-
-        navigateFragment(SIGN_IN_FRAGMENT);
+                    password, passwordVerifyResponse);
 
     }
 
@@ -155,7 +218,7 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
 
     public MutableLiveData<String> getToken()
     {
-        return loginRepo.getToken();
+        return token;
     }
 
     public MutableLiveData<String> getVerifyResponse()
@@ -165,6 +228,10 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
 
     public MutableLiveData<String> getSignUpResponse() {
         return signInResponse;
+    }
+
+    public MutableLiveData<String> getPasswordEmailResponse() {
+        return passwordEmailResponse;
     }
 
     public MutableLiveData<String> getPasswordVerifyResponse() {

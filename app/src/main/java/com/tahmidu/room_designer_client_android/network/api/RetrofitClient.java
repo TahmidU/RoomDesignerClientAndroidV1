@@ -1,10 +1,6 @@
 package com.tahmidu.room_designer_client_android.network.api;
 
 import android.app.Application;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;

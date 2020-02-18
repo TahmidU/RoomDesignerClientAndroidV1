@@ -2,7 +2,6 @@ package com.tahmidu.room_designer_client_android.fragment;
 
 
 import android.os.Bundle;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,17 +11,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.databinding.FragmentPasswordTokenBinding;
-import com.tahmidu.room_designer_client_android.model.Login;
 import com.tahmidu.room_designer_client_android.model.VerifyCode;
 import com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,12 +32,8 @@ public class PasswordTokenFragment extends Fragment {
     //Binding
     private FragmentPasswordTokenBinding binding;
 
-    //View Model
-    private WelcomeViewModel welcomeViewModel;
-
     //Navigation Controller
     private NavController navController;
-
 
     public PasswordTokenFragment()
     {
@@ -68,13 +62,16 @@ public class PasswordTokenFragment extends Fragment {
 
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getActivity().getApplication());
-        welcomeViewModel = new ViewModelProvider(this, factory)
+                .getInstance(Objects.requireNonNull(getActivity()).getApplication());
+        //View Model
+        WelcomeViewModel welcomeViewModel = new ViewModelProvider(this, factory)
                 .get(WelcomeViewModel.class);
+        //Bind to view.
         binding.setVM(welcomeViewModel);
         binding.setVerifyCode(new VerifyCode());
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
+        //On back pressed.
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {

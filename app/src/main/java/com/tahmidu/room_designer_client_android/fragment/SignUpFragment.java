@@ -2,7 +2,6 @@ package com.tahmidu.room_designer_client_android.fragment;
 
 
 import android.os.Bundle;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,17 +11,16 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.tahmidu.room_designer_client_android.R;
-import com.tahmidu.room_designer_client_android.databinding.FragmentLoginBinding;
 import com.tahmidu.room_designer_client_android.databinding.FragmentSignUpBinding;
 import com.tahmidu.room_designer_client_android.model.SignUp;
 import com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,9 +31,6 @@ public class SignUpFragment extends Fragment {
 
     //Binding
     private FragmentSignUpBinding binding;
-
-    //View Model
-    private WelcomeViewModel welcomeViewModel;
 
     //Navigation Controller
     private NavController navController;
@@ -66,21 +61,24 @@ public class SignUpFragment extends Fragment {
 
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getActivity().getApplication());
-        welcomeViewModel = new ViewModelProvider(this, factory)
+                .getInstance(Objects.requireNonNull(getActivity()).getApplication());
+        //View Model
+        WelcomeViewModel welcomeViewModel = new ViewModelProvider(this, factory)
                 .get(WelcomeViewModel.class);
+        //Bind to view.
         binding.setVM(welcomeViewModel);
         binding.setSignUp(new SignUp());
 
+        //On back pressed.
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                // Handle the back button event
                 navController.navigate(R.id.action_signUpFragment_to_loginFragment);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
+        //Navigation
         welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {

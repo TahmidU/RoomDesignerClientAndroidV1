@@ -9,8 +9,8 @@ public class PreferenceProvider
 {
     private SharedPreferences sharedPreferences;
 
-    private final String EMAIL = "EMAIL";
-    private final String TOKEN = "TOKEN";
+    private final String EMAIL = "EMAIL"; //Save email
+    private final String TOKEN = "TOKEN"; //Save password or verification token
 
     public PreferenceProvider(Context applicationContext)
     {
