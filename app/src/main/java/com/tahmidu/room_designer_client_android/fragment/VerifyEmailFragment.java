@@ -20,7 +20,7 @@ import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.databinding.FragmentVerifyEmailBinding;
 import com.tahmidu.room_designer_client_android.model.VerifyCode;
 import com.tahmidu.room_designer_client_android.repository.VerifyRepo;
-import com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel;
+import com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel;
 
 import java.util.Objects;
 

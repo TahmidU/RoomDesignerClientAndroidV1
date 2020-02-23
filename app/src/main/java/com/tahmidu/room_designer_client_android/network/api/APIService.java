@@ -1,6 +1,9 @@
 package com.tahmidu.room_designer_client_android.network.api;
 
+import com.tahmidu.room_designer_client_android.model.Item;
 import com.tahmidu.room_designer_client_android.model.Login;
+
+import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -10,6 +13,8 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -45,4 +50,15 @@ public interface APIService
     Observable<Response<String>> changePassword(@Field("email") String email,
                                                 @Field("token") int token,
                                                 @Field("password") String password);
+
+    @GET("/item/fetch-all")
+    Observable<List<Item>> fetchItem(@Query("pageNum") int pageNum, @Query("itemName") String itemName,
+                                     @Query("catId") Integer catId, @Query("typeId") Integer typeId,
+                                     @Query("hasModel") Boolean hasModel,
+                                     @Header("Authorization") String authorization);
+
+/*    @FormUrlEncoded
+    @POST("image/fetch-thumbnail")
+    Observable<Multipart> fetchItemImage(@Field("itemId") int itemId,
+                                         @Header("Authorization") String authorization);*/
 }

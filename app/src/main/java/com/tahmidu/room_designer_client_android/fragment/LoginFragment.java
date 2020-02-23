@@ -21,7 +21,7 @@ import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.activity.MainActivity;
 import com.tahmidu.room_designer_client_android.databinding.FragmentLoginBinding;
 import com.tahmidu.room_designer_client_android.model.Login;
-import com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel;
+import com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel;
 import java.util.Objects;
 
 /**

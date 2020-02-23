@@ -1,4 +1,4 @@
-package com.tahmidu.room_designer_client_android.viewModel;
+package com.tahmidu.room_designer_client_android.view_model;
 
 import android.app.Application;
 import android.util.Log;
@@ -77,18 +77,6 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
         }
         loginRepo.authUser(email, password, signInResponse, progressVisibility, navigateFragment,
                 jwtToken, preferenceProvider);
-    }
-
-    /**
-     * Once Authenticated, login to retrieve token.
-     * @param email email
-     * @param password password
-     */
-    @Override
-    public void login(String email, String password)
-    {
-        Log.d(TAG, "Login User: " + email);
-        loginRepo.retrieveToken(email, password, jwtToken, preferenceProvider);
     }
 
     /**

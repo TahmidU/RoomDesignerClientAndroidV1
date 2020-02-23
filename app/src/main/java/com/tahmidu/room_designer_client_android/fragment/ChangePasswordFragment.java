@@ -21,8 +21,7 @@ import android.view.ViewGroup;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.databinding.FragmentChangePasswordBinding;
 import com.tahmidu.room_designer_client_android.model.ConfirmPassword;
-import com.tahmidu.room_designer_client_android.model.VerifyCode;
-import com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel;
+import com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel;
 
 public class ChangePasswordFragment extends Fragment {
 

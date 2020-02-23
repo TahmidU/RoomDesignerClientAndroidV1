@@ -8,7 +8,7 @@ import com.tahmidu.room_designer_client_android.network.api.APIService;
 import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
 import com.tahmidu.room_designer_client_android.model.Login;
 import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
-import com.tahmidu.room_designer_client_android.viewModel.WelcomeViewModel;
+import com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel;
 
 import java.util.Objects;
 
