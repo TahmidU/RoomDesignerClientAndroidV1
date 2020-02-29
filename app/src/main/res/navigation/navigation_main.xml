@@ -9,5 +9,26 @@
         android:id="@+id/mainLibraryFragment"
         android:name="com.tahmidu.room_designer_client_android.fragment.MainLibraryFragment"
         android:label="fragment_main_library"
-        tools:layout="@layout/fragment_main_library" />
+        tools:layout="@layout/fragment_main_library" >
+        <action
+            android:id="@+id/action_mainLibraryFragment_to_itemFragment"
+            app:destination="@id/itemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/itemFragment"
+        android:name="com.tahmidu.room_designer_client_android.fragment.ItemFragment"
+        android:label="fragment_item"
+        tools:layout="@layout/fragment_item" >
+        <action
+            android:id="@+id/action_itemFragment_to_mainLibraryFragment"
+            app:destination="@id/mainLibraryFragment" />
+        <action
+            android:id="@+id/action_itemFragment_to_ARActivity"
+            app:destination="@id/ARActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/ARActivity"
+        android:name="com.tahmidu.room_designer_client_android.activity.ARActivity"
+        android:label="activity_ar"
+        tools:layout="@layout/activity_ar" />
 </navigation>

@@ -57,6 +57,10 @@ public interface APIService
                                      @Query("hasModel") Boolean hasModel,
                                      @Header("Authorization") String authorization);
 
+    @GET("/user/contact-info")
+    Observable<Response<String>> retrieveContactInfo(@Query("userId") Long itemId,
+                                                     @Header("Authorization") String authorization);
+
 /*    @FormUrlEncoded
     @POST("image/fetch-thumbnail")
     Observable<Multipart> fetchItemImage(@Field("itemId") int itemId,

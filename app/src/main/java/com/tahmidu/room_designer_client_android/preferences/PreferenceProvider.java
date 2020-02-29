@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+import com.tahmidu.room_designer_client_android.model.Item;
+
 public class PreferenceProvider
 {
     private SharedPreferences sharedPreferences;
@@ -12,6 +15,7 @@ public class PreferenceProvider
     private final String EMAIL = "EMAIL"; //Save email
     private final String TOKEN = "TOKEN"; //Save password or verification token
     private final String JWT_TOKEN = "JWT TOKEN";
+    private final String ITEM = "ITEM";
 
     public PreferenceProvider(Context applicationContext)
     {
@@ -46,5 +50,18 @@ public class PreferenceProvider
     public String getJWTToken()
     {
         return sharedPreferences.getString(JWT_TOKEN, "");
+    }
+
+    public void saveItem(Item item)
+    {
+        Gson gson = new Gson();
+        String itemToJSON = gson.toJson(item);
+        sharedPreferences.edit().putString(ITEM, itemToJSON).apply();
+    }
+
+    public Item getItem()
+    {
+        Gson gson = new Gson();
+        return gson.fromJson(sharedPreferences.getString(ITEM, ""), Item.class);
     }
 }

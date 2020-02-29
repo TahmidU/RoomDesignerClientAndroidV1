@@ -6,7 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Update;
 
-import com.tahmidu.room_designer_client_android.model.cached_model.ItemCached;
+import com.tahmidu.room_designer_client_android.model.Item;
 
 import java.util.List;
 
@@ -14,14 +14,14 @@ import java.util.List;
 public interface ItemCachedDAO
 {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertItem(ItemCached itemCached);
+    public void insertItem(Item item);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertItems(List<ItemCached> itemCaches);
+    public void insertItems(List<Item> items);
 
     @Update
-    public void updateItems(List<ItemCached> itemCaches);
+    public void updateItems(List<Item> items);
 
     @Delete
-    public void deleteItem(ItemCached itemCached);
+    public void deleteItem(Item item);
 }

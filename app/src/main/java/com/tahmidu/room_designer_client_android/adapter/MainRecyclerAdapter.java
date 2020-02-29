@@ -19,22 +19,18 @@ import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
 import java.io.IOException;
 import java.util.List;
 
-import okhttp3.Authenticator;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.Route;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>
+public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapter.MyViewHolder>
 {
     private List<Item> items;
     private Context context;
     private OnClickListener clickListener;
 
-    private String token;
-
-    public RecyclerAdapter(List<Item> items, Context context, OnClickListener clickListener) {
+    public MainRecyclerAdapter(List<Item> items, Context context, OnClickListener clickListener) {
         this.items = items;
         this.context = context;
         this.clickListener = clickListener;
@@ -74,7 +70,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
-        String URL = "http://192.168.0.8:8080/image/fetch-thumbnail?itemId=" + items.get(position).getItemId();
+        String URL = "http://192.168.0.8:8080/image/fetch-thumbnail?itemId="
+                + items.get(position).getItemId();
 
         Picasso.get()
                 .load(URL)

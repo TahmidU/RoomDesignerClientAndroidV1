@@ -20,6 +20,10 @@ android {
     dataBinding {
         enabled = true
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -56,6 +60,10 @@ dependencies {
     //Navigation
     implementation 'androidx.navigation:navigation-fragment:2.2.1'
     implementation 'androidx.navigation:navigation-ui:2.2.1'
+
+    //ARCore
+    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.15.0'
+    implementation 'com.google.ar.sceneform:assets:1.15.0'
 
     //Annotation Processor
     annotationProcessor 'androidx.annotation:annotation:1.1.0'

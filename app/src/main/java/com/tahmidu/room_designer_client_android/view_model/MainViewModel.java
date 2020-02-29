@@ -12,13 +12,21 @@ import com.tahmidu.room_designer_client_android.repository.LibraryRepo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class MainViewModel extends AndroidViewModel
 {
     private final String TAG = "MAIN_VIEW_MODEL";
 
+    //Navigation
+    public final static int MAIN_LIB_FRAGMENT = 0;
+    public final static int ITEM_FRAGMENT = 1;
+
     private final MutableLiveData<List<Item>> itemsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Item> selectItemImages = new MutableLiveData<>();
+
+    private final MutableLiveData<String> contactInfoLiveData = new MutableLiveData<>();
 
     private int mainPageNum = 0;
 
@@ -32,6 +40,7 @@ public class MainViewModel extends AndroidViewModel
         super(application);
 
         itemsLiveData.setValue(new ArrayList<Item>());
+        contactInfoLiveData.setValue("N/A");
 
         libraryRepo = LibraryRepo.getInstance();
         imageRepo = ImageRepo.getInstance();
@@ -42,11 +51,30 @@ public class MainViewModel extends AndroidViewModel
     public void fetchMainLibrary()
     {
         libraryRepo.fetchMainLibrary(itemsLiveData, preferenceProvider.getJWTToken(), mainPageNum);
-
         mainPageNum++;
+    }
+
+    public void clickedItem(int listPosition) {
+        Item item = Objects.requireNonNull(itemsLiveData.getValue()).get(listPosition);
+        preferenceProvider.saveItem(item);
+    }
+
+    public void retrieveContactInfo()
+    {
+        libraryRepo.retrieveContactInfo(preferenceProvider.getItem().getUser(), contactInfoLiveData,
+                preferenceProvider.getJWTToken());
+    }
+
+    public Item getSelectedItem()
+    {
+        return preferenceProvider.getItem();
     }
 
     public MutableLiveData<List<Item>> getItemsLiveData() {
         return itemsLiveData;
+    }
+
+    public MutableLiveData<String> getContactInfoLiveData() {
+        return contactInfoLiveData;
     }
 }

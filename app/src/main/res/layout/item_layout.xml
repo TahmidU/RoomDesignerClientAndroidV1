@@ -33,6 +33,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Item Title"
+        android:textAllCaps="true"
         android:textSize="18sp"
         android:textColor="@color/colorTextPrimary"
         app:layout_constraintStart_toStartOf="parent"
