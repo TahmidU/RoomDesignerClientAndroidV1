@@ -2,13 +2,16 @@ package com.tahmidu.room_designer_client_android.repository.database.relationshi
 
 import androidx.room.Embedded;
 import androidx.room.Relation;
-import com.tahmidu.room_designer_client_android.model.Item;
-import com.tahmidu.room_designer_client_android.model.Model;
 
-public class ItemWithModel
+import com.tahmidu.room_designer_client_android.model.Item;
+import com.tahmidu.room_designer_client_android.model.User;
+
+import java.util.List;
+
+public class UserWithItem
 {
     @Embedded
-    public Item item;
-    @Relation(parentColumn = "itemId",entityColumn = "itemId")
-    public Model model;
+    public User user;
+    @Relation(parentColumn = "userId", entityColumn = "user")
+    public List<Item> items;
 }

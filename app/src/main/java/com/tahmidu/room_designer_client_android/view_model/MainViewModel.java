@@ -62,7 +62,7 @@ public class MainViewModel extends AndroidViewModel
     public void retrieveContactInfo()
     {
         libraryRepo.retrieveContactInfo(preferenceProvider.getItem().getUser(), contactInfoLiveData,
-                preferenceProvider.getJWTToken());
+                preferenceProvider.getJWTToken(), preferenceProvider);
     }
 
     public Item getSelectedItem()

@@ -1,5 +1,6 @@
 package com.tahmidu.room_designer_client_android.network.api;
 
+import com.google.gson.JsonObject;
 import com.tahmidu.room_designer_client_android.model.Item;
 import com.tahmidu.room_designer_client_android.model.Login;
 
@@ -7,6 +8,7 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -57,12 +59,16 @@ public interface APIService
                                      @Query("hasModel") Boolean hasModel,
                                      @Header("Authorization") String authorization);
 
-    @GET("/user/contact-info")
-    Observable<Response<String>> retrieveContactInfo(@Query("userId") Long itemId,
-                                                     @Header("Authorization") String authorization);
+    @GET("/model/fetch")
+    Observable<ResponseBody> retrieveModel(@Query("modelId") Long modelId,
+                                           @Header("Authorization") String authorization);
+
+    @GET("/user/details")
+    Observable<JsonObject> retrieveUserDetails(@Query("userId") Long itemId,
+                                               @Header("Authorization") String authorization);
+}
 
 /*    @FormUrlEncoded
     @POST("image/fetch-thumbnail")
     Observable<Multipart> fetchItemImage(@Field("itemId") int itemId,
                                          @Header("Authorization") String authorization);*/
-}

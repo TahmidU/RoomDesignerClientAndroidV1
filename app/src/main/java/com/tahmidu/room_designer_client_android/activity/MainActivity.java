@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void startARActivity(View view)
     {
-        startActivity(new Intent(this, ARActivity.class));
+        Intent intent = new Intent(this, ARActivity.class);
+        intent.putExtra("download", true);
+        startActivity(intent);
     }
 }

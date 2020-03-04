@@ -7,6 +7,7 @@ import androidx.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.tahmidu.room_designer_client_android.model.Item;
+import com.tahmidu.room_designer_client_android.model.User;
 
 public class PreferenceProvider
 {
@@ -16,6 +17,7 @@ public class PreferenceProvider
     private final String TOKEN = "TOKEN"; //Save password or verification token
     private final String JWT_TOKEN = "JWT TOKEN";
     private final String ITEM = "ITEM";
+    private final String ITEMS_USER = "ITEMS USER";
 
     public PreferenceProvider(Context applicationContext)
     {
@@ -63,5 +65,16 @@ public class PreferenceProvider
     {
         Gson gson = new Gson();
         return gson.fromJson(sharedPreferences.getString(ITEM, ""), Item.class);
+    }
+
+    public void saveItemsUser(String userAsJsonString)
+    {
+        sharedPreferences.edit().putString(ITEMS_USER, userAsJsonString).apply();
+    }
+
+    public User getItemsUser()
+    {
+        Gson gson = new Gson();
+        return gson.fromJson(sharedPreferences.getString(ITEMS_USER, ""), User.class);
     }
 }

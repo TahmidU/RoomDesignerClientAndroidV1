@@ -11,17 +11,17 @@ import com.tahmidu.room_designer_client_android.model.Image;
 import java.util.List;
 
 @Dao
-public interface ImageCachedDAO
+public interface ImageDAO
 {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertImage(Image image);
+    void insertImage(Image image);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertImages(List<Image> images);
+    void insertImages(List<Image> images);
 
     @Update
-    public void updateImages(List<Image> images);
+    void updateImages(List<Image> images);
 
     @Delete
-    public void deleteImage(Image image);
+    void deleteImage(Image image);
 }

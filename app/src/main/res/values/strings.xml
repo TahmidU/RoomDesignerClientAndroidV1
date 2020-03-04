@@ -37,4 +37,6 @@
     <string name="description">Description</string>
     <string name="contact_information">Contact Information</string>
     <string name="similar_products">Similar Products</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

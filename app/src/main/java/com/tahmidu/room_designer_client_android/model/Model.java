@@ -1,17 +1,24 @@
 package com.tahmidu.room_designer_client_android.model;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+@Entity
 public class Model
 {
-    @PrimaryKey private long modelId;
+    @PrimaryKey
+    private long modelId;
     private String uri;
     private long ItemId;
+
+    public Model() {
+    }
 
     public Model(long modelId, String uri, long itemId) {
         this.modelId = modelId;
         this.uri = uri;
-        ItemId = itemId;
+        this.ItemId = itemId;
     }
 
     public long getModelId() {

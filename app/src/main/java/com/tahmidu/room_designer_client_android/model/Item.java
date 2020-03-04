@@ -41,6 +41,9 @@ public class Item
     @Ignore
     private transient Bitmap thumbnail;
 
+    public Item() {
+    }
+
     public Item(long itemId, String name, String description, boolean hasModel, Date date) {
         this.itemId = itemId;
         this.name = name;

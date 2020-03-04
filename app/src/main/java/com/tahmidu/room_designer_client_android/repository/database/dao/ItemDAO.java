@@ -6,22 +6,22 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Update;
 
-import com.tahmidu.room_designer_client_android.model.Model;
+import com.tahmidu.room_designer_client_android.model.Item;
 
 import java.util.List;
 
 @Dao
-public interface ModelCachedDAO
+public interface ItemDAO
 {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertModel(Model model);
+    public void insertItem(Item item);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertModels(List<Model> model);
+    public void insertItems(List<Item> items);
 
     @Update
-    public void updateModels(List<Model> model);
+    public void updateItems(List<Item> items);
 
     @Delete
-    public void deleteModel(Model model);
+    public void deleteItem(Item item);
 }

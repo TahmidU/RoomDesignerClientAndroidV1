@@ -1,6 +1,7 @@
 package com.tahmidu.room_designer_client_android.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
@@ -12,6 +13,9 @@ public class Image
     private String uri;
     private boolean isThumbnail;
     private long itemId;
+
+    public Image() {
+    }
 
     public Image(long imageId, String uri, boolean isThumbnail, long itemId) {
         this.imageId = imageId;

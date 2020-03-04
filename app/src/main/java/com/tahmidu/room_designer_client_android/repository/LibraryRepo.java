@@ -1,10 +1,13 @@
 package com.tahmidu.room_designer_client_android.repository;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.JsonObject;
 import com.tahmidu.room_designer_client_android.model.Item;
+import com.tahmidu.room_designer_client_android.model.User;
 import com.tahmidu.room_designer_client_android.network.api.APIService;
 import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
 import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
@@ -81,25 +84,34 @@ public class LibraryRepo
         });
     }
 
-    public void retrieveContactInfo(final long itemId, final MutableLiveData<String> contactInfo,
-                                    final String JWTToken)
+    public void retrieveContactInfo(final long userId, final MutableLiveData<String> contactInfo,
+                                    final String JWTToken, final PreferenceProvider preferenceProvider)
     {
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
-        final Observable<Response<String>> getObservable = apiService.retrieveContactInfo(itemId,
-                JWTToken);
+        final Observable<JsonObject> getObservable = apiService.retrieveUserDetails(userId, JWTToken);
         getObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<String>>() {
+                .subscribe(new Observer<JsonObject>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         Log.d(TAG, "onSubscribe called");
-                        Log.d(TAG, "onSubscribe " + contactInfo.getValue());
                     }
 
                     @Override
-                    public void onNext(Response<String> stringResponse) {
+                    public void onNext(JsonObject jsonObject)
+                    {
                         Log.d(TAG, "onNext called");
-                        contactInfo.setValue(stringResponse.body());
-                        Log.d(TAG, "onNext " + stringResponse.body());
+
+                        User user = new User(userId, jsonObject.get("firstName").getAsString(),
+                                jsonObject.get("lastName").getAsString(),
+                                jsonObject.get("phoneNum").getAsString(),
+                                jsonObject.get("email").getAsString());
+
+                        preferenceProvider.saveItemsUser(jsonObject.toString());
+
+                        contactInfo.postValue("First Name: " + user.getFirstName() + "\n" +
+                                "Last Name: " + user.getLastName() + "\n" +
+                                "Email: " + user.getEmail() + "\n" +
+                                "Phone Number: " + user.getPhoneNum());
                     }
 
                     @Override
