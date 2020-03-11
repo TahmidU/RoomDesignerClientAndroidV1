@@ -1,6 +1,8 @@
 package com.tahmidu.room_designer_client_android.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.model.Item;
 import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
+import com.tahmidu.room_designer_client_android.util.BasicAuthInterceptor;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,28 +37,6 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
         this.items = items;
         this.context = context;
         this.clickListener = clickListener;
-
-        final String token = new PreferenceProvider(context).getJWTToken();
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Interceptor.Chain chain) throws IOException {
-                        Request newRequest = chain.request().newBuilder()
-                                .addHeader("Authorization", token)
-                                .build();
-                        return chain.proceed(newRequest);
-                    }
-                })
-                .build();
-
-        Picasso picasso = new Picasso.Builder(context)
-                .downloader(new OkHttp3Downloader(client))
-                .build();
-
-        Picasso.setSingletonInstance(picasso);
-        Picasso.get().setLoggingEnabled(true);
-        Picasso.get().setIndicatorsEnabled(true);
     }
 
     @NonNull

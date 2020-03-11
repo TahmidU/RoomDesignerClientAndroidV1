@@ -4,24 +4,34 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 import androidx.room.Update;
 
 import com.tahmidu.room_designer_client_android.model.Model;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+
 @Dao
 public interface ModelDAO
 {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertModel(Model model);
+    Completable insertModel(Model model);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertModels(List<Model> models);
+    Completable insertModels(List<Model> models);
 
     @Update
-    void updateModels(List<Model> models);
+    Completable updateModels(List<Model> models);
 
     @Delete
-    void deleteModel(Model model);
+    Completable deleteModel(Model model);
+
+    @Query("SELECT * FROM Model")
+    Flowable<Model> getAllModel();
+
+    @Query("SELECT * FROM Model WHERE modelId = :modelId")
+    Flowable<Model> getModelById(Long modelId);
 }

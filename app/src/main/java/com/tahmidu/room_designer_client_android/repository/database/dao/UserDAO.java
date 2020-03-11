@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 import androidx.room.Update;
 
 import com.tahmidu.room_designer_client_android.model.Model;
@@ -11,18 +12,28 @@ import com.tahmidu.room_designer_client_android.model.User;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+
 @Dao
 public interface UserDAO
 {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertUser(User user);
+    Completable insertUser(User user);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertUsers(List<User> users);
+    Completable insertUsers(List<User> users);
 
     @Update
-    void updateModels(List<User> users);
+    Completable updateUsers(List<User> users);
 
     @Delete
-    void deleteModel(User user);
+    Completable deleteUser(User user);
+
+    @Query("SELECT * FROM User")
+    Flowable<User> getAllUsers();
+
+    @Query("SELECT * FROM User WHERE userId = :userId")
+    Flowable<User> getUserById(Long userId);
+
 }

@@ -21,8 +21,12 @@ import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.activity.MainActivity;
 import com.tahmidu.room_designer_client_android.databinding.FragmentLoginBinding;
 import com.tahmidu.room_designer_client_android.model.Login;
+import com.tahmidu.room_designer_client_android.util.CustomFileUtil;
 import com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel;
 import java.util.Objects;
+
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +63,13 @@ public class LoginFragment extends Fragment{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        //Clear Model Data
+        CustomFileUtil.deleteDir(getActivity().getApplicationContext().getFilesDir()
+                .getAbsolutePath() + "/" )
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .subscribe();
 
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory

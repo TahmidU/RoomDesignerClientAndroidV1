@@ -2,6 +2,7 @@ package com.tahmidu.room_designer_client_android.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
@@ -12,6 +13,8 @@ import com.tahmidu.room_designer_client_android.model.User;
 public class PreferenceProvider
 {
     private SharedPreferences sharedPreferences;
+
+    private final String TAG = "PREFERENCE PROVIDER";
 
     private final String EMAIL = "EMAIL"; //Save email
     private final String TOKEN = "TOKEN"; //Save password or verification token
@@ -64,6 +67,7 @@ public class PreferenceProvider
     public Item getItem()
     {
         Gson gson = new Gson();
+        Log.d(TAG, sharedPreferences.getString(ITEM,""));
         return gson.fromJson(sharedPreferences.getString(ITEM, ""), Item.class);
     }
 
@@ -75,6 +79,9 @@ public class PreferenceProvider
     public User getItemsUser()
     {
         Gson gson = new Gson();
-        return gson.fromJson(sharedPreferences.getString(ITEMS_USER, ""), User.class);
+        Log.d(TAG, sharedPreferences.getString(ITEMS_USER,""));
+        User user = gson.fromJson(sharedPreferences.getString(ITEMS_USER, ""), User.class);
+        Log.d(TAG, "Users firstName: " + user.getFirstName());
+        return user;
     }
 }

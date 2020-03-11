@@ -1,6 +1,7 @@
 package com.tahmidu.room_designer_client_android.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tahmidu.room_designer_client_android.R;
+import com.tahmidu.room_designer_client_android.activity.ARActivity;
 import com.tahmidu.room_designer_client_android.adapter.MainRecyclerAdapter;
 import com.tahmidu.room_designer_client_android.databinding.FragmentMainLibraryBinding;
 import com.tahmidu.room_designer_client_android.model.Item;
@@ -86,22 +88,27 @@ public class MainLibraryFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         mainViewModel.fetchMainLibrary();
-        mainViewModel.getItemsLiveData().observe(getViewLifecycleOwner(), new Observer<List<Item>>() {
-            @Override
-            public void onChanged(List<Item> items) {
-                mainRecyclerAdapter.notifyDataSetChanged();
+
+        //Observers
+        mainViewModel.getItemsLiveData().observe(getViewLifecycleOwner(),
+                items -> mainRecyclerAdapter.notifyDataSetChanged());
+
+        mainViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), integer ->
+        {
+            switch (integer)
+            {
+                case MainViewModel.ITEM_FRAGMENT:
+                    navController.navigate(R.id.action_mainLibraryFragment_to_itemFragment);
             }
         });
 
+        //Recycler View
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 2));
         mainRecyclerAdapter = new MainRecyclerAdapter(mainViewModel.getItemsLiveData().getValue(),
-                getActivity().getApplicationContext(), new MainRecyclerAdapter.OnClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                mainViewModel.clickedItem(position);
-                navController.navigate(R.id.action_mainLibraryFragment_to_itemFragment);
-            }
-        });
+                getActivity().getApplicationContext(), (view1, position) -> {
+                    mainViewModel.clickedItem(position);
+                    mainViewModel.getNavigateFragment().postValue(MainViewModel.ITEM_FRAGMENT);
+                });
         recyclerView.setAdapter(mainRecyclerAdapter);
     }
 

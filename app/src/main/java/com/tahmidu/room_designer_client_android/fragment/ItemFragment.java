@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -17,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.activity.ARActivity;
@@ -73,14 +75,34 @@ public class ItemFragment extends Fragment {
         mainViewModel = new ViewModelProvider(this, factory)
                 .get(MainViewModel.class);
 
+        //Set to binding
         binding.setVM(mainViewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
+        //View Pager
         itemImagesViewPagerAdapter = new ItemImagesViewPager(getActivity().getApplicationContext(),
                 mainViewModel.getSelectedItem().getImages());
-
         imageSelectViewPager.setAdapter(itemImagesViewPagerAdapter);
 
+        //Details Retrieval
         mainViewModel.retrieveContactInfo();
+
+        //Observers
+        mainViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), integer ->
+        {
+            switch (integer)
+            {
+                case MainViewModel.MAIN_LIB_FRAGMENT:
+                    navController.navigate(R.id.action_itemFragment_to_mainLibraryFragment);
+                    break;
+            }
+        });
+
+        mainViewModel.getFromItemToVR().observe(getViewLifecycleOwner(), aBoolean ->
+        {
+            Intent intent = new Intent(getActivity(), ARActivity.class);
+            intent.putExtra("download", true);
+            startActivity(intent);
+        });
     }
 }

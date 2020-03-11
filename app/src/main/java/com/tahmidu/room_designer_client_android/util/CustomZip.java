@@ -14,12 +14,16 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import io.reactivex.Observable;
+
 public class CustomZip
 {
     private static final String TAG = "CUSTOM ZIP";
 
-    public static boolean unzip(byte[] buffer, String zipName, String outputPath)
+    public static Observable<Boolean> unzip(byte[] buffer, String zipName, String outputPath)
     {
+        Log.d(TAG, Thread.currentThread().getName());
+
         if(buffer != null)
             Log.d("CUSTOM ZIP", "Buffer Length: "+buffer.length);
         else
@@ -65,8 +69,8 @@ public class CustomZip
         }catch (IOException e)
         {
             e.printStackTrace();
-            return false;
+            return Observable.just(false);
         }
-        return true;
+        return Observable.just(true);
     }
 }

@@ -1,5 +1,6 @@
 package com.tahmidu.room_designer_client_android.activity;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Frame;
@@ -28,11 +32,22 @@ import com.google.ar.sceneform.ux.TransformableNode;
 import com.tahmidu.room_designer_client_android.AR.ModelLoader;
 import com.tahmidu.room_designer_client_android.AR.PointerDrawable;
 import com.tahmidu.room_designer_client_android.R;
+import com.tahmidu.room_designer_client_android.adapter.MainRecyclerAdapter;
 import com.tahmidu.room_designer_client_android.databinding.ActivityArBinding;
 import com.tahmidu.room_designer_client_android.view_model.ARViewModel;
+import com.tahmidu.room_designer_client_android.view_model.MainViewModel;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ARActivity extends AppCompatActivity
 {
@@ -43,8 +58,9 @@ public class ARActivity extends AppCompatActivity
     private ActivityArBinding binding;
 
     private PointerDrawable pointerDrawable = new PointerDrawable();
-    private boolean isTracking;
+    private boolean isTracking = false;
     private boolean isHitting;
+    private boolean downloadState = false;
 
     private ModelLoader modelLoader;
 
@@ -57,43 +73,45 @@ public class ARActivity extends AppCompatActivity
 
         Log.d(TAG, "OnCreate Called");
 
-        //Create the View Model.
+        //View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication());
-        //View Model
         arViewModel = new ViewModelProvider(this, factory)
                 .get(ARViewModel.class);
 
         binding.setVM(arViewModel);
         binding.setLifecycleOwner(this);
 
-
-        boolean downloadState = getIntent().getExtras().getBoolean("download");
+        if(getIntent().getExtras() != null)
+            downloadState = getIntent().getExtras().getBoolean("download");
         Log.d(TAG, "Download State: " + downloadState);
-
-        if(downloadState)
-            arViewModel.fetchModel();
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.sceneform_fragment);
 
-        arFragment.getArSceneView().getScene().addOnUpdateListener(frameTime ->
-        {
-            arFragment.onUpdate(frameTime);
-            onUpdate();
-        });
+        if (arFragment != null) {
+            arFragment.getArSceneView().getScene().addOnUpdateListener(frameTime ->
+            {
+                arFragment.onUpdate(frameTime);
+                onUpdate();
+            });
+        }
 
         modelLoader = new ModelLoader(new WeakReference<>(this));
 
-        arViewModel.getArModelDirLiveData().observe(this, s -> {
-            Log.d(TAG, s);
-            addToGallary(s);
+        arViewModel.getIsTracking().observe(this, aBoolean -> {
+            if(downloadState)
+                arViewModel.fetchModel();
         });
+
+        arViewModel.getArModelDirLiveData().observe(this, this::addObject);
     }
 
     private void onUpdate()
     {
         boolean trackingChanged = updateTracking();
         View contentView = findViewById(android.R.id.content);
+
+
 
         if(trackingChanged)
         {
@@ -113,6 +131,7 @@ public class ARActivity extends AppCompatActivity
                 pointerDrawable.setEnabled(isHitting);
                 contentView.invalidate();
             }
+
         }
     }
 
@@ -141,6 +160,10 @@ public class ARActivity extends AppCompatActivity
         Frame frame =  arFragment.getArSceneView().getArFrame();
         boolean wasTracking = isTracking;
         isTracking = frame != null && frame.getCamera().getTrackingState() == TrackingState.TRACKING;
+
+        if(isTracking)
+            arViewModel.setIsTracking(true);
+
         return isTracking != wasTracking;
     }
 
@@ -148,7 +171,7 @@ public class ARActivity extends AppCompatActivity
         View vw = findViewById(android.R.id.content);
         return new android.graphics.Point(vw.getWidth()/2, vw.getHeight()/2);
     }
-
+/*
     private void initializeGallary()
     {
         LinearLayout gallery = findViewById(R.id.gallery_layout);
@@ -157,16 +180,15 @@ public class ARActivity extends AppCompatActivity
 
     private void addToGallary(String dir)
     {
-        LinearLayout gallery = findViewById(R.id.gallery_layout);
+        //LinearLayout gallery = findViewById(R.id.gallery_layout);
 
         ImageView imageView = new ImageView(this);
         imageView.setImageResource(android.R.drawable.ic_menu_today);
-        imageView.setContentDescription("Item");
         imageView.setOnClickListener(view -> addObject(dir));
         Log.d(TAG, Uri.parse(dir).toString());
 
-        gallery.addView(imageView);
-    }
+        //gallery.addView(imageView);
+    }*/
 
     private void addObject(String dir) {
         Frame frame = arFragment.getArSceneView().getArFrame();

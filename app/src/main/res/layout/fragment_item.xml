@@ -76,14 +76,14 @@
                         app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
                     <TextView
-                        android:id="@+id/textView31"
+                        android:id="@+id/vr_text_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/segoe_bold"
                         android:gravity="top|center_horizontal"
-                        android:text="VR"
-                        android:onClick="startARActivity"
+                        android:text="@string/vr"
+                        android:onClick="@{() -> VM.initVR(true)}"
                         android:textColor="@color/colorTextPrimary"
                         android:textSize="18sp"
                         android:textStyle="bold" />

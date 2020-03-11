@@ -1,6 +1,8 @@
 package com.tahmidu.room_designer_client_android.view_model;
 
 import android.app.Application;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
@@ -22,10 +24,13 @@ public class MainViewModel extends AndroidViewModel
     //Navigation
     public final static int MAIN_LIB_FRAGMENT = 0;
     public final static int ITEM_FRAGMENT = 1;
+    public final static int AR_FRAGMENT = 2;
 
+    private final MutableLiveData<Integer> navigateFragment = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> fromItemToVR = new MutableLiveData<>();
+
+    //Items View
     private final MutableLiveData<List<Item>> itemsLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Item> selectItemImages = new MutableLiveData<>();
-
     private final MutableLiveData<String> contactInfoLiveData = new MutableLiveData<>();
 
     private int mainPageNum = 0;
@@ -65,9 +70,30 @@ public class MainViewModel extends AndroidViewModel
                 preferenceProvider.getJWTToken(), preferenceProvider);
     }
 
+    public void navigateFragment(int id)
+    {
+        Log.d(TAG, "Navigate to " + id);
+        navigateFragment.postValue(id);
+    }
+
+    public void initVR(boolean download)
+    {
+        Log.d(TAG, "Initialise VR. Switching from Item to VR? " + download);
+        navigateFragment.postValue(AR_FRAGMENT);
+        fromItemToVR.postValue(download);
+    }
+
     public Item getSelectedItem()
     {
         return preferenceProvider.getItem();
+    }
+
+    public MutableLiveData<Boolean> getFromItemToVR() {
+        return fromItemToVR;
+    }
+
+    public MutableLiveData<Integer> getNavigateFragment() {
+        return navigateFragment;
     }
 
     public MutableLiveData<List<Item>> getItemsLiveData() {

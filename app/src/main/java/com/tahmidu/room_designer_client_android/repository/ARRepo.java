@@ -33,8 +33,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-public class ARRepo
-{
+public class ARRepo {
     private final String TAG = "AR_REPO";
     private final String MODEL = "MODEL";
 
@@ -42,74 +41,43 @@ public class ARRepo
     private static ARRepo instance;
 
     public static ARRepo getInstance() {
-        if(instance == null)
+        if (instance == null)
             return instance = new ARRepo();
         return instance;
     }
 
     public void fetchModel(Long modelId, String JWTToken, Item item, User user, Context context,
-                           final MutableLiveData<String> arModelDirLiveData)
-    {
+                           final MutableLiveData<String> arModelDirLiveData) {
+        String storagePath = context.getFilesDir().getAbsolutePath() + "/" + item.getItemId() + "/" + MODEL;
+
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
 
         final Observable<ResponseBody> getObservable = apiService.retrieveModel(modelId, JWTToken);
-/*        getObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ResponseBody>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                Log.d(TAG, "onSubscribe called");
-            }
-
-            @Override
-            public void onNext(ResponseBody responseBody) {
-                Log.d(TAG, "onNext called");
-
-                CustomZip.unzip(item.getItemId()+"\\"+ MODEL, "response");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.d(TAG, "onError called");
-                Log.e(TAG, Objects.requireNonNull(e.getMessage()));
-            }
-
-            @Override
-            public void onComplete() {
-                Log.d(TAG, "onComplete called");
-            }
-        });*/
-
-        String storagePath = context.getFilesDir().getAbsolutePath() + "/" + item.getItemId()+"/"+ MODEL;
-
         getObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(responseBody -> CustomZip.unzip( responseBody.bytes(), "response", storagePath))
-                .doOnComplete(() -> {
-                    DatabaseConnector dbc = new DatabaseConnector(context);
-                    dbc.insertUser(new User(user.getUserId(), user.getFirstName(), user.getLastName(),
-                            user.getPhoneNum(), user.getEmail()));
-                    getGLTFModelInDir(storagePath, arModelDirLiveData);
+                .subscribeOn(Schedulers.computation())
+                .observeOn(Schedulers.computation())
+                .concatMap(responseBody -> {
+                    Log.d(TAG, Thread.currentThread().getName());
+                    return CustomZip.unzip(responseBody.bytes(), "response", storagePath);
                 })
+                .concatMap(aBoolean -> getGLTFModelInDir(storagePath, arModelDirLiveData))
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
     }
 
-    private void getGLTFModelInDir(String directory, final MutableLiveData<String> arModelDirLiveData)
-    {
-        Log.d(TAG, "Accessing: "+directory);
-        Completable.fromRunnable(() -> {
-            String[] fileNames = new File(directory).list();
-            if(fileNames != null)
-                for(String fileName : fileNames)
-                {
-                    Log.d(TAG, "Found Files: " + fileName);
-                    String newDir = directory + "/" + fileName;
-                    if(CustomFileUtil.getExtension(newDir).equals(".gltf"))
-                    {
-                        arModelDirLiveData.postValue(newDir);
-                        break;
-                    }
+    private Observable<Boolean> getGLTFModelInDir(String directory, final MutableLiveData<String> arModelDirLiveData) {
+        Log.d(TAG, "Accessing: " + directory);
+
+        String[] fileNames = new File(directory).list();
+        if (fileNames != null)
+            for (String fileName : fileNames) {
+                Log.d(TAG, "Found Files: " + fileName);
+                String newDir = directory + "/" + fileName;
+                if (CustomFileUtil.getExtension(newDir).equals(".gltf")) {
+                    arModelDirLiveData.postValue(newDir);
+                    break;
                 }
-        }).subscribeOn(Schedulers.io()).subscribe();
+            }
+        return Observable.just(true);
     }
 }

@@ -33,12 +33,6 @@ public class Item
     @Ignore
     private List<Long> images;
     @Ignore
-    private List<Long> itemDownloads;
-    @Ignore
-    private List<Long> itemViews;
-    @Ignore
-    private List<Long> favourites;
-    @Ignore
     private transient Bitmap thumbnail;
 
     public Item() {
@@ -68,8 +62,7 @@ public class Item
 
     @Ignore
     public Item(long itemId, String name, String description, boolean hasModel, Date date, long model,
-                long user, long category, long itemVariant, long type, List<Long> images,
-                List<Long> itemDownloads, List<Long> itemViews, List<Long> favourites) {
+                long user, long category, long itemVariant, long type, List<Long> images) {
         this.itemId = itemId;
         this.name = name;
         this.description = description;
@@ -81,9 +74,6 @@ public class Item
         this.itemVariant = itemVariant;
         this.type = type;
         this.images = images;
-        this.itemDownloads = itemDownloads;
-        this.itemViews = itemViews;
-        this.favourites = favourites;
     }
 
     public long getItemId() {
@@ -184,36 +174,6 @@ public class Item
     @Ignore
     public void setImages(List<Long> images) {
         this.images = images;
-    }
-
-    @Ignore
-    public List<Long> getItemDownloads() {
-        return itemDownloads;
-    }
-
-    @Ignore
-    public void setItemDownloads(List<Long> itemDownloads) {
-        this.itemDownloads = itemDownloads;
-    }
-
-    @Ignore
-    public List<Long> getItemViews() {
-        return itemViews;
-    }
-
-    @Ignore
-    public void setItemViews(List<Long> itemViews) {
-        this.itemViews = itemViews;
-    }
-
-    @Ignore
-    public List<Long> getFavourites() {
-        return favourites;
-    }
-
-    @Ignore
-    public void setFavourites(List<Long> favourites) {
-        this.favourites = favourites;
     }
 
     @Ignore
