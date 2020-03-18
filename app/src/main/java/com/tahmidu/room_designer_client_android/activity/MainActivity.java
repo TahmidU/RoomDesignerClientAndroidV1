@@ -38,4 +38,11 @@ public class MainActivity extends AppCompatActivity {
         Picasso.setSingletonInstance(picasso);
         Picasso.get().setLoggingEnabled(true);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Picasso.get().shutdown();
+        finish();
+    }
 }

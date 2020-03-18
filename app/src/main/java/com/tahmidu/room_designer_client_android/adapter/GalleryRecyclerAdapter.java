@@ -1,8 +1,6 @@
 package com.tahmidu.room_designer_client_android.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,28 +10,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.tahmidu.room_designer_client_android.R;
+import com.tahmidu.room_designer_client_android.model.GalleryItem;
 import com.tahmidu.room_designer_client_android.model.Item;
-import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
-import com.tahmidu.room_designer_client_android.util.BasicAuthInterceptor;
 
-import java.io.IOException;
 import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
-public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapter.MyViewHolder>
+public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecyclerAdapter.MyViewHolder>
 {
-    private List<Item> items;
+    private List<GalleryItem> items;
     private Context context;
-    private OnClickListener clickListener;
+    private MainRecyclerAdapter.OnClickListener clickListener;
 
-    public MainRecyclerAdapter(List<Item> items, Context context, OnClickListener clickListener) {
+    public GalleryRecyclerAdapter(List<GalleryItem> items, Context context, MainRecyclerAdapter.OnClickListener clickListener) {
         this.items = items;
         this.context = context;
         this.clickListener = clickListener;
@@ -41,26 +31,25 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    public GalleryRecyclerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_layout, parent,
+        View view = LayoutInflater.from(context).inflate(R.layout.gallery_item_layout, parent,
                 false);
-        return new MyViewHolder(view, clickListener);
+        return new GalleryRecyclerAdapter.MyViewHolder(view, clickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
+    public void onBindViewHolder(@NonNull GalleryRecyclerAdapter.MyViewHolder holder, int position)
     {
         String URL = "http://192.168.0.8:8080/image/fetch-thumbnail?itemId="
-                + items.get(position).getItemId();
+                + items.get(position).getItem().getItemId();
 
         Picasso.get()
                 .load(URL)
                 .placeholder(R.color.colorTextPrimary)
-                .error(R.color.colorTextPrimary)
                 .into(holder.itemImage);
 
-        holder.itemTitle.setText(items.get(position).getName());
+        holder.itemTitle.setText(items.get(position).getItem().getName());
     }
 
     @Override
@@ -71,18 +60,16 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         private ImageView itemImage;
-        private ImageView itemFavourite;
         private TextView itemTitle;
 
-        private OnClickListener clickListener;
+        private MainRecyclerAdapter.OnClickListener clickListener;
 
-        public MyViewHolder(@NonNull View itemView, OnClickListener clickListener)
+        public MyViewHolder(@NonNull View itemView, MainRecyclerAdapter.OnClickListener clickListener)
         {
             super(itemView);
 
-            itemImage = itemView.findViewById(R.id.item_image);
-            itemFavourite = itemView.findViewById(R.id.item_favourite);
-            itemTitle = itemView.findViewById(R.id.item_title);
+            itemImage = itemView.findViewById(R.id.gallery_item_image);
+            itemTitle = itemView.findViewById(R.id.gallery_item_title);
 
             this.clickListener = clickListener;
             itemView.setOnClickListener(this);

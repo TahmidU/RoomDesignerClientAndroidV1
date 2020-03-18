@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.JsonObject;
+import com.tahmidu.room_designer_client_android.model.GalleryItem;
 import com.tahmidu.room_designer_client_android.model.Item;
 import com.tahmidu.room_designer_client_android.model.User;
 import com.tahmidu.room_designer_client_android.network.api.APIService;

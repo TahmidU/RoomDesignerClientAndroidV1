@@ -3,7 +3,6 @@ package com.tahmidu.room_designer_client_android.AR;
 import android.app.AlertDialog;
 import android.net.Uri;
 import android.util.Log;
-
 import com.google.ar.core.Anchor;
 import com.google.ar.sceneform.assets.RenderableSource;
 import com.google.ar.sceneform.rendering.ModelRenderable;
@@ -21,6 +20,11 @@ public class ModelLoader
         this.owner = owner;
     }
 
+    /**
+     * Load the model into scene by accessing the models directory.
+     * @param anchor
+     * @param dir
+     */
     public void loadModel(Anchor anchor, String dir)
     {
         if(owner.get() == null)
@@ -40,16 +44,5 @@ public class ModelLoader
                     builder.setMessage(throwable.getMessage()).show();
                     return null;
                 });
-/*                .handle((modelRenderable, throwable) ->
-                {
-                    ARActivity activity = owner.get();
-                    if(activity == null )
-                        return null;
-                    else if(throwable != null)
-                        activity.onException(throwable);
-                    else
-                        activity.addNodeToScene(anchor, modelRenderable);
-                    return null;
-                });*/
     }
 }

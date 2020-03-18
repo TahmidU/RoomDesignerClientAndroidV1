@@ -34,7 +34,8 @@
         </activity>
 
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.ARActivity" />
+        <activity android:name=".activity.ARActivity"
+            android:windowSoftInputMode="stateVisible"/>
 
         <meta-data android:name="com.google.ar.core" android:value="required"/>
     </application>

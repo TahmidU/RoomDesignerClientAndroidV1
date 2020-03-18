@@ -1,16 +1,11 @@
 package com.tahmidu.room_designer_client_android.util;
 
 import android.util.Log;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOError;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -31,12 +26,21 @@ public class CustomZip
 
         Log.d(TAG, outputPath);
 
+        String texturePath = "/textures";
+
         boolean dirResult = false;
         File destDir = new File(outputPath);
         if (!destDir.exists()) {
             dirResult = destDir.mkdirs();
         }
-        Log.d(TAG, "Make Dir Result: " + dirResult + " And does dir exist: " + destDir.exists());
+
+        boolean textureResult = false;
+        File textureDir = new File(outputPath+texturePath);
+        if(!textureDir.exists())
+            textureResult = textureDir.mkdir();
+
+        Log.d(TAG, "Files destination created? " + dirResult);
+        Log.d(TAG, "Textures destination created? " + textureResult);
 
         ZipInputStream zipInputStream;
 
@@ -47,12 +51,26 @@ public class CustomZip
 
             ZipEntry zipEntry;
 
+            //Extract and sort files in proper location.
             while((zipEntry = zipInputStream.getNextEntry()) != null)
             {
                 Log.d(TAG, "Unzipping: "+zipEntry.getName());
+                String fileExtension = CustomFileUtil.getExtension(zipEntry.getName());
 
-                FileOutputStream fileOutputStream =
-                        new FileOutputStream(outputPath+ "/" + zipEntry.getName());
+                FileOutputStream fileOutputStream;
+
+                //Check if its a texture.
+                if(fileExtension.equals(".png") || fileExtension.equals(".jpg")
+                        || fileExtension.equals(".jpeg") || fileExtension.equals(".bmp")
+                        || fileExtension.equals(".tif"))
+                {
+                    fileOutputStream = new FileOutputStream(outputPath + texturePath + "/"
+                            + zipEntry.getName());
+                }else
+                    {
+                        fileOutputStream = new FileOutputStream(outputPath+ "/"
+                                + zipEntry.getName());
+                    }
 
                 BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
 

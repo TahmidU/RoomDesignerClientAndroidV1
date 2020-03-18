@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.tahmidu.room_designer_client_android.model.GalleryItem;
 import com.tahmidu.room_designer_client_android.model.Item;
 import com.tahmidu.room_designer_client_android.model.Model;
 import com.tahmidu.room_designer_client_android.model.User;
@@ -16,6 +17,7 @@ import com.tahmidu.room_designer_client_android.util.CustomFileUtil;
 import com.tahmidu.room_designer_client_android.util.CustomZip;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -46,9 +48,10 @@ public class ARRepo {
         return instance;
     }
 
-    public void fetchModel(Long modelId, String JWTToken, Item item, User user, Context context,
-                           final MutableLiveData<String> arModelDirLiveData) {
-        String storagePath = context.getFilesDir().getAbsolutePath() + "/" + item.getItemId() + "/" + MODEL;
+    public void fetchModel(Long modelId, String JWTToken, Item item, Context context,
+                           final MutableLiveData<List<GalleryItem>> galleryItemsLiveData) {
+        String storagePath = context.getFilesDir().getAbsolutePath() + "/" + item.getItemId()
+                + "/" + MODEL;
 
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
 
@@ -60,12 +63,14 @@ public class ARRepo {
                     Log.d(TAG, Thread.currentThread().getName());
                     return CustomZip.unzip(responseBody.bytes(), "response", storagePath);
                 })
-                .concatMap(aBoolean -> getGLTFModelInDir(storagePath, arModelDirLiveData))
+                .concatMap(aBoolean -> getGLTFModelInDir(storagePath, item, galleryItemsLiveData))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
     }
 
-    private Observable<Boolean> getGLTFModelInDir(String directory, final MutableLiveData<String> arModelDirLiveData) {
+    private Observable<Boolean> getGLTFModelInDir(String directory, Item item,
+                                                  final MutableLiveData<List<GalleryItem>> galleryItemsLiveData) {
+        Log.d(TAG, Thread.currentThread().getName());
         Log.d(TAG, "Accessing: " + directory);
 
         String[] fileNames = new File(directory).list();
@@ -74,7 +79,12 @@ public class ARRepo {
                 Log.d(TAG, "Found Files: " + fileName);
                 String newDir = directory + "/" + fileName;
                 if (CustomFileUtil.getExtension(newDir).equals(".gltf")) {
-                    arModelDirLiveData.postValue(newDir);
+                    GalleryItem galleryItem = new GalleryItem(item,
+                            newDir);
+                    Log.d(TAG, galleryItem.toString());
+                    List<GalleryItem> galleryItems = galleryItemsLiveData.getValue();
+                    galleryItems.add(galleryItem);
+                    galleryItemsLiveData.postValue(galleryItems);
                     break;
                 }
             }

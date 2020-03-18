@@ -6,50 +6,63 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.tahmidu.room_designer_client_android.model.GalleryItem;
+import com.tahmidu.room_designer_client_android.model.Item;
 import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
 import com.tahmidu.room_designer_client_android.repository.ARRepo;
-import com.tahmidu.room_designer_client_android.util.SingleLiveEvent;
+import com.tahmidu.room_designer_client_android.repository.LibraryRepo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ARViewModel extends AndroidViewModel
 {
-
-    private ARRepo arRepo;
-
     private PreferenceProvider preferenceProvider;
 
     //New items directory that's not in cache.
-    private MutableLiveData<String> arModelDirLiveData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isTrackingInit = new MutableLiveData<>();
+    private MutableLiveData<List<GalleryItem>> galleryItemsLiveData = new MutableLiveData<>();
+    private ARRepo arRepo;
+
+    private final MutableLiveData<List<Item>> itemsLiveData = new MutableLiveData<>();
+    private final LibraryRepo libraryRepo;
+    int pageNum = 0;
 
     public ARViewModel(@NonNull Application application) {
         super(application);
 
         arRepo = ARRepo.getInstance();
+        libraryRepo = LibraryRepo.getInstance();
 
         preferenceProvider = new PreferenceProvider(getApplication().getApplicationContext());
+
+        galleryItemsLiveData.setValue(new ArrayList<>());
+        itemsLiveData.setValue(new ArrayList<>());
     }
 
     public void fetchModel()
     {
         arRepo.fetchModel(preferenceProvider.getItem().getModel(), preferenceProvider.getJWTToken(),
-                preferenceProvider.getItem(), preferenceProvider.getItemsUser(),
-                getApplication().getApplicationContext(), arModelDirLiveData);
+                preferenceProvider.getItem(), getApplication().getApplicationContext(),
+                galleryItemsLiveData);
     }
 
-    public MutableLiveData<String> getArModelDirLiveData() {
-        return arModelDirLiveData;
-    }
-
-    public MutableLiveData<Boolean> getIsTracking() {
-        return isTrackingInit;
-    }
-
-    public void setIsTracking(boolean isTracking)
+    public void fetchModel(Item item)
     {
-        if(isTrackingInit != null)
-        {
-            this.isTrackingInit.setValue(isTracking);
-            this.isTrackingInit = null;
-        }
+        arRepo.fetchModel(item.getModel(), preferenceProvider.getJWTToken(), item,
+                getApplication().getApplicationContext(), galleryItemsLiveData);
+    }
+
+    public void fetchItems()
+    {
+        libraryRepo.fetchMainLibrary(itemsLiveData, preferenceProvider.getJWTToken(), pageNum);
+        pageNum++;
+    }
+
+    public MutableLiveData<List<GalleryItem>> getGalleryItemsLiveData() {
+        return galleryItemsLiveData;
+    }
+
+    public MutableLiveData<List<Item>> getItemsLiveData() {
+        return itemsLiveData;
     }
 }

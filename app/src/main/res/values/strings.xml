@@ -40,4 +40,25 @@
 
     <string name="action_settings">Settings</string>
     <string name="vr">VR</string>
+
+    <string-array name="types">
+        <item>All</item>
+        <item>Ceil-Mounted</item>
+        <item>Ground Item</item>
+        <item>Wall-Mounted</item>
+    </string-array>
+
+    <string-array name="categories">
+        <item>All</item>
+        <item>Sofas &amp; Armchairs</item>
+        <item>Sofa Beds</item>
+        <item>Tables &amp; Desks</item>
+        <item>Chairs</item>
+        <item>Beds</item>
+        <item>Wardrobes</item>
+        <item>Drawers</item>
+        <item>Bookcases &amp; Shelves</item>
+        <item>Cabinets &amp; Cupboards</item>
+        <item>TV or Media Furniture</item>
+    </string-array>
 </resources>
