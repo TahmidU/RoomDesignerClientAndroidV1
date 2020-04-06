@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.databinding.FragmentVerifyEmailBinding;
 import com.tahmidu.room_designer_client_android.model.VerifyCode;
-import com.tahmidu.room_designer_client_android.repository.VerifyRepo;
+import com.tahmidu.room_designer_client_android.repository.UserRepo;
 import com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel;
 
 import java.util.Objects;
@@ -86,7 +86,7 @@ public class VerifyEmailFragment extends Fragment {
         welcomeViewModel.getVerifyResponse().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                if (s.equals(VerifyRepo.RESPONSE_OK)) {
+                if (s.equals(UserRepo.RESPONSE_OK)) {
                     navController.navigate(R.id.action_verifyEmailFragment_to_loginFragment);
                 }
             }

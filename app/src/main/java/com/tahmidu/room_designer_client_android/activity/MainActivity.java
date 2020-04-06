@@ -8,9 +8,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import com.google.android.material.navigation.NavigationView;
@@ -22,6 +24,7 @@ import com.tahmidu.room_designer_client_android.fragment.MyAccountFragment;
 import com.tahmidu.room_designer_client_android.fragment.UserLibraryFragment;
 import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
 import com.tahmidu.room_designer_client_android.util.network.BasicAuthInterceptor;
+import com.tahmidu.room_designer_client_android.util.network.PicassoSetup;
 
 import java.util.Objects;
 
@@ -41,19 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //Picasso setup
-        final String token = new PreferenceProvider(getApplicationContext()).getJWTToken();
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new BasicAuthInterceptor(token))
-                .build();
-
-
-        Picasso picasso = new Picasso.Builder(getApplicationContext())
-                .downloader(new OkHttp3Downloader(client))
-                .build();
-
-        Picasso.setSingletonInstance(picasso);
-        Picasso.get().setLoggingEnabled(true);
+        PicassoSetup.getInstance(getApplicationContext()).configurePicasso();
 
         //Set up navigation drawer
         DrawerLayout drawerLayout = findViewById(R.id.main_drawer);
@@ -96,6 +87,21 @@ public class MainActivity extends AppCompatActivity {
                 transaction.commit();
                 return true;
             }
+
+            if(id == R.id.drawer_ar)
+            {
+                Intent intent = new Intent(this, ARActivity.class);
+                intent.putExtra("download", false);
+                startActivity(intent);
+                return true;
+            }
+
+            if(id == R.id.drawer_logout)
+            {
+                Intent intent = new Intent(this, WelcomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
             return true;
         });
 
@@ -105,22 +111,17 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-/*        FragmentManager transactionManager = getSupportFragmentManager();
-        transactionManager.popBackStack();*/
-    }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        try {
+/*        try {
             Picasso.get().shutdown();
         }catch (UnsupportedOperationException e)
         {
             Log.e(TAG, Objects.requireNonNull(e.getMessage()));
-        }
+        }*/
         finish();
     }
 

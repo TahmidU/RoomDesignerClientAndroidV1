@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="VM"
+            type="com.tahmidu.room_designer_client_android.view_model.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.ChangeAccountDetailsFragment">
+
+
+        <TextView
+            android:id="@+id/textView43"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/segoe"
+            android:text="@string/change_account_details"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView43">
+
+            <TextView
+                android:id="@+id/textView45"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/segoe"
+                android:text="@string/first_name"
+                android:textColor="@color/colorTextPrimary" />
+
+            <EditText
+                android:id="@+id/change_acc_details_fn_edittxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/segoe"
+                android:inputType="textPersonName"
+                android:text="@={VM.firstName}"
+                android:textColor="@color/colorTextPrimary" />
+
+            <TextView
+                android:id="@+id/textView46"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/segoe"
+                android:text="@string/last_name"
+                android:textColor="@color/colorTextPrimary" />
+
+            <EditText
+                android:id="@+id/change_acc_details_ln_edittxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/segoe"
+                android:inputType="textPersonName"
+                android:text="@={VM.lastName}"
+                android:textColor="@color/colorTextPrimary" />
+
+            <TextView
+                android:id="@+id/textView47"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/segoe"
+                android:text="@string/phone_number"
+                android:textColor="@color/colorTextPrimary" />
+
+            <EditText
+                android:id="@+id/change_acc_details_ph_edittxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/segoe"
+                android:inputType="textPersonName"
+                android:text="@={VM.phoneNumber}"
+                android:textColor="@color/colorTextPrimary" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/change_acc_details_submit_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/green_rounded_btn"
+            android:fontFamily="@font/segoe"
+            android:text="@string/submit"
+            android:onClick="@{() -> VM.changeUserDetails(VM.firstName, VM.lastName, VM.phoneNumber)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout8" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

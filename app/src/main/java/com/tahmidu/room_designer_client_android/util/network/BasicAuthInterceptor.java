@@ -1,5 +1,9 @@
 package com.tahmidu.room_designer_client_android.util.network;
 
+import android.content.Context;
+
+import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -10,8 +14,8 @@ public class BasicAuthInterceptor implements Interceptor
 {
     private volatile String token;
 
-    public BasicAuthInterceptor(String token) {
-        this.token = token;
+    public BasicAuthInterceptor(Context applicationContext) {
+        this.token = new PreferenceProvider(applicationContext).getJWTToken();
     }
 
     @Override

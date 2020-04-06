@@ -44,13 +44,11 @@ public interface APIService
     @POST("/sign-up/confirmation")
     Observable<Response<String>> verify(@Field("token") int token, @Field("email") String email);
 
-    @FormUrlEncoded
     @POST("sign-up/resend-token")
     Completable resendToken(@Field("email") String email);
-
-    @GET("/user/authenticate")
-    Observable<Response<String>> authenticateUser(@Query("email") String email,
-                                                  @Query("password") String password);
+    
+    @POST("/user/authenticate")
+    Observable<Response<String>> authenticateUser(@Body JsonObject login);
 
     @FormUrlEncoded
     @POST("/password/recovery")
@@ -137,4 +135,14 @@ public interface APIService
     Observable<ResponseBody> editItem(@Body JsonObject item, @Query("catName") String catName,
                                       @Query("typeName") String typeName,
                                       @Header("Authorization") String authorization);
+
+    @GET("/user/me")
+    Observable<JsonObject> retrieveMyDetails(@Header("Authorization") String authorization);
+
+    @PUT("/user/change-details")
+    Observable<ResponseBody> changeUserDetails(@Body JsonObject user,
+                                               @Header("Authorization") String authorization);
+
+    @DELETE("/user/delete")
+    Observable<ResponseBody> deleteUser(@Header("Authorization") String authorization);
 }

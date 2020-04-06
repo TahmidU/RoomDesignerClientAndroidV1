@@ -50,6 +50,9 @@
     <string name="my_account">My Account</string>
     <string name="statistics">Statistics</string>
     <string name="cancel">Cancel</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="change_account_details">Change Account Details</string>
+    <string name="submit">submit</string>
 
     <string-array name="types">
         <item>Ceil-Mounted</item>

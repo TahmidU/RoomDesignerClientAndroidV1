@@ -36,10 +36,12 @@ public class MainViewModel extends AndroidViewModel
     public final static int ADD_ITEM_FRAGMENT = 5;
     public final static int EDIT_ITEM_FRAGMENT = 6;
     public final static int MY_ACCOUNT_FRAGMENT = 7;
+    public final static int CHANGE_ACC_DETAILS_FRAGMENT = 8;
+    public final static int CHANGE_ACC_PASSWORD_FRAGMENT = 9;
+    public final static int WELCOME_ACTIVITY = 10;
 
-
+    //Navigation
     private final MutableLiveData<Integer> navigateFragment = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> fromItemToVR = new MutableLiveData<>();
 
     //Main Library
     private final MutableLiveData<List<Item>> itemsLiveData = new MutableLiveData<>();
@@ -60,6 +62,15 @@ public class MainViewModel extends AndroidViewModel
 
     //My Account
     private MutableLiveData<User> usersAccountLiveData = new MutableLiveData<>();
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+
+    //Password Change
+    private String password;
+    private String reEnterPassword;
+    private final String PASSWORD_NO_MATCH = "The passwords you've provided do not match!";
+    private MutableLiveData<String> passwordChangeStatus = new MutableLiveData<>();
 
     //Repository
     private final LibraryRepo libraryRepo;
@@ -69,10 +80,10 @@ public class MainViewModel extends AndroidViewModel
     private PreferenceProvider preferenceProvider;
 
     //Search
-    Map<Integer, Integer> categories = new HashMap<>();
-    Map<Integer, Integer> types = new HashMap<>();
-    String searchItem = null;
-    boolean filterChanged = false;
+    private Map<Integer, Integer> categories = new HashMap<>();
+    private Map<Integer, Integer> types = new HashMap<>();
+    private String searchItem = null;
+    private boolean filterChanged = false;
 
     public MainViewModel(@NonNull Application application)
     {
@@ -170,13 +181,6 @@ public class MainViewModel extends AndroidViewModel
         navigateFragment.postValue(id);
     }
 
-    public void initVR(boolean download)
-    {
-        Log.d(TAG, "Initialise VR. Switching from Item to VR? " + download);
-        navigateFragment.postValue(AR_ACTIVITY);
-        fromItemToVR.postValue(download);
-    }
-
     public void deleteSelectedItem()
     {
         libraryRepo.removeItem(preferenceProvider.getItem().getItemId(), preferenceProvider);
@@ -198,6 +202,29 @@ public class MainViewModel extends AndroidViewModel
         else
             types.put(type, type);
         filterChanged = true;
+    }
+
+    public void changeUserDetails(String firstName, String lastName, String phoneNum)
+    {
+        userRepo.changeUserDetails(preferenceProvider, firstName, lastName, null, phoneNum);
+        navigateFragment(MY_ACCOUNT_FRAGMENT);
+    }
+
+    public void changePassword(String password, String reEnterPassword)
+    {
+        if(password.equals(reEnterPassword)) {
+            userRepo.changeUserDetails(preferenceProvider, null, null,
+                    password, null);
+            navigateFragment(MY_ACCOUNT_FRAGMENT);
+        }else
+            passwordChangeStatus.postValue(PASSWORD_NO_MATCH);
+
+    }
+
+    public void deleteUser()
+    {
+        userRepo.deleteUser(preferenceProvider);
+        navigateFragment(WELCOME_ACTIVITY);
     }
 
     public void incrementView()
@@ -235,10 +262,6 @@ public class MainViewModel extends AndroidViewModel
     public Item getSelectedItem()
     {
         return preferenceProvider.getItem();
-    }
-
-    public MutableLiveData<Boolean> getFromItemToVR() {
-        return fromItemToVR;
     }
 
     public MutableLiveData<Integer> getNavigateFragment() {
@@ -293,4 +316,51 @@ public class MainViewModel extends AndroidViewModel
         return preferenceProvider;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public MutableLiveData<String> getPasswordChangeStatus() {
+        return passwordChangeStatus;
+    }
+
+    public void setPasswordChangeStatus(MutableLiveData<String> passwordChangeStatus) {
+        this.passwordChangeStatus = passwordChangeStatus;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getReEnterPassword() {
+        return reEnterPassword;
+    }
+
+    public void setReEnterPassword(String reEnterPassword) {
+        this.reEnterPassword = reEnterPassword;
+    }
 }

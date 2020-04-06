@@ -154,12 +154,5 @@ public class UserItemFragment extends Fragment {
                     break;
             }
         });
-
-        mainViewModel.getFromItemToVR().observe(getViewLifecycleOwner(), aBoolean ->
-        {
-            Intent intent = new Intent(getActivity(), ARActivity.class);
-            intent.putExtra("download", true);
-            startActivity(intent);
-        });
     }
 }

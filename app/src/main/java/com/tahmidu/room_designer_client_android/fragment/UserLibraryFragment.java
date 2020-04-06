@@ -2,6 +2,7 @@ package com.tahmidu.room_designer_client_android.fragment;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tahmidu.room_designer_client_android.R;
@@ -32,6 +34,9 @@ import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 import com.tahmidu.room_designer_client_android.view_model.MainViewModel;
 
 import java.util.ArrayList;
+
+import static com.tahmidu.room_designer_client_android.constant.Exit.DURATION;
+import static com.tahmidu.room_designer_client_android.constant.Exit.TOAST_EXIT_MSG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,8 +55,8 @@ public class UserLibraryFragment extends Fragment {
     private RecyclerView recyclerView;
     private MainRecyclerAdapter mainRecyclerAdapter;
 
-    //Navigation Controller
-    //private NavController navController;
+    //Application Exit
+    private long targetTime = 0;
 
     public UserLibraryFragment() {
         // Required empty public constructor
@@ -69,9 +74,6 @@ public class UserLibraryFragment extends Fragment {
         Toolbar toolbar = getActivity().findViewById(R.id.main_toolbar);
         toolbar.setTitle(TOOLBAR_TITLE);
         setHasOptionsMenu(true);
-        /*LinearLayout linearLayout = main_lib_toolbar.findViewById();
-        linearLayout.addView();
-        linearLayout.removeView();*/
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         //Set up navigation drawer
@@ -82,23 +84,22 @@ public class UserLibraryFragment extends Fragment {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-/*        DrawerLayout drawerLayout = getActivity().findViewById(R.id.main_drawer);
-        FloatingActionButton actionBtn = binding.getRoot().findViewById(R.id.user_lib_floating_btn);*/
-
-        //Set Drawer
-/*        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout,
-                toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();*/
-
-/*        //Listeners
-        actionBtn.setOnClickListener(new View.OnClickListener() {
+        //Listeners
+        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
             @Override
-            public void onClick(View v) {
-                navController.navigate(R.id.action_userLibraryFragment_to_addItemFragment);
-            }
-        });*/
+            public void handleOnBackPressed() {
+                Log.d(TAG, "Current time: " + System.currentTimeMillis());
+                Log.d(TAG, "Target time: " + targetTime);
 
+                if(System.currentTimeMillis() < targetTime)
+                    System.exit(1);
+                else {
+                    targetTime = System.currentTimeMillis() + DURATION;
+                    Toast.makeText(getContext(), TOAST_EXIT_MSG, Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         // Inflate the layout for this fragment
         return binding.getRoot();
@@ -107,8 +108,6 @@ public class UserLibraryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //navController = Navigation.findNavController(view);
 
         recyclerView = getActivity().findViewById(R.id.user_lib_recycler_view);
 

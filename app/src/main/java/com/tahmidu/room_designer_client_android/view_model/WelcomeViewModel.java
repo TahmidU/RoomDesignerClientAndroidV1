@@ -6,10 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
-import com.tahmidu.room_designer_client_android.repository.LoginRepo;
-import com.tahmidu.room_designer_client_android.repository.PasswordRepo;
-import com.tahmidu.room_designer_client_android.repository.SignUpRepo;
-import com.tahmidu.room_designer_client_android.repository.VerifyRepo;
+import com.tahmidu.room_designer_client_android.repository.UserRepo;
 
 public class WelcomeViewModel extends AndroidViewModel
 {
@@ -24,10 +21,11 @@ public class WelcomeViewModel extends AndroidViewModel
     public final static int CONFIRM_PASSWORD_FRAGMENT = 5;
 
     //Repository
-    private LoginRepo loginRepo;
-    private SignUpRepo signUpRepo;
-    private VerifyRepo verifyRepo;
-    private PasswordRepo passwordRepo;
+    //private LoginRepo loginRepo;
+    //private SignUpRepo signUpRepo;
+    //private VerifyRepo verifyRepo;
+    //private PasswordRepo passwordRepo;
+    private UserRepo userRepo;
 
     //Visibility
     //This is not a toggle but a notifier to the view to change the visibility.
@@ -50,10 +48,11 @@ public class WelcomeViewModel extends AndroidViewModel
 
     public WelcomeViewModel(@NonNull Application application) {
         super(application);
-        loginRepo = LoginRepo.getInstance();
-        signUpRepo = SignUpRepo.getInstance();
-        verifyRepo = VerifyRepo.getInstance();
-        passwordRepo = PasswordRepo.getInstance();
+        //loginRepo = LoginRepo.getInstance();
+        //signUpRepo = SignUpRepo.getInstance();
+        //verifyRepo = VerifyRepo.getInstance();
+        //passwordRepo = PasswordRepo.getInstance();
+        userRepo = UserRepo.getInstance();
 
         preferenceProvider = new PreferenceProvider(getApplication().getApplicationContext());
 
@@ -74,7 +73,7 @@ public class WelcomeViewModel extends AndroidViewModel
             signInResponse.postValue(COMPLETE_FIELD);
             return;
         }
-        loginRepo.authUser(email, password, signInResponse, progressVisibility, navigateFragment,
+        userRepo.authUser(email, password, signInResponse, progressVisibility, navigateFragment,
                 jwtToken, preferenceProvider);
     }
 
@@ -96,7 +95,7 @@ public class WelcomeViewModel extends AndroidViewModel
 
         if(password.equals(rePassword))
         {
-            signUpRepo.signUp(getApplication().getApplicationContext(),firstName, lastName, password,
+            userRepo.signUp(getApplication().getApplicationContext(),firstName, lastName, password,
                     email, phoneNum);
             Log.d(TAG, "Sign-up: fields valid");
             navigateFragment(VERIFY_EMAIL_FRAGMENT);
@@ -110,7 +109,7 @@ public class WelcomeViewModel extends AndroidViewModel
     public void verifyCode(String code)
     {
         Log.d(TAG,"Verify code" + code);
-       verifyRepo.verify(getApplication().getApplicationContext(), code, verifyResponse);
+       userRepo.verify(getApplication().getApplicationContext(), code, verifyResponse);
     }
 
     /**
@@ -119,7 +118,7 @@ public class WelcomeViewModel extends AndroidViewModel
     public void resendVerificationCode()
     {
         Log.d(TAG,"Resend verify code.");
-        verifyRepo.resendToken(getApplication().getApplicationContext());
+        userRepo.resendToken(getApplication().getApplicationContext());
     }
 
     /**
@@ -146,7 +145,7 @@ public class WelcomeViewModel extends AndroidViewModel
             {
                 preferenceProvider.saveEmail(email);
                 if(sendToken)
-                    passwordRepo.sendToken(email);
+                    userRepo.sendToken(email);
                 Log.d(TAG,"Forgot password, send token: " + sendToken);
                 navigateFragment(VERIFY_PASSWORD_FRAGMENT);
             }
@@ -187,7 +186,7 @@ public class WelcomeViewModel extends AndroidViewModel
             return;
 
         if(password.equals(reEnterPassword))
-            passwordRepo.changePassword(preferenceProvider.getEmail(),preferenceProvider.getToken(),
+            userRepo.changePassword(preferenceProvider.getEmail(),preferenceProvider.getToken(),
                     password, passwordVerifyResponse);
 
     }

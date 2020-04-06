@@ -1,8 +1,6 @@
 package com.tahmidu.room_designer_client_android.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,8 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,38 +24,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.developer.filepicker.controller.DialogSelectionListener;
-import com.developer.filepicker.model.DialogConfigs;
-import com.developer.filepicker.model.DialogProperties;
-import com.developer.filepicker.view.FilePickerDialog;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
 import com.jaiselrahman.filepicker.config.Configurations;
 import com.jaiselrahman.filepicker.model.MediaFile;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.databinding.FragmentAddItemBinding;
 import com.tahmidu.room_designer_client_android.util.file.CustomFileUtil;
-import com.tahmidu.room_designer_client_android.util.filepicker.FilePickerState;
-import com.tahmidu.room_designer_client_android.util.filepicker.FilePickerStatus;
 import com.tahmidu.room_designer_client_android.view_model.MainViewModel;
-import com.vincent.filepicker.Constant;
-import com.vincent.filepicker.activity.ImagePickActivity;
-import com.vincent.filepicker.activity.NormalFilePickActivity;
-import com.vincent.filepicker.filter.entity.ImageFile;
-import com.vincent.filepicker.filter.entity.NormalFile;
 
-import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import static com.vincent.filepicker.activity.ImagePickActivity.IS_NEED_CAMERA;
 
 /**
  * A simple {@link Fragment} subclass.
