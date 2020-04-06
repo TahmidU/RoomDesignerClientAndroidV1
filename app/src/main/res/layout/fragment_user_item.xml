@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="VM"
+            type="com.tahmidu.room_designer_client_android.view_model.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="20dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        tools:context=".fragment.ItemFragment">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoe"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="20dp"
+                    android:textAllCaps="true"
+                    android:text="@{VM.selectedItem.name}"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView39"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/segoe"
+                        android:text="No Preview Images Available"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorTextSecondary"
+                        android:textSize="24sp" />
+
+                    <androidx.viewpager.widget.ViewPager
+                        android:id="@+id/user_item_images_view_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="420sp"
+                        android:background="@android:color/transparent"
+                        android:orientation="horizontal"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
+                        android:paddingBottom="40dp">
+
+                    </androidx.viewpager.widget.ViewPager>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20dp">
+
+                    <ImageButton
+                        android:id="@+id/user_item_delete_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="0.9"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/delete_item" />
+
+                    <Space
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1" />
+
+                    <TextView
+                        android:id="@+id/user_item_ar_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.9"
+                        android:fontFamily="@font/segoe_bold"
+                        android:gravity="top|center_horizontal"
+                        android:text="@string/ar"
+                        android:onClick="@{() -> VM.navigateFragment(VM.AR_ACTIVITY)}"
+                        android:textColor="@color/colorTextPrimary"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <Space
+                        android:layout_width="1dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1" />
+
+                    <ImageButton
+                        android:id="@+id/user_item_edit_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="0.9"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:onClick="@{() -> VM.navigateFragment(VM.EDIT_ITEM_FRAGMENT)}"
+                        app:srcCompat="@drawable/ic_edit" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoe"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="15dp"
+                    android:text="@string/description"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoe"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="40dp"
+                    android:text="@{VM.selectedItem.description}"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoe"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="15dp"
+                    android:text="@string/contact_information"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoe"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="40dp"
+                    android:text="@{VM.contactInfoLiveData}"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoe"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="15dp"
+                    android:text="@string/statistics"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/segoe"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="14sp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="40dp"
+                    android:text="@{VM.statisticsLiveData}"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

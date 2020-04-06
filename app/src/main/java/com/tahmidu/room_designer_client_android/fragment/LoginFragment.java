@@ -21,11 +21,10 @@ import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.activity.MainActivity;
 import com.tahmidu.room_designer_client_android.databinding.FragmentLoginBinding;
 import com.tahmidu.room_designer_client_android.model.Login;
-import com.tahmidu.room_designer_client_android.util.CustomFileUtil;
+import com.tahmidu.room_designer_client_android.util.file.CustomFileUtil;
 import com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel;
 import java.util.Objects;
 
-import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
 
 /**

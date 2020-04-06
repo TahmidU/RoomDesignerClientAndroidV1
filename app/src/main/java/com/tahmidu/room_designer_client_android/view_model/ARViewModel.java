@@ -25,7 +25,6 @@ public class ARViewModel extends AndroidViewModel
 
     private final MutableLiveData<List<Item>> itemsLiveData = new MutableLiveData<>();
     private final LibraryRepo libraryRepo;
-    int pageNum = 0;
 
     public ARViewModel(@NonNull Application application) {
         super(application);
@@ -54,8 +53,13 @@ public class ARViewModel extends AndroidViewModel
 
     public void fetchItems()
     {
-        libraryRepo.fetchMainLibrary(itemsLiveData, preferenceProvider.getJWTToken(), pageNum);
-        pageNum++;
+        libraryRepo.fetchMainLibrary(itemsLiveData, null, null, null,
+                preferenceProvider);
+    }
+
+    public void resetPage()
+    {
+        preferenceProvider.savePage(0);
     }
 
     public MutableLiveData<List<GalleryItem>> getGalleryItemsLiveData() {

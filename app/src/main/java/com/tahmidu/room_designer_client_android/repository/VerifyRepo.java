@@ -3,6 +3,9 @@ package com.tahmidu.room_designer_client_android.repository;
 import android.content.Context;
 import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
+
+import com.tahmidu.room_designer_client_android.network.NetworkState;
+import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 import com.tahmidu.room_designer_client_android.network.api.APIService;
 import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
 import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
@@ -48,6 +51,7 @@ public class VerifyRepo implements IVerifyRepo
 
         String email = preferenceProvider.getEmail();
 
+        NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
         final Observable<Response<String>> postObservable = apiService.verify(Integer.parseInt(code),
                 email);
         postObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -69,11 +73,13 @@ public class VerifyRepo implements IVerifyRepo
                 Log.d(TAG, "onError called");
                 Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                 verifyResponse.postValue(RESPONSE_ERROR);
+                NetworkState.getInstance().setStatus(NetworkStatus.ERROR);
             }
 
             @Override
             public void onComplete() {
                 Log.d(TAG, "onComplete called");
+                NetworkState.getInstance().setStatus(NetworkStatus.DONE);
             }
         });
     }
@@ -90,6 +96,7 @@ public class VerifyRepo implements IVerifyRepo
 
         String email = preferenceProvider.getEmail();
 
+        NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
         final Completable postCompletable = apiService.resendToken(email);
         postCompletable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
@@ -101,12 +108,14 @@ public class VerifyRepo implements IVerifyRepo
                     @Override
                     public void onComplete() {
                         Log.d(TAG, "onComplete called");
+                        NetworkState.getInstance().setStatus(NetworkStatus.DONE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError called");
                         Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                        NetworkState.getInstance().setStatus(NetworkStatus.ERROR);
                     }
                 });
     }

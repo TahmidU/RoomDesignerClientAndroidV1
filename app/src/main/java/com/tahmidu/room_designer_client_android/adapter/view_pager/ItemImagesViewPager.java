@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.squareup.picasso.Picasso;
+import com.tahmidu.room_designer_client_android.R;
 
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class ItemImagesViewPager extends PagerAdapter
                 .fit()
                 .centerCrop()
                 .placeholder(android.R.color.transparent)
+                .error(R.color.colorTextPrimary)
                 .into(imageView);
         container.addView(imageView);
 

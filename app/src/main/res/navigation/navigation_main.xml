@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainLibraryFragment_to_itemFragment"
             app:destination="@id/itemFragment" />
+        <action
+            android:id="@+id/action_mainLibraryFragment_to_userLibraryFragment"
+            app:destination="@id/userLibraryFragment" />
     </fragment>
     <fragment
         android:id="@+id/itemFragment"
@@ -21,7 +24,9 @@
         tools:layout="@layout/fragment_item" >
         <action
             android:id="@+id/action_itemFragment_to_mainLibraryFragment"
-            app:destination="@id/mainLibraryFragment" />
+            app:destination="@id/mainLibraryFragment"
+            app:popUpTo="@id/mainLibraryFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_itemFragment_to_ARActivity"
             app:destination="@id/ARActivity" />
@@ -31,4 +36,59 @@
         android:name="com.tahmidu.room_designer_client_android.activity.ARActivity"
         android:label="activity_ar"
         tools:layout="@layout/activity_ar" />
+    <fragment
+        android:id="@+id/userLibraryFragment"
+        android:name="com.tahmidu.room_designer_client_android.fragment.UserLibraryFragment"
+        android:label="UserLibraryFragment" >
+        <action
+            android:id="@+id/action_userLibraryFragment_to_mainLibraryFragment2"
+            app:destination="@id/mainLibraryFragment" />
+        <action
+            android:id="@+id/action_userLibraryFragment_to_addItemFragment"
+            app:destination="@id/addItemFragment" />
+        <action
+            android:id="@+id/action_userLibraryFragment_to_userItemFragment"
+            app:destination="@id/userItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addItemFragment"
+        android:name="com.tahmidu.room_designer_client_android.fragment.AddItemFragment"
+        android:label="fragment_add_item"
+        tools:layout="@layout/fragment_add_item" >
+        <action
+            android:id="@+id/action_addItemFragment_to_userLibraryFragment"
+            app:destination="@id/userLibraryFragment"
+            app:popUpTo="@id/userLibraryFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/userItemFragment"
+        android:name="com.tahmidu.room_designer_client_android.fragment.UserItemFragment"
+        android:label="UserItemFragment" >
+        <action
+            android:id="@+id/action_userItemFragment_to_userLibraryFragment"
+            app:destination="@id/userLibraryFragment"
+            app:popUpTo="@id/userLibraryFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_userItemFragment_to_editItemFragment"
+            app:destination="@id/editItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editItemFragment"
+        android:name="com.tahmidu.room_designer_client_android.fragment.EditItemFragment"
+        android:label="EditItemFragment" >
+        <action
+            android:id="@+id/action_editItemFragment_to_userItemFragment"
+            app:destination="@id/userItemFragment"
+            app:popUpTo="@id/userItemFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_editItemFragment_to_userLibraryFragment"
+            app:destination="@id/userLibraryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myAccountFragment"
+        android:name="com.tahmidu.room_designer_client_android.fragment.MyAccountFragment"
+        android:label="MyAccountFragment" />
 </navigation>

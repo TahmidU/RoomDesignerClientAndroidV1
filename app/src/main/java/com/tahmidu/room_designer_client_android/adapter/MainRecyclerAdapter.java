@@ -1,8 +1,6 @@
 package com.tahmidu.room_designer_client_android.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,20 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.model.Item;
-import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
-import com.tahmidu.room_designer_client_android.util.BasicAuthInterceptor;
 
-import java.io.IOException;
 import java.util.List;
-
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapter.MyViewHolder>
 {
@@ -92,6 +81,18 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
         public void onClick(View v) {
             clickListener.onClick(v, getAdapterPosition());
         }
+    }
+
+    public void updateList(List<Item> items)
+    {
+        this.items = items;
+        notifyDataSetChanged();
+    }
+
+    public void resetList()
+    {
+        items.clear();
+        notifyDataSetChanged();
     }
 
     public interface OnClickListener

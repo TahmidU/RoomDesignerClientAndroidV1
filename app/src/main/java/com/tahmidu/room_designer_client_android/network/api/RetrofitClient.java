@@ -1,6 +1,7 @@
 package com.tahmidu.room_designer_client_android.network.api;
 
 import android.app.Application;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -15,7 +16,11 @@ public class RetrofitClient extends Application
     {
         if(retrofit == null)
         {
-            okhttp3.OkHttpClient client = new okhttp3.OkHttpClient.Builder().build();
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            okhttp3.OkHttpClient client = new okhttp3.OkHttpClient.Builder()
+                    .addInterceptor(logging).build();
+/*            okhttp3.OkHttpClient client = new okhttp3.OkHttpClient.Builder().build();*/
 
             retrofit = new Retrofit.Builder()
                     .client(client)

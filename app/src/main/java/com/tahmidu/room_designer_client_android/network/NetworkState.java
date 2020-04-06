@@ -1,28 +1,31 @@
 package com.tahmidu.room_designer_client_android.network;
 
-import com.tahmidu.room_designer_client_android.repository.SignUpRepo;
+import android.util.Log;
 
 public class NetworkState
 {
+    private final String TAG = "NETWORK STATE";
+
     private static NetworkState instance;
-    private static Status status;
+    private static NetworkStatus networkStatus;
 
     public static NetworkState getInstance() {
         if(instance == null)
         {
-            status = Status.DONE;
+            networkStatus = NetworkStatus.DONE;
             return instance = new NetworkState();
         }
 
         return instance;
     }
 
-    public static void setStatus(Status status) {
-        NetworkState.status = status;
+    public void setStatus(NetworkStatus networkStatus) {
+        Log.d(TAG, "Now set to: " + networkStatus.toString());
+        NetworkState.networkStatus = networkStatus;
     }
 
-    public static Status getStatus()
+    public NetworkStatus getStatus()
     {
-        return status;
+        return networkStatus;
     }
 }

@@ -74,6 +74,7 @@
         app:el_duration="1000"
         app:el_expanded="false"
         app:el_parallax="0.5"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/sceneform_fragment"
         app:layout_constraintEnd_toEndOf="@+id/sceneform_fragment"
         app:layout_constraintStart_toStartOf="@+id/sceneform_fragment">
@@ -89,6 +90,7 @@
         android:id="@+id/ar_expandable_library"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:el_duration="1000"
         app:el_expanded="false"
         app:el_parallax="0.5"

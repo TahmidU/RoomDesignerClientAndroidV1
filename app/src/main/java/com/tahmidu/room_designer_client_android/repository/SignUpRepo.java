@@ -2,6 +2,9 @@ package com.tahmidu.room_designer_client_android.repository;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.tahmidu.room_designer_client_android.network.NetworkState;
+import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 import com.tahmidu.room_designer_client_android.network.api.APIService;
 import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
 import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
@@ -45,6 +48,7 @@ public class SignUpRepo implements ISignUpRepo
 
         preferenceProvider.saveEmail(email);
 
+        NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
         final Completable postCompletable = apiService.signUp(firstName,lastName,password,email,
                 phoneNum);
         postCompletable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -57,13 +61,14 @@ public class SignUpRepo implements ISignUpRepo
                     @Override
                     public void onComplete() {
                         Log.d(TAG, "onComplete called");
-
+                        NetworkState.getInstance().setStatus(NetworkStatus.DONE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError called");
                         Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                        NetworkState.getInstance().setStatus(NetworkStatus.ERROR);
                     }
                 });
     }

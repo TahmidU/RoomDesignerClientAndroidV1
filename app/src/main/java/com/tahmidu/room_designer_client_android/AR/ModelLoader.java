@@ -27,6 +27,8 @@ public class ModelLoader
      */
     public void loadModel(Anchor anchor, String dir)
     {
+        Uri uriLocation = Uri.fromFile(new File(dir));
+        Log.d(TAG, uriLocation.getPath());
         if(owner.get() == null)
         {
             Log.d(TAG, "Fragment/Activity is null. Cannot load model.");
@@ -34,9 +36,9 @@ public class ModelLoader
         }
         ModelRenderable.builder()
                 .setSource(owner.get(), RenderableSource.builder()
-                        .setSource(owner.get(),Uri.fromFile(new File(dir)), RenderableSource.SourceType.GLTF2)
+                        .setSource(owner.get(),uriLocation, RenderableSource.SourceType.GLTF2)
                         .setRecenterMode(RenderableSource.RecenterMode.ROOT)
-                        .build()).setRegistryId(Uri.fromFile(new File(dir)))
+                        .build()).setRegistryId(uriLocation)
                 .build()
                 .thenAccept(modelRenderable -> owner.get().addNodeToScene(anchor, modelRenderable))
                 .exceptionally(throwable -> {

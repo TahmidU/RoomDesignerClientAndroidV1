@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.tahmidu.room_designer_client_android.network.NetworkState;
+import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 import com.tahmidu.room_designer_client_android.network.api.APIService;
 import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
 import com.tahmidu.room_designer_client_android.model.Login;
@@ -44,6 +46,7 @@ public class LoginRepo implements ILoginRepo
     {
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
 
+        NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
         final Observable<Response<Void>> tokenObservable = apiService.login(new Login(email, password));
         tokenObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Response<Void>>() {
@@ -69,11 +72,13 @@ public class LoginRepo implements ILoginRepo
             public void onError(Throwable e) {
                 Log.d(TAG, "onError called");
                 Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                NetworkState.getInstance().setStatus(NetworkStatus.ERROR);
             }
 
             @Override
             public void onComplete() {
                 Log.d(TAG, "onComplete called");
+                NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
             }
         });
     }
@@ -97,6 +102,7 @@ public class LoginRepo implements ILoginRepo
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
         progressVisibility.postValue(true);
 
+        NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
         final Observable<Response<String>> responseObservable = apiService.authenticateUser(email,
                 password);
         responseObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -125,12 +131,14 @@ public class LoginRepo implements ILoginRepo
                         Log.d(TAG, "onError called");
                         Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                         progressVisibility.postValue(true);
+                        NetworkState.getInstance().setStatus(NetworkStatus.ERROR);
                     }
 
                     @Override
                     public void onComplete() {
                         Log.d(TAG, "onComplete called");
                         progressVisibility.postValue(true);
+                        NetworkState.getInstance().setStatus(NetworkStatus.DONE);
                     }
                 });
     }

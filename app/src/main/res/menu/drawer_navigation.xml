@@ -3,6 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
-
+        <item
+            android:id="@+id/drawer_main_lib"
+            android:title="@string/main_library" />
+        <item
+            android:id="@+id/drawer_user_lib"
+            android:title="@string/my_library" />
+        <item
+            android:id="@+id/drawer_ar"
+            android:title="@string/ar"/>
+        <item
+            android:id="@+id/drawer_my_account"
+            android:title="@string/my_account"/>
+        <item
+            android:id="@+id/drawer_logout"
+            android:title="@string/logout"/>
     </group>
 </menu>

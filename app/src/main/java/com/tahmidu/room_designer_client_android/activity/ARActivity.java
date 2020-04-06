@@ -7,6 +7,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
@@ -31,7 +33,10 @@ import com.tahmidu.room_designer_client_android.AR.PointerDrawable;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.adapter.GalleryRecyclerAdapter;
 import com.tahmidu.room_designer_client_android.adapter.SubLibraryRecyclerAdapter;
+import com.tahmidu.room_designer_client_android.constant.Type;
 import com.tahmidu.room_designer_client_android.databinding.ActivityArBinding;
+import com.tahmidu.room_designer_client_android.network.NetworkState;
+import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 import com.tahmidu.room_designer_client_android.view_model.ARViewModel;
 import net.cachapa.expandablelayout.ExpandableLayout;
 import java.lang.ref.WeakReference;
@@ -75,9 +80,7 @@ public class ARActivity extends AppCompatActivity
     private ImageButton libraryCancelBtn;
 
     //Plane Types
-    private static final int WALL_PLANE = 1;
-    private static final int CEIL_PLANE = 2;
-    private static final int GROUND_PLANE = 3;
+
 
     /**
      * Function executes when the activity finishes being created.
@@ -118,6 +121,7 @@ public class ARActivity extends AppCompatActivity
                 .getInstance(getApplication());
         arViewModel = new ViewModelProvider(this, factory)
                 .get(ARViewModel.class);
+        arViewModel.resetPage();
 
         binding.setVM(arViewModel);
         binding.setLifecycleOwner(this);
@@ -186,6 +190,8 @@ public class ARActivity extends AppCompatActivity
         addModelBtn.setOnClickListener(v -> {
             if(!libraryExpandableLayout.isExpanded())
             {
+                Log.d(TAG, "size of library: "+arViewModel.getItemsLiveData().getValue().size());
+                libraryExpandableLayout.setVisibility(View.VISIBLE);
                 libraryExpandableLayout.expand();
                 addModelBtn.setVisibility(View.GONE);
                 galleryBtn.setVisibility(View.GONE);
@@ -234,6 +240,19 @@ public class ARActivity extends AppCompatActivity
                     arViewModel.fetchModel(arViewModel.getItemsLiveData().getValue().get(position));
         }));
         libraryRecyclerView.setAdapter(libraryRecyclerAdapter);
+
+        libraryRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                Log.d(TAG, "Can the user scroll? " + recyclerView.canScrollVertically(1));
+                if(!recyclerView.canScrollHorizontally(View.FOCUS_RIGHT)
+                        && NetworkState.getInstance().getStatus().equals(NetworkStatus.DONE))
+                {
+                    arViewModel.fetchItems();
+                }
+            }
+        });
     }
 
     /**
@@ -325,17 +344,17 @@ public class ARActivity extends AppCompatActivity
         String message = "The item you have selected is of ";
 
         //Check plane type and overwrite message.
-        if(type == GROUND_PLANE)
+        if(type == Type.GROUND_PLANE)
         {
             targetPlane = Plane.Type.HORIZONTAL_UPWARD_FACING;
             message = message + "ground type";
         }
-        if(type == CEIL_PLANE)
+        if(type == Type.CEIL_PLANE)
         {
             targetPlane = Plane.Type.HORIZONTAL_DOWNWARD_FACING;
             message = message + "ceil-mount type";
         }
-        if(type == WALL_PLANE)
+        if(type == Type.WALL_PLANE)
         {
             targetPlane = Plane.Type.VERTICAL;
             message = message + "wall-mount type";
@@ -421,5 +440,11 @@ public class ARActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        arViewModel.resetPage();
     }
 }

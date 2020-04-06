@@ -1,13 +1,9 @@
 package com.tahmidu.room_designer_client_android.model;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
-@Entity
+
 public class User
 {
-    @PrimaryKey
     private long userId;
     private String firstName;
     private String lastName;
@@ -24,7 +20,6 @@ public class User
         this.email = email;
     }
 
-    @Ignore
     public User(String firstName, String lastName, String phoneNum, String email) {
         this.firstName = firstName;
         this.lastName = lastName;

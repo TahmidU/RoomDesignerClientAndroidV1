@@ -1,15 +1,9 @@
 package com.tahmidu.room_designer_client_android.model;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
-import java.util.Date;
-
-@Entity
 public class Image
 {
-    @PrimaryKey private long imageId;
+    private long imageId;
     private String uri;
     private boolean isThumbnail;
     private long itemId;

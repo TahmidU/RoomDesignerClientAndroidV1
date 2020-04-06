@@ -2,6 +2,9 @@ package com.tahmidu.room_designer_client_android.repository;
 
 import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
+
+import com.tahmidu.room_designer_client_android.network.NetworkState;
+import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 import com.tahmidu.room_designer_client_android.network.api.APIService;
 import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
 import java.util.Objects;
@@ -38,6 +41,7 @@ public class PasswordRepo implements IPasswordRepo
     {
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
 
+        NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
         Completable postCompletable = apiService.sendPasswordToken(email);
         postCompletable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new CompletableObserver() {
@@ -49,12 +53,14 @@ public class PasswordRepo implements IPasswordRepo
                     @Override
                     public void onComplete() {
                         Log.d(TAG, "onComplete called");
+                        NetworkState.getInstance().setStatus(NetworkStatus.DONE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError called");
                         Log.e(TAG, Objects.requireNonNull(e.getMessage()));
+                        NetworkState.getInstance().setStatus(NetworkStatus.ERROR);
                     }
                 });
     }
@@ -71,6 +77,7 @@ public class PasswordRepo implements IPasswordRepo
     {
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
 
+        NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
         Observable<Response<String>> postObservable = apiService.changePassword(email, token,
                 password);
         postObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -94,11 +101,13 @@ public class PasswordRepo implements IPasswordRepo
                         Log.d(TAG, "onError called");
                         Log.e(TAG, Objects.requireNonNull(e.getMessage()));
                         passwordVerifyResponse.postValue(ERROR);
+                        NetworkState.getInstance().setStatus(NetworkStatus.ERROR);
                     }
 
                     @Override
                     public void onComplete() {
                         Log.d(TAG, "onComplete called");
+                        NetworkState.getInstance().setStatus(NetworkStatus.DONE);
                     }
                 });
     }

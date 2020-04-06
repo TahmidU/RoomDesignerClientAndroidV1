@@ -135,7 +135,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/rounded_btn"
+        android:background="@drawable/green_rounded_btn"
         android:onClick="@{() -> VM.authenticateUser(login.email, login.password)}"
         android:text="@string/login"
         android:textAllCaps="false"

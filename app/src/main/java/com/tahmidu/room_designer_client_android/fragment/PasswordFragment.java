@@ -70,7 +70,7 @@ public class PasswordFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         //On back pressed.
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
             @Override
             public void handleOnBackPressed() {
                 navController.navigate(R.id.action_passwordFragment_to_loginFragment);

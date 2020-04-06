@@ -11,7 +11,7 @@ import com.tahmidu.room_designer_client_android.repository.PasswordRepo;
 import com.tahmidu.room_designer_client_android.repository.SignUpRepo;
 import com.tahmidu.room_designer_client_android.repository.VerifyRepo;
 
-public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewModel
+public class WelcomeViewModel extends AndroidViewModel
 {
     private final String TAG = "WELCOME_VIEW_MODEL";
 
@@ -65,7 +65,6 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
      * @param email email
      * @param password password
      */
-    @Override
     public void authenticateUser(String email, String password) {
         //token.postValue("bypass");
         Log.d(TAG, "Authenticate User: " + email);
@@ -88,7 +87,6 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
      * @param email email
      * @param phoneNum phone number
      */
-    @Override
     public void signUp(String firstName, String lastName, String password, String rePassword, String email, String phoneNum)
     {
         Log.d(TAG, "Sign-up");
@@ -109,7 +107,6 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
      * Verify account (filter spam accounts) by checking if verification code matches.
      * @param code verification code
      */
-    @Override
     public void verifyCode(String code)
     {
         Log.d(TAG,"Verify code" + code);
@@ -119,7 +116,6 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
     /**
      * Resend verification code. Previous code will be deleted and replaced!
      */
-    @Override
     public void resendVerificationCode()
     {
         Log.d(TAG,"Resend verify code.");
@@ -130,7 +126,6 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
      * Navigate to specific fragment.
      * @param id fragment id
      */
-    @Override
     public void navigateFragment(int id)
     {
         Log.d(TAG, "Navigate to " + id);
@@ -143,7 +138,6 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
      * @param email email
      * @param sendToken send token?
      */
-    @Override
     public void forgotPassword(String email, boolean sendToken)
     {
         if(email != null)
@@ -165,7 +159,6 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
      * Save password verification token in preference.
      * @param token password token
      */
-    @Override
     public void verifyPasswordToken(String token)
     {
         Log.d(TAG, "Saving password token..." + token);
@@ -176,7 +169,6 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
     /**
      * Resend password verification token.
      */
-    @Override
     public void forgotPasswordTokenResend()
     {
         Log.d(TAG, "Resend password token.");
@@ -188,7 +180,6 @@ public class WelcomeViewModel extends AndroidViewModel implements IWelcomeViewMo
      * @param password password
      * @param reEnterPassword re-enter password
      */
-    @Override
     public void changePassword(String password, String reEnterPassword)
     {
         Log.d(TAG, "Change password");

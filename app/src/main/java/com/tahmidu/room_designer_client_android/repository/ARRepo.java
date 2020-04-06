@@ -1,37 +1,22 @@
 package com.tahmidu.room_designer_client_android.repository;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.tahmidu.room_designer_client_android.model.GalleryItem;
 import com.tahmidu.room_designer_client_android.model.Item;
-import com.tahmidu.room_designer_client_android.model.Model;
-import com.tahmidu.room_designer_client_android.model.User;
+import com.tahmidu.room_designer_client_android.network.NetworkState;
+import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 import com.tahmidu.room_designer_client_android.network.api.APIService;
 import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
-import com.tahmidu.room_designer_client_android.repository.database.DatabaseConnector;
-import com.tahmidu.room_designer_client_android.util.CustomFileUtil;
-import com.tahmidu.room_designer_client_android.util.CustomZip;
-
+import com.tahmidu.room_designer_client_android.util.file.CustomFileUtil;
+import com.tahmidu.room_designer_client_android.util.file.CustomZip;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-
-import io.reactivex.Completable;
-import io.reactivex.CompletableSource;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
@@ -53,8 +38,8 @@ public class ARRepo {
         String storagePath = context.getFilesDir().getAbsolutePath() + "/" + item.getItemId()
                 + "/" + MODEL;
 
+        NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
-
         final Observable<ResponseBody> getObservable = apiService.retrieveModel(modelId, JWTToken);
         getObservable
                 .subscribeOn(Schedulers.computation())
@@ -64,8 +49,10 @@ public class ARRepo {
                     return CustomZip.unzip(responseBody.bytes(), "response", storagePath);
                 })
                 .concatMap(aBoolean -> getGLTFModelInDir(storagePath, item, galleryItemsLiveData))
+                .doOnComplete(() -> NetworkState.getInstance().setStatus(NetworkStatus.DONE))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+
     }
 
     private Observable<Boolean> getGLTFModelInDir(String directory, Item item,
@@ -75,6 +62,7 @@ public class ARRepo {
 
         String[] fileNames = new File(directory).list();
         if (fileNames != null)
+        {
             for (String fileName : fileNames) {
                 Log.d(TAG, "Found Files: " + fileName);
                 String newDir = directory + "/" + fileName;
@@ -88,6 +76,8 @@ public class ARRepo {
                     break;
                 }
             }
-        return Observable.just(true);
+            return Observable.just(true);
+        }
+        return Observable.just(false);
     }
 }

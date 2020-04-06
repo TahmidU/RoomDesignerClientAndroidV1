@@ -19,6 +19,7 @@ public class PreferenceProvider
     private final String EMAIL = "EMAIL"; //Save email
     private final String TOKEN = "TOKEN"; //Save password or verification token
     private final String JWT_TOKEN = "JWT TOKEN";
+    private final String MAIN_LIB_PAGE = "MAIN LIB PAGE";
     private final String ITEM = "ITEM";
     private final String ITEMS_USER = "ITEMS USER";
 
@@ -83,5 +84,15 @@ public class PreferenceProvider
         User user = gson.fromJson(sharedPreferences.getString(ITEMS_USER, ""), User.class);
         Log.d(TAG, "Users firstName: " + user.getFirstName());
         return user;
+    }
+
+    public void savePage(int page)
+    {
+        sharedPreferences.edit().putInt(MAIN_LIB_PAGE, page).apply();
+    }
+
+    public int getPage()
+    {
+        return sharedPreferences.getInt(MAIN_LIB_PAGE, 0);
     }
 }
