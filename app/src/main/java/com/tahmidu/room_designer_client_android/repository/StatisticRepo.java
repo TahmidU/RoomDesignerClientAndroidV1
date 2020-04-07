@@ -1,24 +1,22 @@
 package com.tahmidu.room_designer_client_android.repository;
 
 import android.util.Log;
-
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
 import com.tahmidu.room_designer_client_android.network.NetworkState;
 import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 import com.tahmidu.room_designer_client_android.network.api.APIService;
 import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
 import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
-
 import java.util.Objects;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
+/**
+ * Repository that handles any statistics related interactions/requests.
+ */
 public class StatisticRepo
 {
     private final String TAG = "STATISTIC_REPO";
@@ -32,6 +30,11 @@ public class StatisticRepo
         return instance;
     }
 
+    /**
+     * Retrieve statistics for downloads and views.
+     * @param statistics statistics contains both view and download
+     * @param preferenceProvider preference provider.
+     */
     public void retrieveStatistics(final MutableLiveData<String> statistics,
                                    final PreferenceProvider preferenceProvider)
     {
@@ -91,6 +94,10 @@ public class StatisticRepo
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe();
     }
 
+    /**
+     * Increment view counter.
+     * @param preferenceProvider preference provider
+     */
     public void incrementView(final PreferenceProvider preferenceProvider)
     {
         final String METHOD_TAG = "incrementView";

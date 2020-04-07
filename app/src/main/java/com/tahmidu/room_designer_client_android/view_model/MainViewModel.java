@@ -3,11 +3,9 @@ package com.tahmidu.room_designer_client_android.view_model;
 import android.app.Application;
 import android.content.ContentResolver;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-
 import com.jaiselrahman.filepicker.model.MediaFile;
 import com.tahmidu.room_designer_client_android.model.Item;
 import com.tahmidu.room_designer_client_android.model.User;
@@ -15,7 +13,6 @@ import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
 import com.tahmidu.room_designer_client_android.repository.LibraryRepo;
 import com.tahmidu.room_designer_client_android.repository.StatisticRepo;
 import com.tahmidu.room_designer_client_android.repository.UserRepo;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +66,6 @@ public class MainViewModel extends AndroidViewModel
     //Password Change
     private String password;
     private String reEnterPassword;
-    private final String PASSWORD_NO_MATCH = "The passwords you've provided do not match!";
     private MutableLiveData<String> passwordChangeStatus = new MutableLiveData<>();
 
     //Repository
@@ -99,6 +95,15 @@ public class MainViewModel extends AndroidViewModel
         preferenceProvider = new PreferenceProvider(getApplication().getApplicationContext());
     }
 
+    //-----------------------------Navigation-----------------------------
+
+    public void navigateFragment(int id)
+    {
+        navigateFragment.postValue(id);
+    }
+
+    //-----------------------------Main Library-----------------------------
+
     public void fetchMainLibrary()
     {
         List<Integer> listCategories =  new ArrayList<>(categories.values());
@@ -114,16 +119,41 @@ public class MainViewModel extends AndroidViewModel
         Log.d(TAG, "Main Library Page Number: " + preferenceProvider.getPage());
     }
 
+    public void toggleCategory(int category)
+    {
+        if(categories.containsValue(category))
+            categories.remove(category);
+        else
+            categories.put(category, category);
+        filterChanged = true;
+    }
+
+    public void toggleType(int type)
+    {
+        if(types.containsValue(type))
+            types.remove(type);
+        else
+            types.put(type, type);
+        filterChanged = true;
+    }
+
+    //-----------------------------User Library-----------------------------
+
     public void fetchUserLibrary()
     {
         libraryRepo.fetchUserLibrary(userItemsLiveData, preferenceProvider);
         Log.d(TAG, "User Library Page Number: " + preferenceProvider.getPage());
     }
 
-    public void fetchUserDetails()
+    //-----------------------------Item-----------------------------
+
+    public void retrieveContactInfo()
     {
-        userRepo.fetchUserDetails(preferenceProvider, usersAccountLiveData);
+        libraryRepo.retrieveContactInfo(preferenceProvider.getItem().getUser(), contactInfoLiveData,
+                preferenceProvider.getJWTToken(), preferenceProvider);
     }
+
+    //-----------------------------Item Submission-----------------------------
 
     public void submitItem(String title, String desc, String catName, String typeName,
                            ContentResolver contentResolver)
@@ -131,6 +161,8 @@ public class MainViewModel extends AndroidViewModel
         libraryRepo.submitItem(preferenceProvider, title, desc, catName, typeName, previewImages,
                 thumbnail, modelFiles, contentResolver);
     }
+
+    //-----------------------------Edit Item-----------------------------
 
     public void editItem(String title, String desc, String catName, String typeName,
                          ContentResolver contentResolver)
@@ -154,54 +186,12 @@ public class MainViewModel extends AndroidViewModel
         libraryRepo.removeModel(preferenceProvider);
     }
 
-    public void clickedItem(int listPosition) {
-        Item item = Objects.requireNonNull(itemsLiveData.getValue()).get(listPosition);
-        preferenceProvider.saveItem(item);
-    }
 
-    public void clickedUserItem(int listPosition)
-    {
-        Item item = Objects.requireNonNull(userItemsLiveData.getValue()).get(listPosition);
-        preferenceProvider.saveItem(item);
-    }
+    //-----------------------------My Account-----------------------------
 
-    public void retrieveContactInfo()
+    public void fetchUserDetails()
     {
-        libraryRepo.retrieveContactInfo(preferenceProvider.getItem().getUser(), contactInfoLiveData,
-                preferenceProvider.getJWTToken(), preferenceProvider);
-    }
-
-    public void fetchItemStatistics()
-    {
-        statisticRepo.retrieveStatistics(statisticsLiveData, preferenceProvider);
-    }
-
-    public void navigateFragment(int id)
-    {
-        navigateFragment.postValue(id);
-    }
-
-    public void deleteSelectedItem()
-    {
-        libraryRepo.removeItem(preferenceProvider.getItem().getItemId(), preferenceProvider);
-    }
-
-    public void toggleCategory(int category)
-    {
-        if(categories.containsValue(category))
-            categories.remove(category);
-        else
-            categories.put(category, category);
-        filterChanged = true;
-    }
-
-    public void toggleType(int type)
-    {
-        if(types.containsValue(type))
-            types.remove(type);
-        else
-            types.put(type, type);
-        filterChanged = true;
+        userRepo.fetchUserDetails(preferenceProvider, usersAccountLiveData);
     }
 
     public void changeUserDetails(String firstName, String lastName, String phoneNum)
@@ -212,6 +202,7 @@ public class MainViewModel extends AndroidViewModel
 
     public void changePassword(String password, String reEnterPassword)
     {
+        final String PASSWORD_NO_MATCH = "The passwords you've provided do not match!";
         if(password.equals(reEnterPassword)) {
             userRepo.changeUserDetails(preferenceProvider, null, null,
                     password, null);
@@ -227,9 +218,41 @@ public class MainViewModel extends AndroidViewModel
         navigateFragment(WELCOME_ACTIVITY);
     }
 
+    //-----------------------------Users Item-----------------------------
+
+    public void fetchItemStatistics()
+    {
+        statisticRepo.retrieveStatistics(statisticsLiveData, preferenceProvider);
+    }
+
+    public void deleteSelectedItem()
+    {
+        libraryRepo.removeItem(preferenceProvider.getItem().getItemId(), preferenceProvider);
+    }
+
+    //-----------------------------Statistics-----------------------------
+
     public void incrementView()
     {
         statisticRepo.incrementView(preferenceProvider);
+    }
+
+    //-----------------------------Aux-----------------------------
+
+    public void resetPage()
+    {
+        preferenceProvider.savePage(0);
+    }
+
+    public void clickedItem(int listPosition) {
+        Item item = Objects.requireNonNull(itemsLiveData.getValue()).get(listPosition);
+        preferenceProvider.saveItem(item);
+    }
+
+    public void clickedUserItem(int listPosition)
+    {
+        Item item = Objects.requireNonNull(userItemsLiveData.getValue()).get(listPosition);
+        preferenceProvider.saveItem(item);
     }
 
     public void setLibraryCachePath(String path)
@@ -242,10 +265,7 @@ public class MainViewModel extends AndroidViewModel
         return preferenceProvider.getItem().isHasModel();
     }
 
-    public void resetPage()
-    {
-        preferenceProvider.savePage(0);
-    }
+    //-----------------------------Getters and Setters-----------------------------
 
     public boolean isFilterChanged() {
         return filterChanged;
@@ -342,10 +362,6 @@ public class MainViewModel extends AndroidViewModel
 
     public MutableLiveData<String> getPasswordChangeStatus() {
         return passwordChangeStatus;
-    }
-
-    public void setPasswordChangeStatus(MutableLiveData<String> passwordChangeStatus) {
-        this.passwordChangeStatus = passwordChangeStatus;
     }
 
     public String getPassword() {

@@ -1,7 +1,6 @@
 package com.tahmidu.room_designer_client_android.fragment;
 
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -12,15 +11,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.tahmidu.room_designer_client_android.R;
-import com.tahmidu.room_designer_client_android.databinding.FragmentChangeAccountDetailsBinding;
-import com.tahmidu.room_designer_client_android.databinding.FragmentChangeAccountPasswordBinding;
-import com.tahmidu.room_designer_client_android.databinding.FragmentChangePasswordBinding;
+import com.tahmidu.room_designer_client_android.databinding.FragmentChangeAccountPasswordBinding;;
 import com.tahmidu.room_designer_client_android.view_model.MainViewModel;
 
 /**
@@ -29,11 +24,8 @@ import com.tahmidu.room_designer_client_android.view_model.MainViewModel;
 public class ChangeAccountPasswordFragment extends Fragment {
 
     private final String TAG = "CHANGE_ACC_PASSWORD_FRAGMENT";
-    private final String TOOLBAR_TITLE = "My Account";
 
-    //Model View
-    private MainViewModel mainViewModel;
-
+    //Binding
     private FragmentChangeAccountPasswordBinding binding;
 
     public ChangeAccountPasswordFragment() {
@@ -49,6 +41,7 @@ public class ChangeAccountPasswordFragment extends Fragment {
                         false);
 
         Toolbar toolbar = getActivity().findViewById(R.id.main_toolbar);
+        String TOOLBAR_TITLE = "My Account";
         toolbar.setTitle(TOOLBAR_TITLE);
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -71,8 +64,10 @@ public class ChangeAccountPasswordFragment extends Fragment {
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication());
+
         //View Model
-        mainViewModel = new ViewModelProvider(this, factory)
+        //Model View
+        MainViewModel mainViewModel = new ViewModelProvider(this, factory)
                 .get(MainViewModel.class);
 
         binding.setVM(mainViewModel);

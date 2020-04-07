@@ -32,16 +32,13 @@ import com.tahmidu.room_designer_client_android.databinding.FragmentUserItemBind
 import com.tahmidu.room_designer_client_android.view_model.MainViewModel;
 
 /**
- * A simple {@link Fragment} subclass.
+ * View Users Account.
  */
 public class MyAccountFragment extends Fragment {
 
     private final String TAG = "MY_ACCOUNT_FRAGMENT";
-    private final String TOOLBAR_TITLE = "My Account";
 
-    //Model View
-    private MainViewModel mainViewModel;
-
+    //Binding
     private FragmentMyAccountBinding binding;
 
     public MyAccountFragment() {
@@ -50,12 +47,13 @@ public class MyAccountFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_my_account, container, false);
 
         Toolbar toolbar = getActivity().findViewById(R.id.main_toolbar);
+        String TOOLBAR_TITLE = "My Account";
         toolbar.setTitle(TOOLBAR_TITLE);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -79,8 +77,9 @@ public class MyAccountFragment extends Fragment {
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication());
+
         //View Model
-        mainViewModel = new ViewModelProvider(this, factory)
+        MainViewModel mainViewModel = new ViewModelProvider(this, factory)
                 .get(MainViewModel.class);
 
         //Set to binding

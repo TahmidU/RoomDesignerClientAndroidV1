@@ -2,7 +2,6 @@ package com.tahmidu.room_designer_client_android.fragment;
 
 
 import android.os.Bundle;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,11 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,29 +28,23 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.google.android.material.navigation.NavigationView;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.adapter.MainRecyclerAdapter;
 import com.tahmidu.room_designer_client_android.databinding.FragmentMainLibraryBinding;
 import com.tahmidu.room_designer_client_android.network.NetworkState;
 import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 import com.tahmidu.room_designer_client_android.view_model.MainViewModel;
-
 import net.cachapa.expandablelayout.ExpandableLayout;
-
 import java.util.ArrayList;
-
 import static com.tahmidu.room_designer_client_android.constant.Exit.DURATION;
 import static com.tahmidu.room_designer_client_android.constant.Exit.TOAST_EXIT_MSG;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Main Library.
  */
 public class MainLibraryFragment extends Fragment {
 
     private final String TAG = "MAIN_LIB_FRAGMENT";
-    private final String TOOLBAR_TITLE = "Main Library";
 
     //Model View
     private MainViewModel mainViewModel;
@@ -62,14 +52,11 @@ public class MainLibraryFragment extends Fragment {
     //Binding
     private FragmentMainLibraryBinding binding;
 
-    //Recycler View
-    private RecyclerView recyclerView;
+    //RecyclerView
     private MainRecyclerAdapter mainRecyclerAdapter;
 
     //Filter
-    private LinearLayout filterSortLayout;
     private ExpandableLayout filterSortExpandable;
-    private ImageButton closeFilterBtn;
 
     //Exit Application
     private long targetTime = 0;
@@ -80,19 +67,21 @@ public class MainLibraryFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_main_library, container, false);
 
         Toolbar toolbar = getActivity().findViewById(R.id.main_toolbar);
+        String TOOLBAR_TITLE = "Main Library";
         toolbar.setTitle(TOOLBAR_TITLE);
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        filterSortLayout = binding.getRoot().findViewById(R.id.filter_and_sort_layout);
+        //Filter
+        LinearLayout filterSortLayout = binding.getRoot().findViewById(R.id.filter_and_sort_layout);
         filterSortExpandable = binding.getRoot().findViewById(R.id.filter_sort_expandable);
-        closeFilterBtn = binding.getRoot().findViewById(R.id.close_sub_filter_btn);
+        ImageButton closeFilterBtn = binding.getRoot().findViewById(R.id.close_sub_filter_btn);
 
         //Set up navigation drawer
         DrawerLayout drawerLayout = getActivity().findViewById(R.id.main_drawer);
@@ -142,7 +131,8 @@ public class MainLibraryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = getActivity().findViewById(R.id.main_lib_recycler_view);
+        //Recycler View
+        RecyclerView recyclerView = getActivity().findViewById(R.id.main_lib_recycler_view);
 
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory

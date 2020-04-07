@@ -6,7 +6,6 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.JsonObject;
-import com.tahmidu.room_designer_client_android.model.Login;
 import com.tahmidu.room_designer_client_android.model.User;
 import com.tahmidu.room_designer_client_android.network.NetworkState;
 import com.tahmidu.room_designer_client_android.network.NetworkStatus;
@@ -27,6 +26,9 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
+/**
+ * Repository which handles any user related interactions/requests.
+ */
 public class UserRepo
 {
     private final String TAG = "USER_REPO";
@@ -57,8 +59,12 @@ public class UserRepo
     {
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
 
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("email", email);
+        jsonObject.addProperty("password", password);
+
         NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
-        final Observable<Response<Void>> tokenObservable = apiService.login(new Login(email, password));
+        final Observable<Response<Void>> tokenObservable = apiService.login(jsonObject);
         tokenObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Response<Void>>() {
             @Override
@@ -359,6 +365,11 @@ public class UserRepo
                 });
     }
 
+    /**
+     * Fetch User Details using the JWT Token.
+     * @param preferenceProvider preference provider
+     * @param userLiveData Live data containing User
+     */
     public void fetchUserDetails(PreferenceProvider preferenceProvider, MutableLiveData<User> userLiveData)
     {
         final String METHOD_TAG = "fetchUserDetails";
@@ -399,6 +410,14 @@ public class UserRepo
                 });
     }
 
+    /**
+     * Change User details. JWT token will be used to authorise this change.
+     * @param preferenceProvider preference provider
+     * @param firstName first name
+     * @param lastName last name
+     * @param password password
+     * @param phoneNum phone number
+     */
     public void changeUserDetails(PreferenceProvider preferenceProvider, String firstName,
                                   String lastName, String password, String phoneNum)
     {
@@ -442,6 +461,10 @@ public class UserRepo
                 });
     }
 
+    /**
+     * Delete user. JWT token will be used to authorise deletion.
+     * @param preferenceProvider preference provider
+     */
     public void deleteUser(PreferenceProvider preferenceProvider)
     {
         final String METHOD_TAG = "changeUserDetails";

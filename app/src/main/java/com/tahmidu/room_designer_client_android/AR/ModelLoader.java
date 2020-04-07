@@ -7,10 +7,12 @@ import com.google.ar.core.Anchor;
 import com.google.ar.sceneform.assets.RenderableSource;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.tahmidu.room_designer_client_android.activity.ARActivity;
-
 import java.io.File;
 import java.lang.ref.WeakReference;
 
+/**
+ * Loads model from a directory.
+ */
 public class ModelLoader
 {
     private final WeakReference<ARActivity> owner;

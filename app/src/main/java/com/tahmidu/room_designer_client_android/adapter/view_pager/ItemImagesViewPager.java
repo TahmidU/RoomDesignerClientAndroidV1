@@ -13,6 +13,9 @@ import com.tahmidu.room_designer_client_android.R;
 
 import java.util.List;
 
+/**
+ * Adapter used for the view pager that show image previews of an item in the item view.
+ */
 public class ItemImagesViewPager extends PagerAdapter
 {
     private Context context;

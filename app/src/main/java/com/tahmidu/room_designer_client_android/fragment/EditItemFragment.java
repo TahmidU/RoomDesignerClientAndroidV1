@@ -39,30 +39,29 @@ import com.tahmidu.room_designer_client_android.view_model.MainViewModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Edit Item.
+ */
 public class EditItemFragment extends Fragment
 {
     private final String TAG = "EDIT_ITEM_FRAGMENT";
-    private final String TOOLBAR_TITLE = "Edit Item";
 
     //File Requests
     private final static int FILE_REQUEST_THUMBNAIL = 1;
     private final static int FILE_REQUEST_IMAGES = 2;
     private final static int FILE_REQUEST_MODELS = 3;
 
+    //Binding
     private FragmentEditItemBinding binding;
 
-    //Model View
+    //ViewModel
     private MainViewModel mainViewModel;
 
-    //Navigation Controller
-    //private NavController navController;
-
+    //Views
     private EditText title;
     private EditText desc;
     private Spinner catSpinner;
     private Spinner typeSpinner;
-    private ArrayAdapter<CharSequence> catAdapter;
-    private ArrayAdapter<CharSequence> typeAdapter;
     private TextView thumbnailSelectedTxt;
     private TextView imagesSelectedTxt;
     private TextView modelsSelectedTxt;
@@ -72,7 +71,7 @@ public class EditItemFragment extends Fragment
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_edit_item, container, false);
@@ -80,11 +79,9 @@ public class EditItemFragment extends Fragment
         Log.d(TAG, "called");
 
         Toolbar toolbar = getActivity().findViewById(R.id.main_toolbar);
+        String TOOLBAR_TITLE = "Edit Item";
         toolbar.setTitle(TOOLBAR_TITLE);
         setHasOptionsMenu(true);
-        /*LinearLayout linearLayout = main_lib_toolbar.findViewById();
-        linearLayout.addView();
-        linearLayout.removeView();*/
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         DrawerLayout drawerLayout = getActivity().findViewById(R.id.main_drawer);
@@ -110,9 +107,9 @@ public class EditItemFragment extends Fragment
         drawerToggle.syncState();
 
         //Set up Spinners
-        catAdapter = ArrayAdapter.createFromResource(getContext(), R.array.categories,
+        ArrayAdapter<CharSequence> catAdapter = ArrayAdapter.createFromResource(getContext(), R.array.categories,
                 android.R.layout.simple_spinner_item);
-        typeAdapter = ArrayAdapter.createFromResource(getContext(), R.array.types,
+        ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(getContext(), R.array.types,
                 android.R.layout.simple_spinner_item);
         catSpinner.setAdapter(catAdapter);
         typeSpinner.setAdapter(typeAdapter);
@@ -254,11 +251,10 @@ public class EditItemFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //navController = Navigation.findNavController(view);
-
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getActivity().getApplication());
+
         //View Model
         mainViewModel = new ViewModelProvider(this, factory)
                 .get(MainViewModel.class);

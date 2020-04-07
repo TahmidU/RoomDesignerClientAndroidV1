@@ -2,6 +2,9 @@ package com.tahmidu.room_designer_client_android.network;
 
 import android.util.Log;
 
+/**
+ * Monitor the state of the network.
+ */
 public class NetworkState
 {
     private final String TAG = "NETWORK STATE";

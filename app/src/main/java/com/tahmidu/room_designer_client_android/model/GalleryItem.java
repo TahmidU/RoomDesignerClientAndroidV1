@@ -1,13 +1,11 @@
 package com.tahmidu.room_designer_client_android.model;
 
-import android.graphics.Bitmap;
+import androidx.annotation.NonNull;
 
 public class GalleryItem
 {
     private Item item;
     private String modelDir;
-
-    public GalleryItem(){}
 
     public GalleryItem(Item item, String modelDir) {
         this.item = item;
@@ -26,10 +24,7 @@ public class GalleryItem
         return modelDir;
     }
 
-    public void setModelDir(String modelDir) {
-        this.modelDir = modelDir;
-    }
-
+    @NonNull
     @Override
     public String toString() {
         return "GalleryItem{" +

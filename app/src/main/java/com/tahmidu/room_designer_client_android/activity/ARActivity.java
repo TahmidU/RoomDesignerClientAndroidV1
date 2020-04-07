@@ -7,7 +7,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -48,7 +47,6 @@ public class ARActivity extends AppCompatActivity
 
     //View Model
     private ARViewModel arViewModel;
-    private ActivityArBinding binding;
 
     //Activity Details
     private PointerDrawable pointerDrawable = new PointerDrawable();
@@ -66,30 +64,19 @@ public class ARActivity extends AppCompatActivity
     private ImageButton deleteBtn;
 
     //Gallery
-    private RecyclerView galleryRecyclerView;
     private GalleryRecyclerAdapter galleryRecyclerAdapter;
     private ExpandableLayout galleyExpandableLayout;
     private ImageButton galleryBtn;
-    private ImageButton galleryCancelBtn;
 
     //Library
     private ImageButton addModelBtn;
     private ExpandableLayout libraryExpandableLayout;
-    private RecyclerView libraryRecyclerView;
     private SubLibraryRecyclerAdapter libraryRecyclerAdapter;
-    private ImageButton libraryCancelBtn;
 
-    //Plane Types
-
-
-    /**
-     * Function executes when the activity finishes being created.
-     * @param savedInstanceState
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_ar);
+        com.tahmidu.room_designer_client_android.databinding.ActivityArBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_ar);
 
         Log.d(TAG, "OnCreate Called");
 
@@ -98,12 +85,12 @@ public class ARActivity extends AppCompatActivity
         arBorder = findViewById(R.id.ar_border);
         galleyExpandableLayout = findViewById(R.id.ar_expandable_gallery);
         galleryBtn = findViewById(R.id.gallery_btn);
-        galleryCancelBtn = findViewById(R.id.gallery_cancel_btn);
-        galleryRecyclerView = findViewById(R.id.gallery_view);
+        ImageButton galleryCancelBtn = findViewById(R.id.gallery_cancel_btn);
+        RecyclerView galleryRecyclerView = findViewById(R.id.gallery_view);
         addModelBtn = findViewById(R.id.add_model_btn);
         libraryExpandableLayout = findViewById(R.id.ar_expandable_library);
-        libraryRecyclerView = findViewById(R.id.library_sub_recycler_view);
-        libraryCancelBtn = findViewById(R.id.library_sub_cancel_btn);
+        RecyclerView libraryRecyclerView = findViewById(R.id.library_sub_recycler_view);
+        ImageButton libraryCancelBtn = findViewById(R.id.library_sub_cancel_btn);
 
         //Recycler View configuration
         galleryRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL,
@@ -128,15 +115,19 @@ public class ARActivity extends AppCompatActivity
 
         //Activity configurations.
         galleyExpandableLayout.collapse();
+        modelLoader = new ModelLoader(new WeakReference<>(this));
 
+        //Does the activity need to immediately download an item after creation.
         if(getIntent().getExtras() != null)
             downloadState = getIntent().getExtras().getBoolean("download");
         Log.d(TAG, "Download State: " + downloadState);
 
+        //Fetches
         arViewModel.fetchItems();
         if(downloadState)
             arViewModel.fetchModel();
 
+        //AR session fragment setup
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.sceneform_fragment);
         if (arFragment != null) {
             arFragment.getArSceneView().getScene().addOnUpdateListener(frameTime -> {
@@ -145,8 +136,6 @@ public class ARActivity extends AppCompatActivity
             });
             arFragment.getArSceneView().getScene().addOnPeekTouchListener(this::handleSceneTouch);
         }
-
-        modelLoader = new ModelLoader(new WeakReference<>(this));
 
         //Observers
         arViewModel.getGalleryItemsLiveData().observe(this,
@@ -224,7 +213,7 @@ public class ARActivity extends AppCompatActivity
             }
         });
 
-        //Setup Adapter for RecyclerView
+        //Setup Adapter for RecyclerViews
         galleryRecyclerAdapter = new GalleryRecyclerAdapter(arViewModel.getGalleryItemsLiveData().getValue(),
                 this, (view, position) -> {
                     if(arViewModel.getGalleryItemsLiveData().getValue() != null)
@@ -241,6 +230,7 @@ public class ARActivity extends AppCompatActivity
         }));
         libraryRecyclerView.setAdapter(libraryRecyclerAdapter);
 
+        //Paging setup
         libraryRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {

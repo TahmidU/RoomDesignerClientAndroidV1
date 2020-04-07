@@ -3,13 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <import type="com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel"/>
         <variable
             name="VM"
             type="com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel" />
-        <variable
-            name="verify"
-            type="com.tahmidu.room_designer_client_android.model.VerifyCode" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical"
@@ -71,7 +67,7 @@
             android:hint="@string/enter_the_code_here"
             android:inputType="number"
             android:shadowColor="@color/colorTextSecondary"
-            android:text="@={verify.verifyCode}"
+            android:text="@={VM.accountVCode}"
             android:textAlignment="center"
             android:textColor="@color/colorTextPrimary"
             android:textColorHint="@color/colorTextSecondary"
@@ -103,7 +99,7 @@
             android:layout_marginEnd="32dp"
             android:background="@drawable/green_rounded_btn"
             android:fontFamily="@font/segoe"
-            android:onClick="@{()->VM.verifyCode(verify.verifyCode)}"
+            android:onClick="@{()->VM.verifyCode(VM.accountVCode)}"
             android:text="@string/verify"
             android:textAllCaps="false"
             android:textColor="@color/colorTextPrimary"

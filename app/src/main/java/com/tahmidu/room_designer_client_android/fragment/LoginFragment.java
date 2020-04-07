@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.activity.MainActivity;
 import com.tahmidu.room_designer_client_android.databinding.FragmentLoginBinding;
-import com.tahmidu.room_designer_client_android.model.Login;
 import com.tahmidu.room_designer_client_android.util.file.CustomFileUtil;
 import com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel;
 import java.util.Objects;
@@ -28,7 +27,7 @@ import java.util.Objects;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Login using email and password.
  */
 public class LoginFragment extends Fragment{
 
@@ -45,7 +44,7 @@ public class LoginFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_login, container, false);
@@ -79,45 +78,32 @@ public class LoginFragment extends Fragment{
         //Bind to view
         binding.setVM(welcomeViewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.setLogin(new Login("",""));
 
         //Subscribed to live data.
-        welcomeViewModel.getJWTToken().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Objects.requireNonNull(getActivity()).getWindow()
-                        .setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                toastToken(s);
-                startActivity(new Intent(getContext(), MainActivity.class));
-                getActivity().finish();
-            }
+        welcomeViewModel.getJWTToken().observe(getViewLifecycleOwner(), s -> {
+            Objects.requireNonNull(getActivity()).getWindow()
+                    .setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            startActivity(new Intent(getContext(), MainActivity.class));
+            getActivity().finish();
         });
 
         //Navigation
-        welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                Log.d(TAG, integer.toString());
-                switch (integer)
-                {
-                    case WelcomeViewModel.SIGN_UP_FRAGMENT:
-                        navController.navigate(R.id.action_loginFragment_to_signUpFragment);
-                        break;
-                    case WelcomeViewModel.VERIFY_EMAIL_FRAGMENT:
-                        navController.navigate(R.id.action_loginFragment_to_verifyEmailFragment);
-                        break;
-                    case WelcomeViewModel.FORGOT_PASSWORD_FRAGMENT:
-                        navController.navigate(R.id.action_loginFragment_to_passwordFragment);
-                        break;
-                }
+        welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), integer -> {
+            Log.d(TAG, integer.toString());
+            switch (integer)
+            {
+                case WelcomeViewModel.SIGN_UP_FRAGMENT:
+                    navController.navigate(R.id.action_loginFragment_to_signUpFragment);
+                    break;
+                case WelcomeViewModel.VERIFY_EMAIL_FRAGMENT:
+                    navController.navigate(R.id.action_loginFragment_to_verifyEmailFragment);
+                    break;
+                case WelcomeViewModel.FORGOT_PASSWORD_FRAGMENT:
+                    navController.navigate(R.id.action_loginFragment_to_passwordFragment);
+                    break;
             }
         });
-    }
-
-    private void toastToken(String token)
-    {
-        Toast.makeText(getContext(), token, Toast.LENGTH_LONG).show();
     }
 
 }

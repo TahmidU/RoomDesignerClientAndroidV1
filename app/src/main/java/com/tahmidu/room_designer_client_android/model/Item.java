@@ -1,7 +1,5 @@
 package com.tahmidu.room_designer_client_android.model;
 
-import android.graphics.Bitmap;
-
 import java.util.Date;
 import java.util.List;
 
@@ -56,10 +54,6 @@ public class Item
         return itemId;
     }
 
-    public void setItemId(long itemId) {
-        this.itemId = itemId;
-    }
-
     public String getName() {
         return name;
     }
@@ -72,24 +66,8 @@ public class Item
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public boolean isHasModel() {
         return hasModel;
-    }
-
-    public void setHasModel(boolean hasModel) {
-        this.hasModel = hasModel;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public long getModel() {
@@ -106,22 +84,6 @@ public class Item
 
     public void setUser(long user) {
         this.user = user;
-    }
-
-    public long getCategory() {
-        return category;
-    }
-
-    public void setCategory(long category) {
-        this.category = category;
-    }
-
-    public long getItemVariant() {
-        return itemVariant;
-    }
-
-    public void setItemVariant(long itemVariant) {
-        this.itemVariant = itemVariant;
     }
 
     public long getType() {

@@ -38,6 +38,8 @@ public class ARViewModel extends AndroidViewModel
         itemsLiveData.setValue(new ArrayList<>());
     }
 
+    //-----------------------------Model-----------------------------
+
     public void fetchModel()
     {
         arRepo.fetchModel(preferenceProvider.getItem().getModel(), preferenceProvider.getJWTToken(),
@@ -51,16 +53,22 @@ public class ARViewModel extends AndroidViewModel
                 getApplication().getApplicationContext(), galleryItemsLiveData);
     }
 
+    //-----------------------------Item-----------------------------
+
     public void fetchItems()
     {
         libraryRepo.fetchMainLibrary(itemsLiveData, null, null, null,
                 preferenceProvider);
     }
 
+    //-----------------------------Aux-----------------------------
+
     public void resetPage()
     {
         preferenceProvider.savePage(0);
     }
+
+    //-----------------------------Getters and Setters-----------------------------
 
     public MutableLiveData<List<GalleryItem>> getGalleryItemsLiveData() {
         return galleryItemsLiveData;

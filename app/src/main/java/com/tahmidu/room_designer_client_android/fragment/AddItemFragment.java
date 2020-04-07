@@ -2,7 +2,6 @@ package com.tahmidu.room_designer_client_android.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,7 +24,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.jaiselrahman.filepicker.activity.FilePickerActivity;
 import com.jaiselrahman.filepicker.config.Configurations;
 import com.jaiselrahman.filepicker.model.MediaFile;
@@ -34,17 +31,15 @@ import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.databinding.FragmentAddItemBinding;
 import com.tahmidu.room_designer_client_android.util.file.CustomFileUtil;
 import com.tahmidu.room_designer_client_android.view_model.MainViewModel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Add Items
  */
 public class AddItemFragment extends Fragment {
 
     private final String TAG = "ADD_ITEM_FRAGMENT";
-    private final String TOOLBAR_TITLE = "Add Item";
 
     //File Requests
     private final static int FILE_REQUEST_THUMBNAIL = 1;
@@ -56,6 +51,7 @@ public class AddItemFragment extends Fragment {
     //Model View
     private MainViewModel mainViewModel;
 
+    //Views
     private TextView thumbnailSelectedTxt;
     private TextView imagesSelectedTxt;
     private TextView modelsSelectedTxt;
@@ -67,7 +63,7 @@ public class AddItemFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_add_item, container, false);
@@ -75,6 +71,7 @@ public class AddItemFragment extends Fragment {
         Log.d(TAG, "called");
 
         Toolbar toolbar = getActivity().findViewById(R.id.main_toolbar);
+        String TOOLBAR_TITLE = "Add Item";
         toolbar.setTitle(TOOLBAR_TITLE);
         setHasOptionsMenu(true);
         /*LinearLayout linearLayout = main_lib_toolbar.findViewById();

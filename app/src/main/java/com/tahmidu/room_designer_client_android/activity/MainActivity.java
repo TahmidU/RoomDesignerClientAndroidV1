@@ -1,34 +1,19 @@
 package com.tahmidu.room_designer_client_android.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.Toast;
-
-
 import com.google.android.material.navigation.NavigationView;
-import com.squareup.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.fragment.MainLibraryFragment;
 import com.tahmidu.room_designer_client_android.fragment.MyAccountFragment;
 import com.tahmidu.room_designer_client_android.fragment.UserLibraryFragment;
-import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
-import com.tahmidu.room_designer_client_android.util.network.BasicAuthInterceptor;
 import com.tahmidu.room_designer_client_android.util.network.PicassoSetup;
-
-import java.util.Objects;
-
-import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -116,12 +101,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-/*        try {
-            Picasso.get().shutdown();
-        }catch (UnsupportedOperationException e)
-        {
-            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
-        }*/
         finish();
     }
 

@@ -16,6 +16,9 @@ import com.tahmidu.room_designer_client_android.model.Item;
 
 import java.util.List;
 
+/**
+ * Adapter used for the recycler view in Main and User Library.
+ */
 public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapter.MyViewHolder>
 {
     private List<Item> items;

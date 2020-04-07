@@ -17,13 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.databinding.FragmentSignUpBinding;
-import com.tahmidu.room_designer_client_android.model.SignUp;
 import com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel;
 
 import java.util.Objects;
 
 /**
- * A simple {@link Fragment} subclass.
+ * SignUp an Account.
  */
 public class SignUpFragment extends Fragment {
 
@@ -67,10 +66,9 @@ public class SignUpFragment extends Fragment {
                 .get(WelcomeViewModel.class);
         //Bind to view.
         binding.setVM(welcomeViewModel);
-        binding.setSignUp(new SignUp());
 
         //On back pressed.
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 navController.navigate(R.id.action_signUpFragment_to_loginFragment);
@@ -79,19 +77,16 @@ public class SignUpFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         //Navigation
-        welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                Log.d(TAG, integer.toString());
-                switch (integer)
-                {
-                    case WelcomeViewModel.SIGN_IN_FRAGMENT:
-                        navController.navigate(R.id.action_signUpFragment_to_loginFragment);
-                        break;
-                    case WelcomeViewModel.VERIFY_EMAIL_FRAGMENT:
-                        navController.navigate(R.id.action_signUpFragment_to_verifyEmailFragment);
-                        break;
-                }
+        welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), integer -> {
+            Log.d(TAG, integer.toString());
+            switch (integer)
+            {
+                case WelcomeViewModel.SIGN_IN_FRAGMENT:
+                    navController.navigate(R.id.action_signUpFragment_to_loginFragment);
+                    break;
+                case WelcomeViewModel.VERIFY_EMAIL_FRAGMENT:
+                    navController.navigate(R.id.action_signUpFragment_to_verifyEmailFragment);
+                    break;
             }
         });
     }

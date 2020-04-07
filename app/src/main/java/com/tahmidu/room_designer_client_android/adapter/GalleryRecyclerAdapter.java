@@ -6,17 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.squareup.picasso.Picasso;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.model.GalleryItem;
-import com.tahmidu.room_designer_client_android.model.Item;
-
 import java.util.List;
 
+/**
+ * Adapter used for the recycler view that shows model installed within the device in the AR session.
+ */
 public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecyclerAdapter.MyViewHolder>
 {
     private List<GalleryItem> items;

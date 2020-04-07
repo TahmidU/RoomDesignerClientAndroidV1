@@ -21,11 +21,36 @@ public class WelcomeViewModel extends AndroidViewModel
     public final static int CONFIRM_PASSWORD_FRAGMENT = 5;
 
     //Repository
-    //private LoginRepo loginRepo;
-    //private SignUpRepo signUpRepo;
-    //private VerifyRepo verifyRepo;
-    //private PasswordRepo passwordRepo;
     private UserRepo userRepo;
+
+    //Login
+    private MutableLiveData<String> loginEmail = new MutableLiveData<>();
+    private MutableLiveData<String> loginPassword = new MutableLiveData<>();
+    private final MutableLiveData<String> signInResponse = new MutableLiveData<>();
+
+    //Signup
+    private MutableLiveData<String> signUpFirstN = new MutableLiveData<>();
+    private MutableLiveData<String> signUpLastN = new MutableLiveData<>();
+    private MutableLiveData<String> signUpEmail = new MutableLiveData<>();
+    private MutableLiveData<String> signUpPN = new MutableLiveData<>();
+    private MutableLiveData<String> signUpPassword = new MutableLiveData<>();
+    private MutableLiveData<String> signUpRePassword = new MutableLiveData<>();
+
+    //Forgot Password
+    private MutableLiveData<String> forgotEmail = new MutableLiveData<>();
+    private final MutableLiveData<String> passwordEmailResponse = new MutableLiveData<>();
+
+    //Password Change
+    private MutableLiveData<String> passwordChangePassword = new MutableLiveData<>();
+    private MutableLiveData<String> passwordChangeRePassword = new MutableLiveData<>();
+
+    //Password Verify
+    private MutableLiveData<String> passwordVCode = new MutableLiveData<>();
+    private final MutableLiveData<String> passwordVerifyResponse = new MutableLiveData<>();
+
+    //Verify Account
+    private MutableLiveData<String> accountVCode = new MutableLiveData<>();
+    private final MutableLiveData<String> verifyResponse = new MutableLiveData<>();
 
     //Visibility
     //This is not a toggle but a notifier to the view to change the visibility.
@@ -33,12 +58,6 @@ public class WelcomeViewModel extends AndroidViewModel
 
     //Navigation
     private MutableLiveData<Integer> navigateFragment = new MutableLiveData<>();
-
-    //Responses
-    private final MutableLiveData<String> verifyResponse = new MutableLiveData<>();
-    private final MutableLiveData<String> signInResponse = new MutableLiveData<>();
-    private final MutableLiveData<String> passwordEmailResponse = new MutableLiveData<>();
-    private final MutableLiveData<String> passwordVerifyResponse = new MutableLiveData<>();
 
     //JWT Token
     private final MutableLiveData<String> jwtToken = new MutableLiveData<>();
@@ -48,16 +67,26 @@ public class WelcomeViewModel extends AndroidViewModel
 
     public WelcomeViewModel(@NonNull Application application) {
         super(application);
-        //loginRepo = LoginRepo.getInstance();
-        //signUpRepo = SignUpRepo.getInstance();
-        //verifyRepo = VerifyRepo.getInstance();
-        //passwordRepo = PasswordRepo.getInstance();
         userRepo = UserRepo.getInstance();
 
         preferenceProvider = new PreferenceProvider(getApplication().getApplicationContext());
 
         progressVisibility.setValue(true);
     }
+
+    //-----------------------------Navigation-----------------------------
+
+    /**
+     * Navigate to specific fragment.
+     * @param id fragment id
+     */
+    public void navigateFragment(int id)
+    {
+        Log.d(TAG, "Navigate to " + id);
+        navigateFragment.postValue(id);
+    }
+
+    //-----------------------------Login-----------------------------
 
     /**
      * Authenticate if the user has valid credentials.
@@ -76,6 +105,8 @@ public class WelcomeViewModel extends AndroidViewModel
         userRepo.authUser(email, password, signInResponse, progressVisibility, navigateFragment,
                 jwtToken, preferenceProvider);
     }
+
+    //-----------------------------SignUp-----------------------------
 
     /**
      * Sign-up user.
@@ -121,15 +152,7 @@ public class WelcomeViewModel extends AndroidViewModel
         userRepo.resendToken(getApplication().getApplicationContext());
     }
 
-    /**
-     * Navigate to specific fragment.
-     * @param id fragment id
-     */
-    public void navigateFragment(int id)
-    {
-        Log.d(TAG, "Navigate to " + id);
-        navigateFragment.postValue(id);
-    }
+    //-----------------------------Password-----------------------------
 
     /**
      * Send password reset token to users email (optional), if and only if the user exists.
@@ -191,6 +214,8 @@ public class WelcomeViewModel extends AndroidViewModel
 
     }
 
+    //-----------------------------Getters and Setters-----------------------------
+
     public MutableLiveData<Boolean> getProgressVisibility() {
         return progressVisibility;
     }
@@ -221,4 +246,55 @@ public class WelcomeViewModel extends AndroidViewModel
         return navigateFragment;
     }
 
+    public MutableLiveData<String> getLoginEmail() {
+        return loginEmail;
+    }
+
+    public MutableLiveData<String> getLoginPassword() {
+        return loginPassword;
+    }
+
+    public MutableLiveData<String> getForgotEmail() {
+        return forgotEmail;
+    }
+
+    public MutableLiveData<String> getSignUpFirstN() {
+        return signUpFirstN;
+    }
+
+    public MutableLiveData<String> getSignUpLastN() {
+        return signUpLastN;
+    }
+
+    public MutableLiveData<String> getSignUpEmail() {
+        return signUpEmail;
+    }
+
+    public MutableLiveData<String> getSignUpPN() {
+        return signUpPN;
+    }
+
+    public MutableLiveData<String> getSignUpPassword() {
+        return signUpPassword;
+    }
+
+    public MutableLiveData<String> getSignUpRePassword() {
+        return signUpRePassword;
+    }
+
+    public MutableLiveData<String> getPasswordChangePassword() {
+        return passwordChangePassword;
+    }
+
+    public MutableLiveData<String> getPasswordChangeRePassword() {
+        return passwordChangeRePassword;
+    }
+
+    public MutableLiveData<String> getPasswordVCode() {
+        return passwordVCode;
+    }
+
+    public MutableLiveData<String> getAccountVCode() {
+        return accountVCode;
+    }
 }

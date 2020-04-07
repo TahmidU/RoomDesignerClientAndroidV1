@@ -2,7 +2,6 @@ package com.tahmidu.room_designer_client_android.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,18 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.activity.ARActivity;
 import com.tahmidu.room_designer_client_android.adapter.view_pager.ItemImagesViewPager;
@@ -33,29 +27,21 @@ import com.tahmidu.room_designer_client_android.databinding.FragmentUserItemBind
 import com.tahmidu.room_designer_client_android.view_model.MainViewModel;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Users Item.
  */
 public class UserItemFragment extends Fragment {
 
     private final String TAG = "USER_ITEM_FRAGMENT";
-    private final String TOOLBAR_TITLE = "User Item";
 
     //Model View
     private MainViewModel mainViewModel;
 
+    //Binding
     private FragmentUserItemBinding binding;
-
-    //Recycler View
-    private ViewPager imageSelectViewPager;
-    private ItemImagesViewPager itemImagesViewPagerAdapter;
-
-    //Navigation Controller
-    private NavController navController;
 
     public UserItemFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,13 +52,12 @@ public class UserItemFragment extends Fragment {
                 .inflate(inflater, R.layout.fragment_user_item, container, false);
 
         Toolbar toolbar = getActivity().findViewById(R.id.main_toolbar);
+        String TOOLBAR_TITLE = "User Item";
         toolbar.setTitle(TOOLBAR_TITLE);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        TextView arTextView = binding.getRoot().findViewById(R.id.user_item_ar_text_view);
         DrawerLayout drawerLayout = getActivity().findViewById(R.id.main_drawer);
         ImageButton deleteBtn = binding.getRoot().findViewById(R.id.user_item_delete_btn);
-        ImageButton editBtn = binding.getRoot().findViewById(R.id.user_item_edit_btn);
 
         //Set Drawer
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout,
@@ -96,9 +81,8 @@ public class UserItemFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //navController = Navigation.findNavController(view);
-
-        imageSelectViewPager = getActivity().findViewById(R.id.user_item_images_view_pager);
+        //Recycler View
+        ViewPager imageSelectViewPager = getActivity().findViewById(R.id.user_item_images_view_pager);
 
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory
@@ -112,7 +96,7 @@ public class UserItemFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         //View Pager
-        itemImagesViewPagerAdapter = new ItemImagesViewPager(getActivity().getApplicationContext(),
+        ItemImagesViewPager itemImagesViewPagerAdapter = new ItemImagesViewPager(getActivity().getApplicationContext(),
                 mainViewModel.getSelectedItem().getImages());
         imageSelectViewPager.setAdapter(itemImagesViewPagerAdapter);
 

@@ -17,13 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.databinding.FragmentPasswordTokenBinding;
-import com.tahmidu.room_designer_client_android.model.VerifyCode;
 import com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel;
 
 import java.util.Objects;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Verify Password token.
  */
 public class PasswordTokenFragment extends Fragment {
 
@@ -63,16 +62,17 @@ public class PasswordTokenFragment extends Fragment {
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(Objects.requireNonNull(getActivity()).getApplication());
+
         //View Model
         WelcomeViewModel welcomeViewModel = new ViewModelProvider(this, factory)
                 .get(WelcomeViewModel.class);
+
         //Bind to view.
         binding.setVM(welcomeViewModel);
-        binding.setVerifyCode(new VerifyCode());
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         //On back pressed.
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
@@ -82,13 +82,10 @@ public class PasswordTokenFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         //Navigation
-        welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                Log.d(TAG, integer.toString());
-                if (integer == WelcomeViewModel.CONFIRM_PASSWORD_FRAGMENT) {
-                    navController.navigate(R.id.action_passwordTokenFragment_to_changePasswordFragment);
-                }
+        welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), integer -> {
+            Log.d(TAG, integer.toString());
+            if (integer == WelcomeViewModel.CONFIRM_PASSWORD_FRAGMENT) {
+                navController.navigate(R.id.action_passwordTokenFragment_to_changePasswordFragment);
             }
         });
     }

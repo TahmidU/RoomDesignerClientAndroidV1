@@ -1,7 +1,6 @@
 package com.tahmidu.room_designer_client_android.repository;
 
 import android.content.ContentResolver;
-import android.os.FileUtils;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -17,19 +16,11 @@ import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
 import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
 import com.tahmidu.room_designer_client_android.util.file.CustomFileUtil;
 
-import org.json.JSONObject;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,14 +28,12 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
-import retrofit2.http.Multipart;
 
 public class LibraryRepo
 {
@@ -71,7 +60,7 @@ public class LibraryRepo
         String JWTToken = preferenceProvider.getJWTToken();
 
         NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
-        final Observable<List<Item>> getObservable = apiService.fetchItem(pageNum,
+        final Observable<List<Item>> getObservable = apiService.fetchAllItem(pageNum,
                 itemName, catIds, typeIds, null, JWTToken);
         getObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<Item>>() {

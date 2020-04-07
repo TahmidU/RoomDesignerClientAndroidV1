@@ -17,7 +17,7 @@ public class RetrofitClient extends Application
         if(retrofit == null)
         {
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+            logging.level(HttpLoggingInterceptor.Level.BODY);
             okhttp3.OkHttpClient client = new okhttp3.OkHttpClient.Builder()
                     .addInterceptor(logging).build();
 /*            okhttp3.OkHttpClient client = new okhttp3.OkHttpClient.Builder().build();*/

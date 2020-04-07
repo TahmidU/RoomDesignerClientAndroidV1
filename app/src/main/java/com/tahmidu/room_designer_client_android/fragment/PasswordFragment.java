@@ -17,13 +17,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.tahmidu.room_designer_client_android.R;
 import com.tahmidu.room_designer_client_android.databinding.FragmentPasswordBinding;
-import com.tahmidu.room_designer_client_android.model.Login;
 import com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel;
 
 import java.util.Objects;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Change Password.
  */
 public class PasswordFragment extends Fragment {
 
@@ -61,12 +60,13 @@ public class PasswordFragment extends Fragment {
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(Objects.requireNonNull(getActivity()).getApplication());
+
         //View Model
         WelcomeViewModel welcomeViewModel = new ViewModelProvider(this, factory)
                 .get(WelcomeViewModel.class);
+
         //Bind to view.
         binding.setVM(welcomeViewModel);
-        binding.setLogin(new Login());
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         //On back pressed.
@@ -79,19 +79,16 @@ public class PasswordFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
         //Navigation
-        welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                Log.d(TAG, integer.toString());
-                switch (integer)
-                {
-                    case WelcomeViewModel.VERIFY_PASSWORD_FRAGMENT:
-                        navController.navigate(R.id.action_passwordFragment_to_passwordTokenFragment);
-                        break;
-                    case WelcomeViewModel.SIGN_UP_FRAGMENT:
-                        navController.navigate(R.id.action_passwordFragment_to_signUpFragment);
-                        break;
-                }
+        welcomeViewModel.getNavigateFragment().observe(getViewLifecycleOwner(), integer -> {
+            Log.d(TAG, integer.toString());
+            switch (integer)
+            {
+                case WelcomeViewModel.VERIFY_PASSWORD_FRAGMENT:
+                    navController.navigate(R.id.action_passwordFragment_to_passwordTokenFragment);
+                    break;
+                case WelcomeViewModel.SIGN_UP_FRAGMENT:
+                    navController.navigate(R.id.action_passwordFragment_to_signUpFragment);
+                    break;
             }
         });
     }

@@ -39,12 +39,11 @@ import static com.tahmidu.room_designer_client_android.constant.Exit.DURATION;
 import static com.tahmidu.room_designer_client_android.constant.Exit.TOAST_EXIT_MSG;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Users Library.
  */
 public class UserLibraryFragment extends Fragment {
 
     private final String TAG = "USER_LIB_FRAGMENT";
-    private final String TOOLBAR_TITLE = "User Library";
 
     private FragmentUserLibraryBinding binding;
 
@@ -52,7 +51,6 @@ public class UserLibraryFragment extends Fragment {
     private MainViewModel mainViewModel;
 
     //Recycler View
-    private RecyclerView recyclerView;
     private MainRecyclerAdapter mainRecyclerAdapter;
 
     //Application Exit
@@ -64,7 +62,7 @@ public class UserLibraryFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil
                 .inflate(inflater, R.layout.fragment_user_library, container, false);
@@ -72,6 +70,7 @@ public class UserLibraryFragment extends Fragment {
         Log.d(TAG, "called");
 
         Toolbar toolbar = getActivity().findViewById(R.id.main_toolbar);
+        String TOOLBAR_TITLE = "User Library";
         toolbar.setTitle(TOOLBAR_TITLE);
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -109,7 +108,8 @@ public class UserLibraryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = getActivity().findViewById(R.id.user_lib_recycler_view);
+        //Recycler View
+        RecyclerView recyclerView = getActivity().findViewById(R.id.user_lib_recycler_view);
 
         //Create the View Model.
         ViewModelProvider.Factory factory = ViewModelProvider.AndroidViewModelFactory

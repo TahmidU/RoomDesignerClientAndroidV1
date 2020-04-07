@@ -20,6 +20,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
+/**
+ * Repository that handles any AR related interactions/requests.
+ */
 public class ARRepo {
     private final String TAG = "AR_REPO";
     private final String MODEL = "MODEL";
@@ -33,6 +36,14 @@ public class ARRepo {
         return instance;
     }
 
+    /**
+     * Fetch the specified 3D model from the server.
+     * @param modelId Model Id
+     * @param JWTToken Authorization token
+     * @param item Item
+     * @param context App context
+     * @param galleryItemsLiveData Live data containing a list of Gallery Items
+     */
     public void fetchModel(Long modelId, String JWTToken, Item item, Context context,
                            final MutableLiveData<List<GalleryItem>> galleryItemsLiveData) {
         String storagePath = context.getFilesDir().getAbsolutePath() + "/" + item.getItemId()
@@ -55,6 +66,13 @@ public class ARRepo {
 
     }
 
+    /**
+     * Retrieve GLTF model from the specified directory.
+     * @param directory directory
+     * @param item Item
+     * @param galleryItemsLiveData Live data containing a list of Gallery Items.
+     * @return
+     */
     private Observable<Boolean> getGLTFModelInDir(String directory, Item item,
                                                   final MutableLiveData<List<GalleryItem>> galleryItemsLiveData) {
         Log.d(TAG, Thread.currentThread().getName());
