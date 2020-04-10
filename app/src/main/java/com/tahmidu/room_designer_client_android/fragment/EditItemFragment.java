@@ -282,24 +282,25 @@ public class EditItemFragment extends Fragment
         if (data != null) {
             files = data.getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES);
         }
-        if(FILE_REQUEST_THUMBNAIL == requestCode) {
-            mainViewModel.setThumbnail(files.get(0));
-            if(mainViewModel.getThumbnail() != null) {
-                String msg = "1/1 Files Selected";
-                thumbnailSelectedTxt.setText(msg);
+        if(files != null) {
+            if (FILE_REQUEST_THUMBNAIL == requestCode) {
+                mainViewModel.setThumbnail(files.get(0));
+                if (mainViewModel.getThumbnail() != null) {
+                    String msg = "1/1 Files Selected";
+                    thumbnailSelectedTxt.setText(msg);
+                }
             }
-        }
-        if(FILE_REQUEST_IMAGES == requestCode)
-        {
-            mainViewModel.setPreviewImages(files);
-            String msg = mainViewModel.getPreviewImages().size() + "/5 Files Selected";
-            imagesSelectedTxt.setText(msg);
-        }
-        if(FILE_REQUEST_MODELS == requestCode) {
-            mainViewModel.setModelFiles(files);
-            String msg = mainViewModel.getModelFiles().size()
-                    + "/2 Files Selected (must include gltf and bin files)";
-            modelsSelectedTxt.setText(msg);
+            if (FILE_REQUEST_IMAGES == requestCode) {
+                mainViewModel.setPreviewImages(files);
+                String msg = mainViewModel.getPreviewImages().size() + "/5 Files Selected";
+                imagesSelectedTxt.setText(msg);
+            }
+            if (FILE_REQUEST_MODELS == requestCode) {
+                mainViewModel.setModelFiles(files);
+                String msg = mainViewModel.getModelFiles().size()
+                        + "/2 Files Selected (must include gltf and bin files)";
+                modelsSelectedTxt.setText(msg);
+            }
         }
     }
 }

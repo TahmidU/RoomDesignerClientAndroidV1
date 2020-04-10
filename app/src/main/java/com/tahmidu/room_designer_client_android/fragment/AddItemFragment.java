@@ -74,9 +74,6 @@ public class AddItemFragment extends Fragment {
         String TOOLBAR_TITLE = "Add Item";
         toolbar.setTitle(TOOLBAR_TITLE);
         setHasOptionsMenu(true);
-        /*LinearLayout linearLayout = main_lib_toolbar.findViewById();
-        linearLayout.addView();
-        linearLayout.removeView();*/
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         DrawerLayout drawerLayout = getActivity().findViewById(R.id.main_drawer);
@@ -113,6 +110,7 @@ public class AddItemFragment extends Fragment {
 
             Intent intent = new Intent(getContext(), FilePickerActivity.class);
             intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
+                    .setSuffixes("jpg","jpeg","png","webp")
                     .setCheckPermission(true)
                     .setShowImages(true)
                     .enableImageCapture(true)
@@ -130,6 +128,7 @@ public class AddItemFragment extends Fragment {
         {
             Intent intent = new Intent(getContext(), FilePickerActivity.class);
             intent.putExtra(FilePickerActivity.CONFIGS, new Configurations.Builder()
+                    .setSuffixes("jpg","jpeg","png","webp")
                     .setCheckPermission(true)
                     .setShowImages(true)
                     .enableImageCapture(true)
@@ -264,29 +263,33 @@ public class AddItemFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        ArrayList<MediaFile> files = data.getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES);
+        ArrayList<MediaFile> files = null;
+        if (data != null) {
+            files = data.getParcelableArrayListExtra(FilePickerActivity.MEDIA_FILES);
+        }
 
-        if (FILE_REQUEST_THUMBNAIL == requestCode) {
-            mainViewModel.setThumbnail(files.get(0));
-            Log.d(TAG, "modelFiles size: " + (mainViewModel.getThumbnail() != null));
-            if (mainViewModel.getThumbnail() != null) {
-                String msg = "1/1 Files Selected";
-                thumbnailSelectedTxt.setText(msg);
+        if(files != null) {
+            if (FILE_REQUEST_THUMBNAIL == requestCode) {
+                mainViewModel.setThumbnail(files.get(0));
+                Log.d(TAG, "modelFiles size: " + (mainViewModel.getThumbnail() != null));
+                if (mainViewModel.getThumbnail() != null) {
+                    String msg = "1/1 Files Selected";
+                    thumbnailSelectedTxt.setText(msg);
+                }
+            }
+            if (FILE_REQUEST_IMAGES == requestCode) {
+                mainViewModel.setPreviewImages(files);
+                Log.d(TAG, "previewImagesFiles size: " + mainViewModel.getPreviewImages().size());
+                String msg = mainViewModel.getPreviewImages().size() + "/5 Files Selected";
+                imagesSelectedTxt.setText(msg);
+            }
+            if (FILE_REQUEST_MODELS == requestCode) {
+                mainViewModel.setModelFiles(files);
+                Log.d(TAG, "modelFiles size: " + mainViewModel.getModelFiles().size());
+                String msg = mainViewModel.getModelFiles().size()
+                        + "/2 Files Selected (must include gltf and bin files)";
+                modelsSelectedTxt.setText(msg);
             }
         }
-        if (FILE_REQUEST_IMAGES == requestCode) {
-            mainViewModel.setPreviewImages(files);
-            Log.d(TAG, "previewImagesFiles size: " + mainViewModel.getPreviewImages().size());
-            String msg = mainViewModel.getPreviewImages().size() + "/5 Files Selected";
-            imagesSelectedTxt.setText(msg);
-        }
-        if (FILE_REQUEST_MODELS == requestCode) {
-            mainViewModel.setModelFiles(files);
-            Log.d(TAG, "modelFiles size: " + mainViewModel.getModelFiles().size());
-            String msg = mainViewModel.getModelFiles().size()
-                        + "/2 Files Selected (must include gltf and bin files)";
-            modelsSelectedTxt.setText(msg);
-        }
-
     }
 }

@@ -16,6 +16,7 @@ public class Item
     private long user;
     private long itemVariant;
     private List<Long> images;
+    private boolean isClicked = false;
 
     public Item() {
     }
@@ -98,4 +99,11 @@ public class Item
         return images;
     }
 
+    public boolean isClicked() {
+        return isClicked;
+    }
+
+    public void setClicked(boolean clicked) {
+        isClicked = clicked;
+    }
 }

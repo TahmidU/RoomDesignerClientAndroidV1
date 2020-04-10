@@ -34,6 +34,7 @@ import com.tahmidu.room_designer_client_android.adapter.GalleryRecyclerAdapter;
 import com.tahmidu.room_designer_client_android.adapter.SubLibraryRecyclerAdapter;
 import com.tahmidu.room_designer_client_android.constant.Type;
 import com.tahmidu.room_designer_client_android.databinding.ActivityArBinding;
+import com.tahmidu.room_designer_client_android.model.Item;
 import com.tahmidu.room_designer_client_android.network.NetworkState;
 import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 import com.tahmidu.room_designer_client_android.view_model.ARViewModel;
@@ -44,6 +45,13 @@ import java.util.List;
 public class ARActivity extends AppCompatActivity
 {
     private final static String TAG = "AR_ACTIVITY";
+
+    //Messages
+    private final String DOWNLOADING = "Downloading... This may take some time. Check your Gallery later.";
+    private final String ITEM_EXISTS = "Item already exists on your device or is currently downloading.";
+    private final String DOWNLOAD_COMPLETE = "Download complete! Check your Gallery.";
+    private final String DELETE_MODE_ON = "Delete mode on.";
+    private final String DELETE_MODE_OFF = "Delete mode off.";
 
     //View Model
     private ARViewModel arViewModel;
@@ -76,9 +84,8 @@ public class ARActivity extends AppCompatActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        com.tahmidu.room_designer_client_android.databinding.ActivityArBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_ar);
-
-        Log.d(TAG, "OnCreate Called");
+        com.tahmidu.room_designer_client_android.databinding.ActivityArBinding binding =
+                DataBindingUtil.setContentView(this, R.layout.activity_ar);
 
         //Views
         deleteBtn = findViewById(R.id.delete_btn);
@@ -144,6 +151,10 @@ public class ARActivity extends AppCompatActivity
                     Log.d(TAG, "Gallery items live data has changed. Gallery Size "
                             + galleryItems.size() + " and Adapter Size " + galleryRecyclerAdapter.getItemCount());
                     galleryRecyclerAdapter.notifyDataSetChanged();
+                    if(!galleryItems.isEmpty()) {
+                        Toast.makeText(getApplicationContext(), this.DOWNLOAD_COMPLETE, Toast.LENGTH_SHORT)
+                                .show();
+                    }
                 });
 
         arViewModel.getItemsLiveData().observe(this, items ->
@@ -204,10 +215,12 @@ public class ARActivity extends AppCompatActivity
         {
             if(!isDeleteMode)
             {
+                Toast.makeText(getApplicationContext(), DELETE_MODE_ON, Toast.LENGTH_SHORT).show();
                 isDeleteMode = true;
                 arBorder.setBackground(getDrawable(R.drawable.delete_border));
             }else
             {
+                Toast.makeText(getApplicationContext(), DELETE_MODE_OFF, Toast.LENGTH_SHORT).show();
                 isDeleteMode = false;
                 arBorder.setBackground(null);
             }
@@ -226,7 +239,16 @@ public class ARActivity extends AppCompatActivity
 
         libraryRecyclerAdapter = new SubLibraryRecyclerAdapter(arViewModel.getItemsLiveData().getValue(),
                 this, ((view, position) -> {
-                    arViewModel.fetchModel(arViewModel.getItemsLiveData().getValue().get(position));
+                    Item item = arViewModel.getItemsLiveData().getValue().get(position);
+                    if(!item.isClicked())
+                    {
+                        item.setClicked(true);
+                        arViewModel.fetchModel(item);
+                        Toast.makeText(getApplicationContext(), DOWNLOADING, Toast.LENGTH_SHORT).show();
+
+                    }else
+                        Toast.makeText(getApplicationContext(), ITEM_EXISTS, Toast.LENGTH_SHORT)
+                                .show();
         }));
         libraryRecyclerView.setAdapter(libraryRecyclerAdapter);
 
