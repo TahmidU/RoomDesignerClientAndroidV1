@@ -34,6 +34,7 @@ import com.tahmidu.room_designer_client_android.adapter.GalleryRecyclerAdapter;
 import com.tahmidu.room_designer_client_android.adapter.SubLibraryRecyclerAdapter;
 import com.tahmidu.room_designer_client_android.constant.Type;
 import com.tahmidu.room_designer_client_android.databinding.ActivityArBinding;
+import com.tahmidu.room_designer_client_android.model.GalleryItem;
 import com.tahmidu.room_designer_client_android.model.Item;
 import com.tahmidu.room_designer_client_android.network.NetworkState;
 import com.tahmidu.room_designer_client_android.network.NetworkStatus;
@@ -229,11 +230,11 @@ public class ARActivity extends AppCompatActivity
         //Setup Adapter for RecyclerViews
         galleryRecyclerAdapter = new GalleryRecyclerAdapter(arViewModel.getGalleryItemsLiveData().getValue(),
                 this, (view, position) -> {
-                    if(arViewModel.getGalleryItemsLiveData().getValue() != null)
-                        addObject(arViewModel.getGalleryItemsLiveData().getValue()
-                                .get(position).getModelDir(),
-                                arViewModel.getGalleryItemsLiveData()
-                                        .getValue().get(position).getItem().getType());
+                    if(arViewModel.getGalleryItemsLiveData().getValue() != null) {
+                        GalleryItem galleryItem = arViewModel.getGalleryItemsLiveData().getValue().get(position);
+                        addObject(galleryItem.getModelDir(), galleryItem.getTextureDir(),
+                                 galleryItem.getItem().getType());
+                    }
                 });
         galleryRecyclerView.setAdapter(galleryRecyclerAdapter);
 
@@ -345,10 +346,10 @@ public class ARActivity extends AppCompatActivity
 
     /**
      * Adds object to scene.
-     * @param dir models directory.
+     * @param modelDir models directory.
      * @param type models plane type.
      */
-    private void addObject(String dir, long type) {
+    private void addObject(String modelDir, String textureDir, long type) {
         Frame frame = arFragment.getArSceneView().getArFrame();
         android.graphics.Point pt = getScreenCenter();
         List<HitResult> hits;
@@ -382,7 +383,7 @@ public class ARActivity extends AppCompatActivity
                 {
                     Plane.Type planeType = ((Plane) trackable).getType();
                     if(planeType == targetPlane)
-                        modelLoader.loadModel(hit.createAnchor(), dir);
+                        modelLoader.loadModel(hit.createAnchor(), modelDir, textureDir, this);
                     else
                         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
                     break;

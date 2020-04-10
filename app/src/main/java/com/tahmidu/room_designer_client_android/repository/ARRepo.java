@@ -77,23 +77,32 @@ public class ARRepo {
                                                   final MutableLiveData<List<GalleryItem>> galleryItemsLiveData) {
         Log.d(TAG, Thread.currentThread().getName());
         Log.d(TAG, "Accessing: " + directory);
+        GalleryItem galleryItem = new GalleryItem(item);
 
         String[] fileNames = new File(directory).list();
         if (fileNames != null)
         {
             for (String fileName : fileNames) {
+
                 Log.d(TAG, "Found Files: " + fileName);
                 String newDir = directory + "/" + fileName;
-                if (CustomFileUtil.getExtension(newDir).equals(".gltf")) {
-                    GalleryItem galleryItem = new GalleryItem(item,
-                            newDir);
-                    Log.d(TAG, galleryItem.toString());
-                    List<GalleryItem> galleryItems = galleryItemsLiveData.getValue();
-                    galleryItems.add(galleryItem);
-                    galleryItemsLiveData.postValue(galleryItems);
-                    break;
-                }
+
+                if (CustomFileUtil.getExtension(newDir).equals(".gltf"))
+                    galleryItem.setModelDir(newDir);
+
+                if(CustomFileUtil.getExtension(newDir).equals(".png") ||
+                        CustomFileUtil.getExtension(newDir).equals(".jpg"))
+                    galleryItem.setTextureDir(newDir);
+
             }
+
+            Log.d(TAG, galleryItem.toString());
+            List<GalleryItem> galleryItems = galleryItemsLiveData.getValue();
+            if(galleryItems != null) {
+                galleryItems.add(galleryItem);
+                galleryItemsLiveData.postValue(galleryItems);
+            }
+
             return Observable.just(true);
         }
         return Observable.just(false);

@@ -165,11 +165,13 @@ public class AddItemFragment extends Fragment {
             HashMap<String, Boolean> permissibleType = new HashMap<>();
             permissibleType.put(".bin", true);
             permissibleType.put(".gltf", true);
+            permissibleType.put(".png", true);
+            permissibleType.put(".jpg", true);
 
             if(mainViewModel.getModelFiles().size() == 0)
                 isValid = true;
 
-            if(mainViewModel.getModelFiles().size() < 3)
+            if(mainViewModel.getModelFiles().size() < 4)
             {
                 for(MediaFile mf : mainViewModel.getModelFiles())
                 {

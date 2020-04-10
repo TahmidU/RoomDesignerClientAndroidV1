@@ -27,21 +27,13 @@ public class CustomZip
 
         Log.d(TAG, outputPath);
 
-        String texturePath = "/textures";
-
         boolean dirResult = false;
         File destDir = new File(outputPath);
         if (!destDir.exists()) {
             dirResult = destDir.mkdirs();
         }
 
-        boolean textureResult = false;
-        File textureDir = new File(outputPath+texturePath);
-        if(!textureDir.exists())
-            textureResult = textureDir.mkdir();
-
         Log.d(TAG, "Files destination created? " + dirResult);
-        Log.d(TAG, "Textures destination created? " + textureResult);
 
         ZipInputStream zipInputStream;
 
@@ -56,25 +48,14 @@ public class CustomZip
             while((zipEntry = zipInputStream.getNextEntry()) != null)
             {
                 Log.d(TAG, "Unzipping: "+zipEntry.getName());
-                String fileExtension = CustomFileUtil.getExtension(zipEntry.getName());
 
                 FileOutputStream fileOutputStream;
 
                 //Check if its a texture.
-                String path = "";
-                if(fileExtension.equals(".png") || fileExtension.equals(".jpg")
-                        || fileExtension.equals(".jpeg") || fileExtension.equals(".bmp")
-                        || fileExtension.equals(".tif"))
-                {
-                    path = outputPath + texturePath + "/" + zipEntry.getName();
-                    Log.d(TAG, "Extracting to" + path);
-                    fileOutputStream = new FileOutputStream(path);
-                }else
-                    {
-                        path = outputPath+ "/" + zipEntry.getName();
-                        Log.d(TAG, "Extracting to" + path);
-                        fileOutputStream = new FileOutputStream(path);
-                    }
+                String path = outputPath+ "/" + zipEntry.getName();
+                Log.d(TAG, "Extracting to" + path);
+                fileOutputStream = new FileOutputStream(path);
+
 
                 BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
 

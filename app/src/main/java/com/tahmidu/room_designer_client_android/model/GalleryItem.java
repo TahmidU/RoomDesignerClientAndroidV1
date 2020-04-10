@@ -6,10 +6,10 @@ public class GalleryItem
 {
     private Item item;
     private String modelDir;
+    private String textureDir;
 
-    public GalleryItem(Item item, String modelDir) {
+    public GalleryItem(Item item) {
         this.item = item;
-        this.modelDir = modelDir;
     }
 
     public Item getItem() {
@@ -22,6 +22,19 @@ public class GalleryItem
 
     public String getModelDir() {
         return modelDir;
+    }
+
+    public void setModelDir(String modelDir) {
+        this.modelDir = modelDir;
+    }
+
+    public String getTextureDir() {
+        return textureDir;
+    }
+
+
+    public void setTextureDir(String textureDir) {
+        this.textureDir = textureDir;
     }
 
     @NonNull
