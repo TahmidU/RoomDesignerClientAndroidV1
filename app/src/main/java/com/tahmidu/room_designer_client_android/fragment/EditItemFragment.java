@@ -300,7 +300,7 @@ public class EditItemFragment extends Fragment
             if (FILE_REQUEST_MODELS == requestCode) {
                 mainViewModel.setModelFiles(files);
                 String msg = mainViewModel.getModelFiles().size()
-                        + "/2 Files Selected (must include gltf and bin files)";
+                        + "/3 Files Selected (must include gltf and bin files)";
                 modelsSelectedTxt.setText(msg);
             }
         }

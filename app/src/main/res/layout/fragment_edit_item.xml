@@ -156,14 +156,14 @@
                     android:id="@+id/edit_item_upload_models_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Upload 3D Model" />
+                    android:text="Upload 3D Model and Texture Image" />
 
                 <TextView
                     android:id="@+id/edit_item_models_selected_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/segoe"
-                    android:text="0/2 Files Selected (must include gltf and bin files)" />
+                    android:text="0/3 Files Selected (must include gltf and bin files)" />
 
                 <Space
                     android:layout_width="match_parent"

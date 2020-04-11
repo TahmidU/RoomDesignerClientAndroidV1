@@ -289,7 +289,7 @@ public class AddItemFragment extends Fragment {
                 mainViewModel.setModelFiles(files);
                 Log.d(TAG, "modelFiles size: " + mainViewModel.getModelFiles().size());
                 String msg = mainViewModel.getModelFiles().size()
-                        + "/2 Files Selected (must include gltf and bin files)";
+                        + "/3 Files Selected (must include gltf and bin files)";
                 modelsSelectedTxt.setText(msg);
             }
         }
