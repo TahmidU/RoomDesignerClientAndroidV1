@@ -8,7 +8,15 @@ import com.squareup.picasso.Picasso;
 import com.tahmidu.room_designer_client_android.network.NetworkState;
 import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 
+import java.security.cert.CertificateException;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class PicassoSetup
 {
@@ -32,18 +40,56 @@ public class PicassoSetup
     public void configurePicasso()
     {
         if(picassoStatus == PicassoStatus.NOT_SET) {
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(new BasicAuthInterceptor(applicationContext))
-                    .build();
+            try {
+                // Create a trust manager that does not validate certificate chains
+                final TrustManager[] trustAllCerts = new TrustManager[] {
+                        new X509TrustManager() {
+                            @Override
+                            public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                            }
 
-            Picasso picasso = new Picasso.Builder(applicationContext)
-                    .downloader(new OkHttp3Downloader(client))
-                    .build();
+                            @Override
+                            public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                            }
 
-            Picasso.setSingletonInstance(picasso);
-            Picasso.get().setLoggingEnabled(true);
+                            @Override
+                            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                                return new java.security.cert.X509Certificate[]{};
+                            }
+                        }
+                };
 
-            picassoStatus = PicassoStatus.SET;
+                // Install the all-trusting trust manager
+                final SSLContext sslContext = SSLContext.getInstance("SSL");
+                sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+
+                // Create an ssl socket factory with our all-trusting manager
+                final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+
+                //logging
+                HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+                logging.level(HttpLoggingInterceptor.Level.BODY);
+
+                OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                builder.addInterceptor(logging);
+                builder.addInterceptor(new BasicAuthInterceptor(applicationContext));
+                builder.sslSocketFactory(sslSocketFactory, (X509TrustManager)trustAllCerts[0]);
+                builder.hostnameVerifier((hostname, session) -> true);
+
+                Picasso picasso = new Picasso.Builder(applicationContext)
+                        .downloader(new OkHttp3Downloader(builder.build()))
+                        .build();
+
+                Picasso.setSingletonInstance(picasso);
+                Picasso.get().setLoggingEnabled(true);
+
+                picassoStatus = PicassoStatus.SET;
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+
         }
     }
 

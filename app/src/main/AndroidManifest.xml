@@ -13,9 +13,10 @@
     <!--Features-->
     <uses-feature android:name="android.hardware.camera.ar" android:required="true"/>
 
+    <!--android:usesCleartextTraffic="true"-->
+
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:icon="@mipmap/rd_logo"
         android:name=".network.api.RetrofitClient"
         android:label="@string/app_name"

@@ -41,7 +41,7 @@ public class ItemImagesViewPager extends PagerAdapter
     public Object instantiateItem(@NonNull ViewGroup container, int position)
     {
         ImageView imageView = new ImageView(context);
-        String URL = "http://192.168.0.8:8080/image/fetch-image?imageId="
+        String URL = "https://192.168.0.8:8443/image/fetch-image?imageId="
                 + images.get(position);
 
         Picasso.get()

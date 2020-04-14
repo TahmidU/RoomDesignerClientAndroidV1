@@ -34,29 +34,48 @@ public class ModelLoader
     public void loadModel(Anchor anchor, String modalDir, String textureDir, Context context)
     {
         Uri uriLocation = Uri.fromFile(new File(modalDir));
-        CompletableFuture<Texture> futureTexture = Texture.builder().setSource(context,
-                Uri.fromFile(new File(textureDir))).build();
-        Log.d(TAG, uriLocation.getPath());
         if(owner.get() == null)
         {
             Log.d(TAG, "Fragment/Activity is null. Cannot load model.");
             return;
         }
-        ModelRenderable.builder()
-                .setSource(owner.get(), RenderableSource.builder()
-                        .setSource(owner.get(),uriLocation, RenderableSource.SourceType.GLTF2)
-                        .setRecenterMode(RenderableSource.RecenterMode.ROOT)
-                        .build()).setRegistryId(uriLocation)
-                .build()
-                .thenAcceptBoth(futureTexture, ((modelRenderable, texture) ->
-                {
-                    modelRenderable.getMaterial().setTexture(MaterialFactory.MATERIAL_TEXTURE, texture);
-                    owner.get().addNodeToScene(anchor, modelRenderable);
-                }))
-                .exceptionally(throwable -> {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(owner.get());
-                    builder.setMessage(throwable.getMessage()).show();
-                    return null;
-                });
+        if(textureDir != null)
+        {
+            CompletableFuture<Texture> futureTexture = Texture.builder().setSource(context,
+                    Uri.fromFile(new File(textureDir))).build();
+
+            ModelRenderable.builder()
+                    .setSource(owner.get(), RenderableSource.builder()
+                            .setSource(owner.get(),uriLocation, RenderableSource.SourceType.GLTF2)
+                            .setRecenterMode(RenderableSource.RecenterMode.ROOT)
+                            .build()).setRegistryId(uriLocation)
+                    .build()
+                    .thenAcceptBoth(futureTexture, ((modelRenderable, texture) ->
+                    {
+                        modelRenderable.getMaterial().setTexture(MaterialFactory.MATERIAL_TEXTURE, texture);
+                        owner.get().addNodeToScene(anchor, modelRenderable);
+                    }))
+                    .exceptionally(throwable -> {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(owner.get());
+                        builder.setMessage(throwable.getMessage()).show();
+                        return null;
+                    });
+        }else
+            {
+                ModelRenderable.builder()
+                        .setSource(owner.get(), RenderableSource.builder()
+                                .setSource(owner.get(),uriLocation, RenderableSource.SourceType.GLTF2)
+                                .setRecenterMode(RenderableSource.RecenterMode.ROOT)
+                                .build()).setRegistryId(uriLocation)
+                        .build()
+                        .thenAccept(modelRenderable ->
+                                owner.get().addNodeToScene(anchor, modelRenderable))
+                        .exceptionally(throwable -> {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(owner.get());
+                            builder.setMessage(throwable.getMessage()).show();
+                            return null;
+                        });
+            }
+
     }
 }
