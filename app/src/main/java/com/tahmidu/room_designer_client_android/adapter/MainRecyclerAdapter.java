@@ -43,7 +43,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
-        String URL = "https://192.168.0.8:8443/image/fetch-thumbnail?itemId="
+        String URL = "https://192.168.0.8:8443/api/image/fetch-thumbnail?itemId="
                 + items.get(position).getItemId();
 
         Picasso.get()
@@ -63,7 +63,6 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         private ImageView itemImage;
-        private ImageView itemFavourite;
         private TextView itemTitle;
 
         private OnClickListener clickListener;
@@ -73,7 +72,6 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
             super(itemView);
 
             itemImage = itemView.findViewById(R.id.item_image);
-            itemFavourite = itemView.findViewById(R.id.item_favourite);
             itemTitle = itemView.findViewById(R.id.item_title);
 
             this.clickListener = clickListener;

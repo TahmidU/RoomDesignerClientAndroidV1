@@ -28,98 +28,98 @@ public interface APIService
 {
     //-----------------------------Login-----------------------------
 
-    @POST("/user/authenticate")
+    @POST("/api/user/authenticate")
     Observable<Response<String>> authenticateUser(@Body JsonObject login);
 
-    @POST("/login")
+    @POST("/api/login")
     Observable<Response<Void>> login(@Body JsonObject login);
 
     //-----------------------------SignUp-----------------------------
 
     @FormUrlEncoded
-    @POST("/sign-up/v1")
+    @POST("/api/sign-up/v1")
     Completable signUp(@Field("firstName") String firstName, @Field("lastName") String lastName,
                              @Field("password") String password, @Field("email") String email,
                              @Field("phoneNum") String phoneNum);
 
     @FormUrlEncoded
-    @POST("/sign-up/confirmation")
+    @POST("/api/sign-up/confirmation")
     Observable<Response<String>> verify(@Field("token") int token, @Field("email") String email);
 
     @FormUrlEncoded
-    @POST("sign-up/resend-token")
+    @POST("/api/sign-up/resend-token")
     Completable resendToken(@Field("email") String email);
 
     //-----------------------------Password Recovery-----------------------------
 
     @FormUrlEncoded
-    @POST("/password/recovery")
+    @POST("/api/password/recovery")
     Completable sendPasswordToken(@Field("email") String email);
 
     @FormUrlEncoded
-    @POST("/password/recovery/change")
+    @POST("/api/password/recovery/change")
     Observable<Response<String>> changePassword(@Field("email") String email,
                                                 @Field("token") int token,
                                                 @Field("password") String password);
 
     //-----------------------------Item-----------------------------
 
-    @GET("/item/fetch-all")
+    @GET("/api/item/fetch-all")
     Observable<List<Item>> fetchAllItem(@Query("pageNum") int pageNum, @Query("itemName") String itemName,
                                         @Query("catIds") List<Integer> catIds, @Query("typeIds") List<Integer> typeIds,
                                         @Query("hasModel") Boolean hasModel,
                                         @Header("Authorization") String authorization);
 
-    @GET("/item/fetch/my")
+    @GET("/api/item/fetch/my")
     Observable<List<Item>> fetchUserItem(@Query("pageNum") int pageNum, @Query("itemName") String itemName,
                                          @Query("catIds") List<Integer> catIds, @Query("typeIds") List<Integer> typeIds,
                                          @Query("hasModel") Boolean hasModel,
                                          @Header("Authorization") String authorization);
 
     @Headers("Content-Type: application/json")
-    @POST("/item/add")
+    @POST("/api/item/add")
     Observable<JsonObject> addItem(@Body JsonObject item, @Query("catName") String catName,
                                    @Query("typeName") String typeName,
                                    @Header("Authorization") String authorization);
 
-    @DELETE("/item/remove")
+    @DELETE("/api/item/remove")
     Observable<ResponseBody> removeItem(@Query("id") Long id,
                                         @Header("Authorization") String authorization);
 
-    @PUT("/item/update")
+    @PUT("/api/item/update")
     Observable<ResponseBody> editItem(@Body JsonObject item, @Query("catName") String catName,
                                       @Query("typeName") String typeName,
                                       @Header("Authorization") String authorization);
 
     //-----------------------------User-----------------------------
 
-    @GET("/user/me")
+    @GET("/api/user/me")
     Observable<JsonObject> retrieveMyDetails(@Header("Authorization") String authorization);
 
-    @PUT("/user/change-details")
+    @PUT("/api/user/change-details")
     Observable<ResponseBody> changeUserDetails(@Body JsonObject user,
                                                @Header("Authorization") String authorization);
 
-    @DELETE("/user/delete")
+    @DELETE("/api/user/delete")
     Observable<ResponseBody> deleteUser(@Header("Authorization") String authorization);
 
-    @GET("/user/details")
+    @GET("/api/user/details")
     Observable<JsonObject> retrieveUserDetails(@Query("userId") Long itemId,
                                                @Header("Authorization") String authorization);
 
     //-----------------------------Model-----------------------------
 
     @Streaming
-    @GET("/model/fetch")
+    @GET("/api/model/fetch")
     Observable<ResponseBody> retrieveModel(@Query("modelId") Long modelId,
                                            @Header("Authorization") String authorization);
 
     @Multipart
-    @POST("/model/upload")
+    @POST("/api/model/upload")
     Observable<ResponseBody> uploadModel(@Part MultipartBody.Part[] files, @Query("itemId") Long itemId,
                                          @Header("Authorization") String authorization);
 
-    @DELETE("/model/remove")
+    @DELETE("/api/model/remove")
     Observable<ResponseBody> deleteModel(@Query("modelId") Long modelId,
                                          @Query("itemId") Long itemId,
                                          @Header("Authorization") String authorization);
@@ -127,34 +127,34 @@ public interface APIService
     //-----------------------------Image-----------------------------
 
     @Multipart
-    @POST("/image/upload")
+    @POST("/api/image/upload")
     Observable<ResponseBody> uploadImages(@Part MultipartBody.Part[] files,
                                           @Query("itemId") Long itemId,
                                           @Query("isThumbnail") Boolean isThumbnail,
                                           @Header("Authorization") String authorization);
 
-    @DELETE("/image/delete")
+    @DELETE("/api/image/delete")
     Observable<ResponseBody> deleteImage(@Query("imageId") Long imageId,
                                          @Query("isThumbnail") Boolean isThumbnail,
                                          @Query("itemId") Long itemId,
                                          @Header("Authorization") String authorization);
 
-    @GET("/image/fetch-thumbnail-id")
+    @GET("/api/image/fetch-thumbnail-id")
     Observable<Response<Long>> fetchThumbnailId(@Query("itemId") Long itemId,
                                               @Header("Authorization") String authorization);
 
     //-----------------------------Statistics-----------------------------
 
-    @GET("/item-view/get-views")
+    @GET("/api/item-view/get-views")
     Observable<Response<Integer>> fetchViewStat(@Query("itemId") Long itemId,
                                                 @Header("Authorization") String authorization);
 
-    @GET("/item-download/aggregate")
+    @GET("/api/item-download/aggregate")
     Observable<Response<Integer>> fetchDownloadStat(@Query("itemId") Long itemId,
                                                     @Header("Authorization") String authorization);
 
     @FormUrlEncoded
-    @POST("/item-view/increment")
+    @POST("/api/item-view/increment")
     Observable<ResponseBody> incrementView(@Field("itemId") Long itemId,
                                            @Header("Authorization") String authorization);
 

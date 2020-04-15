@@ -402,7 +402,8 @@ public class ARActivity extends AppCompatActivity
     public void addNodeToScene(Anchor anchor, ModelRenderable renderable) {
         AnchorNode anchorNode = new AnchorNode(anchor);
         TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
-        node.setLocalScale(new Vector3(0.75f, 0.75f, 0.75f));
+        node.getScaleController().setEnabled(false);
+        node.setWorldScale(new Vector3(0.75f, 0.75f, 0.75f));
         node.setRenderable(renderable);
         node.setParent(anchorNode);
         arFragment.getArSceneView().getScene().addChild(anchorNode);
