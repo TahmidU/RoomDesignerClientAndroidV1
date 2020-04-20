@@ -43,7 +43,7 @@ public class MainRecyclerAdapter extends RecyclerView.Adapter<MainRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position)
     {
-        String URL = "https://192.168.0.8:8443/api/image/fetch-thumbnail?itemId="
+        String URL = "https://192.168.0.8:8443/api/images/thumbnail/download?itemId="
                 + items.get(position).getItemId();
 
         Picasso.get()

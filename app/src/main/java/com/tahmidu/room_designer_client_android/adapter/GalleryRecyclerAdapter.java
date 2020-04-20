@@ -40,7 +40,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
     @Override
     public void onBindViewHolder(@NonNull GalleryRecyclerAdapter.MyViewHolder holder, int position)
     {
-        String URL = "https://192.168.0.8:8443/api/image/fetch-thumbnail?itemId="
+        String URL = "https://192.168.0.8:8443/api/images/thumbnail/download?itemId="
                 + items.get(position).getItem().getItemId();
 
         Picasso.get()
