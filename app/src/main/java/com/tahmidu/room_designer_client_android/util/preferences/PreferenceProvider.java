@@ -1,4 +1,4 @@
-package com.tahmidu.room_designer_client_android.preferences;
+package com.tahmidu.room_designer_client_android.util.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,7 +14,7 @@ public class PreferenceProvider
 {
     private SharedPreferences sharedPreferences;
 
-    private final String TAG = "PREFERENCE PROVIDER";
+    private final String TAG = "PREFERENCE_PROVIDER";
 
     private final String EMAIL = "EMAIL"; //Save email
     private final String TOKEN = "TOKEN"; //Save password or verification token

@@ -12,4 +12,5 @@ public class Category
     public static final int BOOKCASES_AND_SHELVES = 8;
     public static final int CABINETS_AND_CUPBOARDS = 9;
     public static final int TV_OR_MEDIA_FURNITURE = 10;
+    public static final int OTHER = 11;
 }

@@ -7,7 +7,7 @@ import android.util.Log;
  */
 public class NetworkState
 {
-    private final String TAG = "NETWORK STATE";
+    private final String TAG = "NETWORK_STATE";
 
     private static NetworkState instance;
     private static NetworkStatus networkStatus;

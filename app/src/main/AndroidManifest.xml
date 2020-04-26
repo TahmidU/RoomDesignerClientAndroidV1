@@ -26,17 +26,18 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <!--Activities Registration-->
-        <activity android:name=".activity.WelcomeActivity">
+        <activity android:name=".activity.WelcomeActivity"
+            android:configChanges="keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.MainActivity"
+            android:configChanges="keyboardHidden|orientation"/>
         <activity android:name=".activity.ARActivity"
-            android:windowSoftInputMode="stateVisible"/>
+            android:windowSoftInputMode="stateVisible" />
 
         <meta-data android:name="com.google.ar.core" android:value="required"/>
     </application>

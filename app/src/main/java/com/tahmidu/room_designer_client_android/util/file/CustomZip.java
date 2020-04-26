@@ -14,7 +14,7 @@ import io.reactivex.Observable;
 
 public class CustomZip
 {
-    private static final String TAG = "CUSTOM ZIP";
+    private static final String TAG = "CUSTOM_ZIP";
 
     public static Observable<Boolean> unzip(byte[] buffer, String zipName, String outputPath)
     {

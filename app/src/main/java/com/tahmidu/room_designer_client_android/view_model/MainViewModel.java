@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.jaiselrahman.filepicker.model.MediaFile;
 import com.tahmidu.room_designer_client_android.model.Item;
 import com.tahmidu.room_designer_client_android.model.User;
-import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
+import com.tahmidu.room_designer_client_android.util.preferences.PreferenceProvider;
 import com.tahmidu.room_designer_client_android.repository.LibraryRepo;
 import com.tahmidu.room_designer_client_android.repository.StatisticRepo;
 import com.tahmidu.room_designer_client_android.repository.UserRepo;

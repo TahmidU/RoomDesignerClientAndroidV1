@@ -29,9 +29,6 @@ public interface APIService
 {
     //-----------------------------Login-----------------------------
 
-    @POST("/api/users/authenticate")
-    Observable<Response<String>> authenticateUser(@Body JsonObject login);
-
     @POST("/login")
     Observable<Response<Void>> login(@Body JsonObject login);
 

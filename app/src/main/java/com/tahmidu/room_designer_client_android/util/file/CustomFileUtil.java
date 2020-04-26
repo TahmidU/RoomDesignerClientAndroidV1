@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CustomFileUtil
 {
-    private static final String TAG = "CUSTOM FILE UTIL";
+    private static final String TAG = "CUSTOM_FILE_UTIL";
 
     public static File[] filesInDir(String dir)
     {

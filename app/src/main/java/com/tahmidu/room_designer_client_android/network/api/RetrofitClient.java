@@ -41,7 +41,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class RetrofitClient extends Application
 {
     private static Retrofit retrofit = null;
-    private final static String URL = "https://192.168.0.8:8443/";
+    //private final static String URL = "https://192.168.0.8:8443/";
+    private final static String URL = "https://10.0.2.2:8443/";
 
     public static Retrofit getRetrofit()
     {

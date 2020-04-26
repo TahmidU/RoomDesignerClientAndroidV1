@@ -53,6 +53,7 @@
     <string name="delete_account">Delete Account</string>
     <string name="change_account_details">Change Account Details</string>
     <string name="submit">submit</string>
+    <string name="verify_your_account">Verify your Account!</string>
 
     <string-array name="types">
         <item>Ceil-Mounted</item>
@@ -71,5 +72,6 @@
         <item>Bookcases &amp; Shelves</item>
         <item>Cabinets &amp; Cupboards</item>
         <item>TV or Media Furniture</item>
+        <item>Other</item>
     </string-array>
 </resources>

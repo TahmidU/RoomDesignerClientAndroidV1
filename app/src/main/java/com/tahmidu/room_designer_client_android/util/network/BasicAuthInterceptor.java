@@ -2,7 +2,7 @@ package com.tahmidu.room_designer_client_android.util.network;
 
 import android.content.Context;
 
-import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
+import com.tahmidu.room_designer_client_android.util.preferences.PreferenceProvider;
 
 import java.io.IOException;
 

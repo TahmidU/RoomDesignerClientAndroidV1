@@ -6,7 +6,7 @@ import com.tahmidu.room_designer_client_android.network.NetworkState;
 import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 import com.tahmidu.room_designer_client_android.network.api.APIService;
 import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
-import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
+import com.tahmidu.room_designer_client_android.util.preferences.PreferenceProvider;
 import java.util.Objects;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

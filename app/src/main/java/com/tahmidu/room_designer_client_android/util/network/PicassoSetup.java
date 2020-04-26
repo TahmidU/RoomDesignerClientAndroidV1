@@ -20,7 +20,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 public class PicassoSetup
 {
-    private final String TAG = "PICASSO SETUP";
+    private final String TAG = "PICASSO_SETUP";
 
     private static PicassoSetup instance;
     private static PicassoStatus picassoStatus;

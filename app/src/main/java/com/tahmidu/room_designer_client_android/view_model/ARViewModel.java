@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.tahmidu.room_designer_client_android.model.GalleryItem;
 import com.tahmidu.room_designer_client_android.model.Item;
-import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
+import com.tahmidu.room_designer_client_android.util.preferences.PreferenceProvider;
 import com.tahmidu.room_designer_client_android.repository.ARRepo;
 import com.tahmidu.room_designer_client_android.repository.LibraryRepo;
 

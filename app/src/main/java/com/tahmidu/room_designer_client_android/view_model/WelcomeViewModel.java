@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
+import com.tahmidu.room_designer_client_android.util.preferences.PreferenceProvider;
 import com.tahmidu.room_designer_client_android.repository.UserRepo;
 
 public class WelcomeViewModel extends AndroidViewModel
@@ -102,8 +102,7 @@ public class WelcomeViewModel extends AndroidViewModel
             signInResponse.postValue(COMPLETE_FIELD);
             return;
         }
-        userRepo.authUser(email, password, signInResponse, progressVisibility, navigateFragment,
-                jwtToken, preferenceProvider);
+        userRepo.retrieveToken(email, password, jwtToken, preferenceProvider, signInResponse);
     }
 
     //-----------------------------SignUp-----------------------------
@@ -150,6 +149,22 @@ public class WelcomeViewModel extends AndroidViewModel
     {
         Log.d(TAG,"Resend verify code.");
         userRepo.resendToken(getApplication().getApplicationContext());
+    }
+
+    /**
+     * Go to Verify Email from Login. Email field must be entered.
+     * @param email user email.
+     */
+    public void toVerifyAccount(String email)
+    {
+        final String TO_VERIFY_EMPTY_EMAIL = "Email field must not be empty!";
+        if(email == null)
+            signInResponse.postValue(TO_VERIFY_EMPTY_EMAIL);
+        else {
+            preferenceProvider.saveEmail(email);
+            userRepo.resendToken(getApplication().getApplicationContext());
+            navigateFragment(WelcomeViewModel.VERIFY_EMAIL_FRAGMENT);
+        }
     }
 
     //-----------------------------Password-----------------------------

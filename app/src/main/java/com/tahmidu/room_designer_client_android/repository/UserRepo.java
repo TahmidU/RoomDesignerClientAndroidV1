@@ -11,8 +11,7 @@ import com.tahmidu.room_designer_client_android.network.NetworkState;
 import com.tahmidu.room_designer_client_android.network.NetworkStatus;
 import com.tahmidu.room_designer_client_android.network.api.APIService;
 import com.tahmidu.room_designer_client_android.network.api.RetrofitClient;
-import com.tahmidu.room_designer_client_android.preferences.PreferenceProvider;
-import com.tahmidu.room_designer_client_android.view_model.WelcomeViewModel;
+import com.tahmidu.room_designer_client_android.util.preferences.PreferenceProvider;
 
 import java.util.Objects;
 
@@ -55,9 +54,12 @@ public class UserRepo
      * @param token mutable live data containing JWT Token
      */
     public void retrieveToken(String email, String password, final MutableLiveData<String> token,
-                              final PreferenceProvider preferenceProvider)
+                              final PreferenceProvider preferenceProvider,
+                              final MutableLiveData<String> signInResponse)
     {
         APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
+
+        preferenceProvider.saveEmail(email);
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("email", email);
@@ -76,12 +78,15 @@ public class UserRepo
             public void onNext(Response<Void> voidResponse) {
                 Log.d(TAG, "onNext called");
 
-                String responseHeader = voidResponse.headers().get("Authorization");
-                if(responseHeader != null)
+                String message = voidResponse.headers().get("Message");
+                assert message != null;
+                if(message.equals("Success"))
                 {
+                    String responseHeader = voidResponse.headers().get("Authorization");
                     preferenceProvider.saveJWTToken(responseHeader);
                     token.postValue(responseHeader);
-                }
+                }else
+                    signInResponse.postValue(message);
 
             }
 
@@ -98,69 +103,6 @@ public class UserRepo
                 NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
             }
         });
-    }
-
-    /**
-     * Authenticate user.
-     * @param email email
-     * @param password password
-     * @param signUpResponse Mutable live data containing sign-up response
-     * @param progressVisibility Mutable live data containing progress view visibility change
-     * @param navFragment Mutable live data containing navigation
-     * @param token Mutable live data containing JWT Token
-     */
-    public void authUser(final String email, final String password,
-                         final MutableLiveData<String> signUpResponse,
-                         final MutableLiveData<Boolean> progressVisibility,
-                         final MutableLiveData<Integer> navFragment,
-                         final MutableLiveData<String> token,
-                         final PreferenceProvider preferenceProvider)
-    {
-        APIService apiService = RetrofitClient.getRetrofit().create(APIService.class);
-        progressVisibility.postValue(true);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("email", email);
-        jsonObject.addProperty("password", password);
-
-        NetworkState.getInstance().setStatus(NetworkStatus.PENDING);
-        final Observable<Response<String>> responseObservable = apiService.authenticateUser(jsonObject);
-        responseObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<String>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe called");
-                    }
-
-                    @Override
-                    public void onNext(Response<String> stringResponse) {
-                        Log.d(TAG, "onNext called");
-                        signUpResponse.postValue(stringResponse.body());
-                        Log.d(TAG, "OnNext " + stringResponse.body());
-
-                        if(stringResponse.body() != null) {
-                            if (stringResponse.body().equals(""))
-                                retrieveToken(email, password, token, preferenceProvider);
-                            if (stringResponse.body().equals("This Account is not active."))
-                                navFragment.postValue(WelcomeViewModel.VERIFY_EMAIL_FRAGMENT);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "onError called");
-                        Log.e(TAG, Objects.requireNonNull(e.getMessage()));
-                        progressVisibility.postValue(true);
-                        NetworkState.getInstance().setStatus(NetworkStatus.ERROR);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.d(TAG, "onComplete called");
-                        progressVisibility.postValue(true);
-                        NetworkState.getInstance().setStatus(NetworkStatus.DONE);
-                    }
-                });
     }
 
     /**

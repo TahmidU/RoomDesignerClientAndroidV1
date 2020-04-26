@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 public class ModelLoader
 {
     private final WeakReference<ARActivity> owner;
-    private static final String TAG = "ModelLoader";
+    private static final String TAG = "MODEL_LOADER";
 
     public ModelLoader(WeakReference<ARActivity> owner) {
         this.owner = owner;
